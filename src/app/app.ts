@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
+import { HeaderComponent } from "./components/header/header";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ThemeSwitcher],
+  imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
