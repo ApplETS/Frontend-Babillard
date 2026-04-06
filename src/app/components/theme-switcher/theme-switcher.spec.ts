@@ -1,23 +1,43 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+  import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThemeSwitcher } from './theme-switcher';
-import { App } from '../../app';
+  import { ThemeSwitcher } from './theme-switcher';
+  import { App } from '../../app';
 
-describe('ThemeSwitcher', () => {
-  let component: ThemeSwitcher;
-  let fixture: ComponentFixture<ThemeSwitcher>;
+  describe('ThemeSwitcher', () => {
+    let component: ThemeSwitcher;
+    let fixture: ComponentFixture<ThemeSwitcher>;
+    const localStorageMock = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      clear: vi.fn(),
+    };
+    beforeEach(async () => {
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ThemeSwitcher],
-    }).compileComponents();
+      Object.defineProperty(window, 'localStorage', {
+        value: localStorageMock,
+      });
 
-    fixture = TestBed.createComponent(ThemeSwitcher);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
+      await TestBed.configureTestingModule({
+        imports: [ThemeSwitcher]
+      }).compileComponents();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+      fixture = TestBed.createComponent(ThemeSwitcher);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should apply "dark" theme when isDark is true', () => {
+      component.isDark.set(true);
+      fixture.detectChanges();
+      expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+      expect(document.documentElement.classList.contains('dark')).toBe(true);
+      expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'dark');
+    });
+
+    it('should apply "light" theme when isDark is false', () => {
+      component.isDark.set(false);
+      fixture.detectChanges();
+      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+      expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'light');
+    });
+  })
