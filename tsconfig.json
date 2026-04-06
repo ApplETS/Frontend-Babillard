@@ -17,7 +17,9 @@
     "paths": {
       "@services/*": ["./src/services/*"],
       "@environment/*": ["./src/environments/*"],
-      "@models/*": ["./src/models/*"]
+      "@models/*": ["./src/models/*"],
+      "@components/*": ["./src/app/components/*"],
+      "@routed-components/*": ["./src/app/routed-components/*"]
     }
   },
   "angularCompilerOptions": {
