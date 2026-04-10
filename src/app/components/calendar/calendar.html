@@ -1,1 +1,60 @@
-<p>calendar works!</p>
+		<div className="flex flex-col flex-grow h-full">
+      <app-calendar-header>
+
+      </app-calendar-header>
+      <full-calendar [options]="options"></full-calendar>
+			<!--<CalendarHeader
+				calendarRef={calendarRef}
+				locale={locale}
+				handleFilterChange={handleFilterChange}
+				activityAreas={activityAreas}
+				viewType={viewType}
+				setViewType={setViewType}
+				sharedEvent={sharedEvent}
+			/>
+			<FullCalendar
+				viewClassNames={'rounded-lg border border-gray-300 overflow-hidden'}
+				ref={calendarRef}
+				height={'100%'}
+				plugins={[dayGridPlugin, interactionPlugin, momentPlugin, timeGridPlugin, timeGridDay]}
+				initialView={view}
+				locales={[frLocale, enLocale]}
+				locale={locale}
+				events={getShownEvents(shownEvents)}
+				eventContent={(arg: EventContentArg) => {
+					if (arg.event.extendedProps.isShowMore) {
+						return (
+							<div className="p-1 w-full text-center z-0">
+								<EventContainer
+									title={arg.event.title}
+									showMoreEvents={arg.event.extendedProps.events}
+									onClickEvent={handleEventSelect}
+									locale={locale}
+									date={arg.event.start}
+									setOpenMoreModal={setOpenMoreModal}
+									openMoreModal={openMoreModal}
+									monthview={true}
+								/>
+							</div>
+						);
+					} else {
+						return (
+							<div className="p-1 cursor-pointer w-full text-center z-0">
+								<EventContainer title={arg.event.title} monthview={viewType == 'dayGridMonth'} />
+							</div>
+						);
+					}
+				}}
+				eventTimeFormat={{
+					hour: '2-digit',
+					minute: '2-digit',
+					hour12: false,
+				}}
+				eventClick={(info) => {
+					handleEventSelect(Number(info.event.groupId));
+				}}
+				eventDisplay="block"
+				eventOrder={'start'}
+				headerToolbar={false}
+			/>-->
+		</div>
