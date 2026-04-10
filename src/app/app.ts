@@ -5,8 +5,7 @@ import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, ThemeSwitcher],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  templateUrl: './app.html'
 })
 export class App {
   protected readonly title = signal('Babillard-Frontend');
