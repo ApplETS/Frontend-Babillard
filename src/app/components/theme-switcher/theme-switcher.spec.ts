@@ -1,24 +1,23 @@
   import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+  import { signal, WritableSignal } from '@angular/core';
   import { ThemeSwitcher } from './theme-switcher';
-  import { App } from '../../app';
+  import { ThemeService } from '../../services/themeService/theme-service';
 
   describe('ThemeSwitcher', () => {
     let component: ThemeSwitcher;
     let fixture: ComponentFixture<ThemeSwitcher>;
-    const localStorageMock = {
-      getItem: vi.fn(),
-      setItem: vi.fn(),
-      clear: vi.fn(),
-    };
-    beforeEach(async () => {
+    let mockThemeService: { isDark: WritableSignal<boolean> };
 
-      Object.defineProperty(window, 'localStorage', {
-        value: localStorageMock,
-      });
+    beforeEach(async () => {
+      mockThemeService = {
+        isDark: signal(false),
+      };
 
       await TestBed.configureTestingModule({
-        imports: [ThemeSwitcher]
+        imports: [ThemeSwitcher],
+        providers: [
+          {provide: ThemeService, useValue: mockThemeService},
+        ]
       }).compileComponents();
 
       fixture = TestBed.createComponent(ThemeSwitcher);
@@ -26,18 +25,19 @@
       fixture.detectChanges();
     });
 
-    it('should apply "dark" theme when isDark is true', () => {
-      component.isDark.set(true);
+    it('should apply "light" on click when isDark is true', () => {
+      component.themeService.isDark.set(true);
+      const checkboxElement: HTMLInputElement = fixture.nativeElement.querySelector('input[type="checkbox"]');
+      checkboxElement.click();
       fixture.detectChanges();
-      expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-      expect(document.documentElement.classList.contains('dark')).toBe(true);
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'dark');
+      expect(mockThemeService.isDark()).toBe(false);
     });
 
-    it('should apply "light" theme when isDark is false', () => {
-      component.isDark.set(false);
+    it('should apply "dark" on click when isDark is false', () => {
+      component.themeService.isDark.set(false);
+      const checkboxElement: HTMLInputElement = fixture.nativeElement.querySelector('input[type="checkbox"]');
+      checkboxElement.click();
       fixture.detectChanges();
-      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'light');
+      expect(mockThemeService.isDark()).toBe(true);
     });
   })
