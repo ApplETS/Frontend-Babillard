@@ -1,7 +1,5 @@
 		<div className="flex flex-col flex-grow h-full">
-      <app-calendar-header>
-
-      </app-calendar-header>
+      <app-calendar-header [viewType]="view"></app-calendar-header>
       <full-calendar [options]="options"></full-calendar>
 			<!--<CalendarHeader
 				calendarRef={calendarRef}

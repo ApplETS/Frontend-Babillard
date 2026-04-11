@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, WritableSignal } from '@angular/core';
+import { TimeGridType } from '@components/calendar/calendar';
 import { DropDownSelectComponent } from '@components/drop-down-select.component/drop-down-select.component';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faChevronLeft, faChevronRight, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
@@ -16,22 +17,16 @@ export class CalendarHeader {
   readonly CalendarAction = CalendarAction;
   readonly TimeGridType = TimeGridType;
 
-  viewType: TimeGridType = TimeGridType.month;
+  @Input({required: true}) viewType!: WritableSignal<TimeGridType>;
 
   handleDateChange(action: CalendarAction): void {
     
   }
 
   handleViewChange(view: TimeGridType): void {
-    this.viewType = view;
+    this.viewType.set(view);
   }
 }
-
-export enum TimeGridType{
-  month = "dayGridMonth",
-  week = "timeGridWeek",
-  day = "timeGridDay"
-} 
 
 export enum CalendarAction {
   previous = "prev",

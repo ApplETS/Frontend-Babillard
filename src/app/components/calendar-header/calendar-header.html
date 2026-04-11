@@ -4,15 +4,7 @@
 			<fa-icon [icon]="faChevronLeft" />
 		</button>
 		<p className="text-lg">
-			viewType === 'timeGridDay'
-			  ? date?.locale(locale).format('LL')
-						: viewType === 'timeGridWeek'
-						? `$date?.clone().startOf('week').locale(locale).format('LL') - $date
-								?.clone()
-								.endOf('week')
-								.locale(locale)
-								.format('LL')`
-						: date?.locale(locale).format('MMMM YYYY')
+			{{viewType()}}
 		</p>
 		<button type="button" class="btn btn-sm" (click)="handleDateChange(CalendarAction.next)">
 			<fa-icon [icon]="faChevronRight" />
@@ -23,21 +15,22 @@
 	</div>
 	<div class="flex justify-center basis-1/3">
 		<div class="tabs tabs-boxed" role="tablist">
-			<a role="tab" class="tab" [class.tab-active]="viewType === TimeGridType.day" (click)="handleViewChange(TimeGridType.day)"
+			<a role="tab" class="tab" [class.tab-active]="viewType() === TimeGridType.month" (click)="handleViewChange(TimeGridType.month)"
       >
-      t('month')
+      Month
 			</a>
 			<a
 				role="tab"
-        [class.tab-active]="viewType === TimeGridType.week"
+				class="tab"
+        [class.tab-active]="viewType() === TimeGridType.week"
 				(click)="handleViewChange(TimeGridType.week)">
-			  t('week')
+			  Week
 			</a>
 			<a
 			  role="tab"
-        class="tab" [class.tab-active]="viewType === TimeGridType.day"
+        class="tab" [class.tab-active]="viewType() === TimeGridType.day"
 				(click)="handleViewChange(TimeGridType.day)">
-						t('day')
+						Day
 			</a>
 		</div>
 	</div>

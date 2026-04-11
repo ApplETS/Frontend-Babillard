@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
@@ -16,12 +16,15 @@ import interactionPlugin from '@fullcalendar/interaction';
   templateUrl: './calendar.html',
 })
 export class Calendar {
+
+  view = signal(TimeGridType.month);
+
   options: CalendarOptions = {
     locales: [frLocale, enLocale],
     locale: frLocale,
     height: "100%",
     headerToolbar: false,
-    initialView: 'dayGridMonth',
+    initialView: this.view(),
     events: [
       { title: 'event 1', date: '2024-06-01' },
       { title: 'event 2', date: '2024-06-02' }
@@ -29,3 +32,9 @@ export class Calendar {
     plugins: [dayGridPlugin, interactionPlugin, momentPlugin, timeGridPlugin, timeGridDay]
   }
 }
+
+export enum TimeGridType{
+  month = "dayGridMonth",
+  week = "timeGridWeek",
+  day = "timeGridDay"
+} 
