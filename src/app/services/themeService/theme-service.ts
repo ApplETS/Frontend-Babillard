@@ -27,4 +27,7 @@ export class ThemeService {
       localStorage.setItem('theme', currentTheme);
     });
   }
+  onChange = () => {
+    this.isDark.update(value => !value);
+  }
 }

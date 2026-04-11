@@ -31,8 +31,9 @@ describe('ThemeService', () => {
   });
 
   it('should update DOM and localStorage when isDark have been changed to true', () => {
-    service.isDark.set(true);
+    service.isDark.set(false);
 
+    service.onChange();
     TestBed.tick();
 
     expect(rendererMock.setAttribute).toHaveBeenCalledWith(expect.any(HTMLElement), 'data-theme', 'dark');
@@ -41,9 +42,10 @@ describe('ThemeService', () => {
   });
 
   it('should update DOM and localStorage when isDark have been changed to false', () => {
-    service.isDark.set(false);
+    service.isDark.set(true);
 
-    TestBed.tick()
+    service.onChange();
+    TestBed.tick();
 
     expect(rendererMock.setAttribute).toHaveBeenCalledWith(expect.any(HTMLElement), 'data-theme', 'light');
     expect(rendererMock.removeClass).toHaveBeenCalledWith(expect.any(HTMLElement), 'dark');

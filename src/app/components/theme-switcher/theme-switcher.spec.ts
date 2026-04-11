@@ -3,14 +3,16 @@
   import { ThemeSwitcher } from './theme-switcher';
   import { ThemeService } from '../../services/themeService/theme-service';
 
+
   describe('ThemeSwitcher', () => {
     let component: ThemeSwitcher;
     let fixture: ComponentFixture<ThemeSwitcher>;
-    let mockThemeService: { isDark: WritableSignal<boolean> };
+    let mockThemeService: { isDark: WritableSignal<boolean>, onChange(): void };
 
     beforeEach(async () => {
       mockThemeService = {
         isDark: signal(false),
+        onChange: ()=>{mockThemeService.isDark.update(value => !value)},
       };
 
       await TestBed.configureTestingModule({
@@ -38,6 +40,7 @@
       const checkboxElement: HTMLInputElement = fixture.nativeElement.querySelector('input[type="checkbox"]');
       checkboxElement.click();
       fixture.detectChanges();
+
       expect(mockThemeService.isDark()).toBe(true);
     });
   })
