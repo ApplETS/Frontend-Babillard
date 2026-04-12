@@ -9,6 +9,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import timeGridDay from '@fullcalendar/timegrid';
 import momentPlugin from '@fullcalendar/moment';
 import interactionPlugin from '@fullcalendar/interaction';
+import moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
@@ -20,17 +21,6 @@ export class Calendar {
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
   
   view = signal(TimeGridType.month);
-
-  constructor() {
-    effect(() => {
-      const currentView = this.view();
-      if (this.calendarComponent) {
-        const calendarApi = this.calendarComponent.getApi();
-        calendarApi.changeView(currentView);
-      }
-    });
-  }
-
   options: CalendarOptions = {
     locales: [frLocale, enLocale],
     locale: "fr",
@@ -52,7 +42,19 @@ export class Calendar {
     },
     eventDisplay: "block",
     eventOrder: "start",
+  };
+  selectedCalendarDate = moment(Date.now());
+  
+  constructor() {
+    effect(() => {
+      const currentView = this.view();
+      if (this.calendarComponent) {
+        const calendarApi = this.calendarComponent.getApi();
+        calendarApi.changeView(currentView);
+      }
+    });
   }
+
 
   calendarChange(action: CalendarAction): void {
     const calendarApi = this.calendarComponent.getApi();
@@ -67,6 +69,7 @@ export class Calendar {
         calendarApi.today();
         break;
     }
+    this.selectedCalendarDate = moment(calendarApi.getDate());
   }
 }
 

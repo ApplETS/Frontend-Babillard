@@ -18,6 +18,7 @@ export class CalendarHeader {
   readonly TimeGridType = TimeGridType;
 
   @Input({required: true}) viewType!: WritableSignal<TimeGridType>;
+  @Input({required: true}) currentDate!: moment.Moment;
   @Output() calendarChanged = new EventEmitter<CalendarAction>();
 
   handleDateChange(action: CalendarAction): void {
@@ -26,5 +27,20 @@ export class CalendarHeader {
 
   handleViewChange(view: TimeGridType): void {
     this.viewType.set(view);
+  }
+
+  get timeFrame(): string {
+    switch (this.viewType()) {
+      case TimeGridType.month:
+        return this.currentDate.format("MMMM YYYY");
+      case TimeGridType.week:
+        const startOfWeek = this.currentDate.clone().startOf('week').format("D MMM");
+        const endOfWeek = this.currentDate.clone().endOf('week').format("D MMM YYYY");
+        return `${startOfWeek} - ${endOfWeek}`;
+      case TimeGridType.day:
+        return this.currentDate.format("D MMM YYYY");
+      default:
+        return "";
+    }
   }
 }

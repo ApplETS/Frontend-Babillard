@@ -1,5 +1,5 @@
 		<div class="flex flex-col flex-grow h-full">
-      <app-calendar-header [viewType]="view" (calendarChanged)="calendarChange($event)"></app-calendar-header>
+      <app-calendar-header [viewType]="view" [currentDate]="selectedCalendarDate" (calendarChanged)="calendarChange($event)"></app-calendar-header>
       <full-calendar [options]="options" [events]="null">
 				<ng-template #eventContent let-event="event">
 					@if (event.extendedProps.isShowMore) {
