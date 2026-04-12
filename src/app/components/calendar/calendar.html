@@ -1,7 +1,16 @@
 		<div class="flex flex-col flex-grow h-full">
       <app-calendar-header [viewType]="view"></app-calendar-header>
-      <full-calendar [options]="options">
+      <full-calendar [options]="options" [events]="null">
 				<ng-template #eventContent let-event="event">
+					@if (event.extendedProps.isShowMore) {
+						<div class="p-1 w-full text-center z-0">
+							Show more		
+						</div>
+					} @else {
+						<div class="p-1 cursor-pointer w-full text-center z-0">
+						All good
+						</div>
+					}
 					<div class="p-1 cursor-pointer w-full text-center z-0">
 						{{ event.title }}
 					</div>

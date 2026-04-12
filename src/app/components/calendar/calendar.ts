@@ -21,7 +21,7 @@ export class Calendar {
 
   options: CalendarOptions = {
     locales: [frLocale, enLocale],
-    locale: frLocale,
+    locale: "fr",
     height: "100%",
     headerToolbar: false,
     initialView: this.view(),
@@ -32,7 +32,15 @@ export class Calendar {
     viewClassNames: () => {
       return ["rounded-lg", "border", "border-gray-300", "overflow-hidden"];
     },
-    plugins: [dayGridPlugin, interactionPlugin, momentPlugin, timeGridPlugin, timeGridDay]
+    plugins: [dayGridPlugin, interactionPlugin, momentPlugin, timeGridPlugin, timeGridDay],
+    eventTimeFormat: {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit'
+    },
+    eventDisplay: "block",
+    eventOrder: "start",
+    
   }
 }
 
