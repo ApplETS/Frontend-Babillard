@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewChild, effect } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
-import { FullCalendarModule } from '@fullcalendar/angular';
+import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
 import frLocale from '@fullcalendar/core/locales/fr';
 import enLocale from '@fullcalendar/core/locales/en-gb';
@@ -17,7 +17,19 @@ import interactionPlugin from '@fullcalendar/interaction';
 })
 export class Calendar {
 
+  @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
+  
   view = signal(TimeGridType.month);
+
+  constructor() {
+    effect(() => {
+      const currentView = this.view();
+      if (this.calendarComponent) {
+        const calendarApi = this.calendarComponent.getApi();
+        calendarApi.changeView(currentView);
+      }
+    });
+  }
 
   options: CalendarOptions = {
     locales: [frLocale, enLocale],
@@ -40,7 +52,6 @@ export class Calendar {
     },
     eventDisplay: "block",
     eventOrder: "start",
-    
   }
 }
 
