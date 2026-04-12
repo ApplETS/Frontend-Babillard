@@ -53,6 +53,21 @@ export class Calendar {
     eventDisplay: "block",
     eventOrder: "start",
   }
+
+  calendarChange(action: CalendarAction): void {
+    const calendarApi = this.calendarComponent.getApi();
+    switch (action){
+      case CalendarAction.previous:
+        calendarApi.prev();
+        break;
+      case CalendarAction.next:
+        calendarApi.next();
+        break;
+      case CalendarAction.today:
+        calendarApi.today();
+        break;
+    }
+  }
 }
 
 export enum TimeGridType{
@@ -60,3 +75,9 @@ export enum TimeGridType{
   week = "timeGridWeek",
   day = "timeGridDay"
 } 
+
+export enum CalendarAction {
+  previous = "prev",
+  next = "next",
+  today = "today"
+}
