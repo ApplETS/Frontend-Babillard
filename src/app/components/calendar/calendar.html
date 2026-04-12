@@ -1,6 +1,12 @@
-		<div className="flex flex-col flex-grow h-full">
+		<div class="flex flex-col flex-grow h-full">
       <app-calendar-header [viewType]="view"></app-calendar-header>
-      <full-calendar [options]="options"></full-calendar>
+      <full-calendar [options]="options">
+				<ng-template #eventContent let-event="event">
+					<div class="p-1 cursor-pointer w-full text-center z-0">
+						{{ event.title }}
+					</div>
+				</ng-template>
+			</full-calendar>
 			<!--<CalendarHeader
 				calendarRef={calendarRef}
 				locale={locale}

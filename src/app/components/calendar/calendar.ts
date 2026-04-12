@@ -29,6 +29,9 @@ export class Calendar {
       { title: 'event 1', date: '2024-06-01' },
       { title: 'event 2', date: '2024-06-02' }
     ],
+    viewClassNames: () => {
+      return ["rounded-lg", "border", "border-gray-300", "overflow-hidden"];
+    },
     plugins: [dayGridPlugin, interactionPlugin, momentPlugin, timeGridPlugin, timeGridDay]
   }
 }
