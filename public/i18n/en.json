@@ -1,1 +1,390 @@
-{}
+{
+  "localeLayout": {
+    "title": "Hello",
+    "default-error": "An error occurred"
+  },
+  "dashboard": {
+    "news": "News",
+    "publications": "Publications",
+    "approbations": "Approbations",
+    "login": "Login",
+    "accounts": "Accounts"
+  },
+  "navbar": {
+    "settings": "Settings",
+    "sign-out": "Sign out",
+    "moderator": "Moderator"
+  },
+  "login": {
+    "welcome": "Welcome !",
+    "email": "Email",
+    "password": "Password",
+    "remember": "Remember me",
+    "login": "Login",
+    "forgot-info": "Forgot your information?",
+    "reset-password": "Reset your password",
+    "no-account": "Don't have an account?",
+    "signup": "Sign up",
+    "400": "Wrong credentials",
+    "401": "Session expired, please login again",
+    "200": "Verification successful",
+    "field-required": "A {field} is required"
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "register": "Register",
+    "name": "Organization Name",
+    "email": "Email",
+    "activity": "Activity field",
+    "scientific-club": "Scientific Club",
+    "ets": "ETS",
+    "sve": "Student Life Service",
+    "aeets": "AEETS",
+    "password": "Password",
+    "confirm": "Confirm Password",
+    "already": "Already have an account?",
+    "already-link": "Login here",
+    "422": "The password should be at least 6 characters"
+  },
+  "forgotPassword": {
+    "title": "Reset your password",
+    "email": "Email",
+    "send": "Reset your password",
+    "remember": "Already have an account?",
+    "remember-link": "Login here",
+    "field-required": "A {field} is required",
+    "400": "Please enter a valid email address."
+  },
+  "updatePassword": {
+    "title": "Reset your password",
+    "token": "Token",
+    "email": "Email",
+    "new-password": "New password",
+    "confirm-password": "Confirm password",
+    "update": "Update your password",
+    "remember": "Already have an account?",
+    "remember-link": "Login here",
+    "401": "Invalid token",
+    "token-placeholder": "Token received by email",
+    "201": "Please verify your email",
+    "field-required": "A {field} is required",
+    "field-required-f": "A {field} is required",
+    "passwords-must-match": "Passwords must match",
+    "403": "The token has expired or is invalid",
+    "422": "Please enter a valid email address."
+  },
+  "setPassword": {
+    "title": "Change temporary password",
+    "new-password": "New password",
+    "confirm-password": "Confirm password",
+    "password-success-toast-message": "The password was successfully changed",
+    "password-error-toast-message": "An error occurred while changing the password",
+    "password-mismatch-error": "Passwords do not match",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "newsPage": {
+    "view-profile": "View profile",
+    "no-events-message": "No events found"
+  },
+  "publications": {
+    "title": "Publications",
+    "search": "Search",
+    "create-new-post": "Create a post",
+    "no-posts": "No posts",
+    "no-publications": "No publications found",
+    "required-fields": "Required fields",
+    "table": {
+      "title": "Title",
+      "release-date": "Release date",
+      "event-date": "Event date",
+      "status": "Status",
+      "open": "Open",
+      "none": "None"
+    },
+    "filters": {
+      "all": "All",
+      "published": "Published",
+      "draft": "Draft",
+      "on-hold": "On hold",
+      "refused": "Refused",
+      "approved": "Approved",
+      "deleted": "Deactivated"
+    },
+    "menu": {
+      "duplicate": "Duplicate",
+      "delete": "Delete",
+      "open": "Open",
+      "modify": "Modifier"
+    },
+    "modal": {
+      "create-page-title": "Create a news",
+      "duplicate-page-title": "(Duplicate)",
+      "modify-page-title": "Modify a news",
+      "view-page-title": "Consult a news",
+      "title": "Title",
+      "activity-area": "Activity area",
+      "alt-text": "Alt text",
+      "published-date": "Published date",
+      "event-start-date": "Event start date and time",
+      "event-end-date": "Event end date and time",
+      "tags-title": "Tag(s) (maximum of 5)",
+      "content": "Content",
+      "news": "News",
+      "image": "Image",
+      "event-date": "Event date",
+      "choose-file": "Choose a file",
+      "cancel-button": "Close",
+      "submit-button": "Send for approbation",
+      "resubmit-button": "Resubmit for approbation",
+      "tool-tip-text": "It will go back to pending approval and your previous post will be deleted",
+      "published-date-tool-tip-text": "The date that the event will be published",
+      "start-date-tool-tip-text": "This is the start date of the event",
+      "end-date-tool-tip-text": "This is the end date of the event",
+      "error-toast-message": "Please fill those field(s)",
+      "date-error-toast-message": "The event start date must be before the event end date",
+      "image-format-error-toast-message": "The image format is not supported",
+      "success-toast-message": "The news has been sent for approbation",
+      "post-error-toast-message": "An error occurred while sending the news for approbation",
+      "preview": "Preview",
+      "delete-title": "Are your sure you want to delete this news?",
+      "delete-button": "Delete",
+      "delete-success-toast-message": "The news has been deleted",
+      "delete-error-toast-message": "An error occurred while deleting the news",
+      "reject-success-toast-message": "The news has been rejected",
+      "reject-error-toast-message": "An error occurred while rejecting the news",
+      "approve-success-toast-message": "The news has been approved",
+      "approve-error-toast-message": "An error occurred while approving the news",
+      "draft-success-toast-message": "The news has been saved as draft",
+      "draft-error-toast-message": "An error occurred while saving the news as draft",
+      "cancel": "Cancel",
+      "activity-area-items": {
+        "scientificClub": "Scientific Club",
+        "ets": "ETS",
+        "sve": "Student Life Service",
+        "aeets": "AEETS"
+      },
+      "alt-text-tooltip": "An alt text is a brief written description of an image on a web page, used by screen readers for the visually impaired or when the image cannot be displayed.",
+      "image-cropper": {
+        "title": "Resize the image",
+        "subtitle": "Drag to move the image and adjust the cropping using the mouse wheel.",
+        "crop": "Crop",
+        "cancel": "Cancel",
+        "zoom-hint": "Use ⌘ + scroll (or ctrl + scroll) to zoom the image"
+      }
+    },
+    "error-fetching-events": "An error occured while loading the publications",
+    "none": "None"
+  },
+  "approbations": {
+    "title": "Approbations",
+    "none": "None",
+    "search": "Search",
+    "no-publications": "No publications found",
+    "activity-area-filters": "Activity area",
+    "table": {
+      "author": "Author",
+      "title": "Title",
+      "release-date": "Release date",
+      "status": "Status",
+      "open": "Open"
+    },
+    "filters": {
+      "all": "All",
+      "published": "Published",
+      "draft": "Draft",
+      "on-hold": "On hold",
+      "refused": "Refused",
+      "approved": "Approved",
+      "deleted": "Deactivated"
+    },
+    "modal": {
+      "moderator-page-title": "Consult a news",
+      "draft": "Save as draft",
+      "approve-button": "Approve",
+      "reject-button": "Refuse",
+      "deactivate-button": "Deactivate"
+    },
+    "refuse-question": "Why do you want to refuse this news?",
+    "cancel": "Cancel",
+    "reject": "Refuse the news",
+    "reason": "Reason",
+    "deactivate-question": "Why do you want to deactivate this news?",
+    "deactivate": "Deactivate the news",
+    "give-reason": "Please give a reason for this action",
+    "error-fetching-events": "An error occured while loading the publications"
+  },
+  "profile": {
+    "notify-me": "Notify me",
+    "tooltip-notify-me": "Click on 'Notify me' to receive an email when {author} publishes a news.",
+    "interests": "Interests",
+    "search": "Search",
+    "to": " to ",
+    "from": " from ",
+    "until": " until ",
+    "informations": "Informations",
+    "website": "Website",
+    "email": "Email",
+    "enter-email": "Enter the email you want to be notified at",
+    "email-success-toast-message": "You will be notified by email when the author publishes a news. You can unsubscribe in the email you will receive.",
+    "email-error-toast-message": "An error occurred while saving your email",
+    "save": "Save",
+    "cancel": "Cancel",
+    "field-required": "A {field} is required",
+    "error-loading-news": "An error occured while loading the news",
+    "no-results-message": "No results found"
+  },
+  "accounts": {
+    "title": "Accounts",
+    "search": "Search",
+    "create-new-account": "Create account",
+    "no-accounts-found": "No accounts found",
+    "field-required": "A {field} is required",
+    "deactivate-success": "Account was successfully deactivated",
+    "activate-error": "An error occurred while activating the account",
+    "deactivate-error": "An error occurred while deactivating the account",
+    "table": {
+      "organization": "Organization",
+      "email": "Email",
+      "activated": "Activated",
+      "yes": "Yes",
+      "no": "No",
+      "activityarea": "Activity area",
+      "actions": "Action"
+    },
+    "filters": {
+      "all": "All",
+      "deactivated": "Deactivated",
+      "active": "Activated"
+    },
+    "menu": {
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
+    "create": {
+      "title": "Create account",
+      "organization": "Organization name",
+      "activityarea": "Activity area",
+      "email": "Email",
+      "send": "Send",
+      "close": "Close",
+      "activity": {
+        "scientificClub": "Scientific Club",
+        "ets": "ETS",
+        "sve": "Student Life Service",
+        "aeets": "AEETS"
+      },
+      "success": "Account created",
+      "error": "An error occurred",
+      "organization-length-error": "The organization name must be between 1 and 50 characters",
+      "activate-success": "Account was successfully activated",
+      "none": "None"
+    },
+    "toggle": {
+      "deactivation-title": "Why do you want to deactivate the account of {organization}?",
+      "deactivation-title-no-organization": "Why do you want to deactivate the account?",
+      "activation-title": "Are you sure you want to activate the account of {organization}?",
+      "activation-title-no-organization": "Are you sure you want to activate the account?",
+      "delete-title": "Are your sure you want to delete the account of {organization}?",
+      "delete-title-no-organization": "Are your sure you want to delete the account?",
+      "close": "Close",
+      "deactivate": "Deactivate account",
+      "activate": "Activate account",
+      "delete": "Delete",
+      "input-title": "Reason",
+      "give-reason": "Please give a reason for this action"
+    },
+    "error-fetching-users": "An error occured while loading the accounts"
+  },
+  "settings": {
+    "title": "Settings",
+    "save": "Save",
+    "400": "Password credentials do not match",
+    "200": "Settings updated",
+    "socials": "Socials",
+    "appearance": "Display",
+    "password": "Password",
+    "profile": "Profile",
+    "socials-section": {
+      "title": "Socials",
+      "info": "Your socials will be displayed on your profile page, which is accessible by other users. We will not share nor use your socials for any other purpose.",
+      "save": "Save",
+      "changes": "Changes detected, save to update",
+      "cancel": "Cancel"
+    },
+    "profile-section": {
+      "title": "Profile",
+      "drop-picture": "Drop a picture here or click to upload",
+      "delete-picture": "Delete picture",
+      "company-name": "Company name",
+      "email": "Email",
+      "activity": "Activity field",
+      "scientific-club": "Scientific Club",
+      "ets": "ETS",
+      "sve": "Student Life Service",
+      "aeets": "AEETS",
+      "description": "Description",
+      "website": "Website",
+      "save": "Save",
+      "200": "Profile updated",
+      "changes": "Changes detected, save to update",
+      "cancel": "Cancel",
+      "field-required": "A {field} is required"
+    },
+    "password-section": {
+      "title": "Password",
+      "new-password": "New password",
+      "confirm-new-password": "Confirm new password",
+      "save": "Save",
+      "200": "Password saved",
+      "changes": "Changes detected, save to update",
+      "cancel": "Cancel",
+      "passwords-must-match": "Passwords do not match"
+    },
+    "display-section": {
+      "title": "Display",
+      "language": "Language",
+      "theme": "Theme",
+      "save": "Save",
+      "light": "Light",
+      "dark": "Dark",
+      "english": "English",
+      "french": "French"
+    },
+    "dialog": {
+      "title": "Reset your changes",
+      "message": "Are you sure you want to reset your changes?",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "calendar": {
+    "filters": "Activity area",
+    "week": "Week",
+    "month": "Month",
+    "day": "Day"
+  },
+  "help": {
+    "title": "Need help?",
+    "contact-us": "Contact us at "
+  },
+  "unsubscribeEmail": {
+    "title": "You have successfully unsubscribed from emails!",
+    "message": "Feel free to subscribe back in the profile page of the author.",
+    "back": "Back to the homepage",
+    "error-title": "Unsubscription failed",
+    "error-message": "An error occurred while processing your unsubscription. Please try again later or contact support if the problem persists.",
+    "retry": "Retry"
+  },
+  "pagination": {
+    "page": "Page",
+    "of": "of",
+    "goToPage": "Go to page",
+    "show": "Show {count}"
+  },
+  "none": "None",
+  "mdxEditor": {
+    "link-text": "Link text",
+    "link-url": "Link"
+  }
+}

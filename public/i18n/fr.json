@@ -1,1 +1,390 @@
-{}
+{
+	"localeLayout": {
+		"title": "Hello",
+		"default-error": "Une erreur est survenue"
+	},
+	"dashboard": {
+		"news": "Annonces",
+		"publications": "Publications",
+		"approbations": "Approbations",
+		"login": "Se connecter",
+		"accounts": "Comptes"
+	},
+	"navbar": {
+		"settings": "Paramètres",
+		"sign-out": "Déconnexion",
+		"moderator": "Modérateur"
+	},
+	"login": {
+		"welcome": "Bienvenue !",
+		"email": "Courriel",
+		"password": "Mot de passe",
+		"remember": "Se souvenir de moi",
+		"login": "Se connecter",
+		"forgot-info": "Vous avez oublié vos informations?",
+		"reset-password": "Réinitialisez votre mot de passe",
+		"no-account": "Vous n'avez pas de compte?",
+		"signup": "Inscrivez-vous",
+		"400": "Mauvaises informations de connexion",
+		"401": "Session expirée, veuillez vous reconnecter",
+		"200": "Vérification réussie",
+		"field-required": "Un {field} est obligatoire"
+	},
+	"signUp": {
+		"title": "Inscription",
+		"register": "S'inscrire",
+		"name": "Nom de l'organisation",
+		"email": "Courriel",
+		"activity": "Secteur d'activité",
+		"scientific-club": "Club scientifique",
+		"ets": "ETS",
+		"sve": "Service à la vie étudiante",
+		"aeets": "AEETS",
+		"password": "Mot de passe",
+		"confirm": "Confirmation de mot de passe",
+		"already": "Vous avez déjà un compte?",
+		"already-link": "Connectez-vous",
+		"422": "Le mot de passe devrait contenir au moins 6 caractères"
+	},
+	"forgotPassword": {
+		"title": "Mot de passe oublié",
+		"email": "Courriel",
+		"send": "Envoyer",
+		"remember": "Vous avez un compte?",
+		"remember-link": "Connectez-vous",
+		"field-required": "Un {field} est obligatoire",
+		"400": "Veuillez saisir une adresse courriel valide."
+	},
+	"updatePassword": {
+		"title": "Réinitialiser votre mot de passe",
+		"token": "Code de réinitialisation",
+		"email": "Courriel",
+		"new-password": "Nouveau mot de passe",
+		"confirm-password": "Confirmation de mot de passe",
+		"update": "Réinitialiser le mot de passe",
+		"remember": "Vous avez un compte?",
+		"remember-link": "Connectez-vous",
+		"401": "Le code de réinitialisation est invalide ou a expiré",
+		"token-placeholder": "Code reçu par courriel",
+		"201": "Veuillez vérifier votre courriel",
+		"field-required": "Un {field} est obligatoire",
+		"field-required-f": "Une {field} est obligatoire",
+		"passwords-must-match": "Les mots de passe doivent correspondre",
+		"403": "Le code de réinitialisation a expiré ou est invalide",
+		"422": "Veuillez saisir une adresse courriel valide."
+	},
+	"setPassword": {
+		"title": "Changer le mot de passe temporaire",
+		"new-password": "Nouveau mot de passe",
+		"confirm-password": "Confirmation de mot de passe",
+		"password-success-toast-message": "Le mot de passe a été changé avec succès",
+		"password-error-toast-message": "Une erreur est survenue lors du changement de mot de passe",
+		"password-mismatch-error": "Les mots de passe ne correspondent pas",
+		"cancel": "Annuler",
+		"save": "Enregistrer"
+	},
+	"newsPage": {
+		"view-profile": "Voir le profil",
+		"no-events-message": "Aucune publication trouvée"
+	},
+	"publications": {
+		"title": "Publications",
+		"search": "Rechercher",
+		"create-new-post": "Créer une publication",
+		"no-publications": "Aucune publication",
+		"no-posts": "Aucune publication trouvée",
+		"required-fields": "Champs requis",
+		"table": {
+			"title": "Titre",
+			"release-date": "Date de publication",
+			"event-date": "Date de l'événement",
+			"status": "Statut",
+			"open": "Ouvrir",
+			"none": "Aucun"
+		},
+		"filters": {
+			"all": "Tous",
+			"published": "Publiée",
+			"draft": "Brouillon",
+			"on-hold": "En attente",
+			"refused": "Refusée",
+			"approved": "Approuvée",
+			"deleted": "Desactivée"
+		},
+		"menu": {
+			"duplicate": "Dupliquer",
+			"delete": "Supprimer",
+			"open": "Ouvrir",
+			"modify": "Modifier"
+		},
+		"modal": {
+			"create-page-title": "Créer une publication",
+			"duplicate-page-title": "(Copie)",
+			"modify-page-title": "Modifier une publication",
+			"view-page-title": "Consulter une publication",
+			"title": "Titre",
+			"activity-area": "Secteur d'activité",
+			"alt-text": "Texte alternatif de l'image",
+			"published-date": "Date de publication",
+			"event-start-date": "Date et heure de début l'événement",
+			"event-end-date": "Date et heure de fin de l'événement",
+			"tags-title": "Étiquette(s) (Maximum de 5)",
+			"content": "Contenu",
+			"news": "Annonce",
+			"image": "Image",
+			"event-date": "Date de l'événement",
+			"choose-file": "Choisir un fichier",
+			"cancel-button": "Fermer",
+			"submit-button": "Envoyer pour approbation",
+			"resubmit-button": "Renvoyer pour approbation",
+			"tool-tip-text": "Elle retombera en attente d'approbation et votre publication précédente sera supprimé",
+			"published-date-tool-tip-text": "Il s'agit de la date que l'annonce sera publiée",
+			"start-date-tool-tip-text": "Il s'agit de la date de début de l'événement",
+			"end-date-tool-tip-text": "Il s'agit de la date de fin de l'événement",
+			"error-toast-message": "Veuillez remplir ces champs",
+			"date-error-toast-message": "La date de fin de l'événement doit être postérieure à la date de début",
+			"image-format-error-toast-message": "Le format de l'image n'est pas supporté",
+			"success-toast-message": "Publication envoyée pour approbation",
+			"post-error-toast-message": "Une erreur est survenue lors de l'envoi de la publication",
+			"preview": "Aperçu",
+			"delete-title": "Êtes-vous sûr de vouloir supprimer cette publication?",
+			"delete-button": "Supprimer",
+			"delete-success-toast-message": "Publication supprimée",
+			"delete-error-toast-message": "Une erreur est survenue lors de la suppression de la publication",
+			"reject-success-toast-message": "Publication refusée",
+			"reject-error-toast-message": "Une erreur est survenue lors du refus de la publication",
+			"approve-success-toast-message": "Publication approuvée",
+			"approve-error-toast-message": "Une erreur est survenue lors de l'approbation de la publication",
+			"draft-success-toast-message": "Publication enregistrée comme brouillon",
+			"draft-error-toast-message": "Une erreur est survenue lors de l'enregistrement de la publication comme brouillon",
+			"cancel": "Annuler",
+			"activity-area-items": {
+				"scientificClub": "Club scientifique",
+				"ets": "ETS",
+				"sve": "Service à la vie étudiante",
+				"aeets": "AEETS"
+			},
+			"alt-text-tooltip": "Un texte alternatif est une courte description écrite d'une image sur une page web, utilisée par les lecteurs d'écran pour les personnes malvoyantes ou lorsque l'image ne peut pas être affichée.",
+			"image-cropper": {
+				"title": "Recadrer l'image",
+				"subtitle": "Glissez pour déplacer l'image et ajuster le recadrage en utilisant la roulette de la souris.",
+				"crop": "Recadrer",
+				"cancel": "Annuler",
+				"zoom-hint": "Utilisez ⌘ + scroll (ou ctrl + scroll) pour zoomer l'image"
+			}
+		},
+		"error-fetching-events": "Une erreur est survenue lors du chargement des publications",
+		"none": "Aucune"
+	},
+	"approbations": {
+		"title": "Approbations",
+		"search": "Rechercher",
+		"no-publications": "Aucune publication",
+		"activity-area-filters": "Secteur d'activité",
+		"table": {
+			"author": "Auteur",
+			"title": "Titre",
+			"release-date": "Date de publication",
+			"status": "Statut",
+			"open": "Ouvrir"
+		},
+		"filters": {
+			"all": "Tous",
+			"published": "Publiée",
+			"draft": "Brouillon",
+			"on-hold": "En attente",
+			"refused": "Refusée",
+			"approved": "Approuvée",
+			"deleted": "Désactivée"
+		},
+		"modal": {
+			"moderator-page-title": "Consulter une publication",
+			"draft": "Enregistrer comme brouillon",
+			"approve-button": "Approuver",
+			"reject-button": "Refuser",
+			"deactivate-button": "Désactiver"
+		},
+		"refuse-question": "Pourquoi voulez vous refuser cette annonce?",
+		"cancel": "Annuler",
+		"reject": "Refuser l'annonce",
+		"reason": "Raison",
+		"deactivate-question": "Pourquoi voulez vous désactiver cette annonce?",
+		"deactivate": "Désactiver l'annonce",
+		"give-reason": "Veuillez donner une raison pour cette action",
+		"error-fetching-events": "Une erreur est survenue lors du chargement des publications",
+		"none": "Aucune"
+	},
+	"profile": {
+		"notify-me": "Me notifier",
+		"tooltip-notify-me": "Cliquez sur 'Me notifier' pour recevoir un courriel lorsque {author} publiera une annonce.",
+		"interests": "Champs d'intérêts",
+		"search": "Rechercher",
+		"to": " à ",
+		"from": " de ",
+		"until": " jusqu'au ",
+		"informations": "Informations",
+		"website": "Site web",
+		"email": "Courriel",
+		"enter-email": "Entrez le courriel où vous souhaitez être notifié",
+		"email-success-toast-message": "Vous serez notifié par courriel lorsque l'auteur publiera une annonce. Vous pouvez vous désabonner dans le courriel que vous recevrez.",
+		"email-error-toast-message": "Une erreur est survenue lors de l'enregistrement de votre courriel",
+		"save": "Enregistrer",
+		"cancel": "Annuler",
+		"field-required": "Un {field} est obligatoire",
+		"error-loading-news": "Une erreur est survenue lors du chargement des publications",
+		"no-results-message": "Aucun résultat trouvé"
+	},
+	"accounts": {
+		"title": "Comptes",
+		"search": "Rechercher",
+		"create-new-account": "Créer un compte",
+		"no-accounts-found": "Aucun compte trouvé",
+		"activate-success": "Le compte a été activé avec succès",
+		"deactivate-success": "Le compte a été désactivé avec succès",
+		"activate-error": "Une erreur est survenue lors de l'activation du compte",
+		"deactivate-error": "Une erreur est survenue lors de la désactivation du compte",
+		"table": {
+			"organization": "Organisation",
+			"email": "Courriel",
+			"activated": "Actif",
+			"yes": "Oui",
+			"no": "Non",
+			"activityarea": "Secteur d'activité",
+			"actions": "Action"
+		},
+		"filters": {
+			"all": "Tous",
+			"deactivated": "Désactivé",
+			"active": "Activé"
+		},
+		"menu": {
+			"activate": "Activer",
+			"deactivate": "Désactiver"
+		},
+		"create": {
+			"title": "Créer un compte",
+			"organization": "Nom de l'organisation",
+			"activityarea": "Secteur d'activité",
+			"email": "Courriel",
+			"send": "Envoyer",
+			"close": "Fermer",
+			"activity": {
+				"scientificClub": "Club scientifique",
+				"ets": "ETS",
+				"sve": "Service à la vie étudiante",
+				"aeets": "AEETS"
+			},
+			"success": "Compte créé avec succès",
+			"error": "Erreur lors de la création du compte",
+			"field-required": "Un {field} est obligatoire",
+			"organization-length-error": "Le nom de l'organisation doit être entre 1 et 50 caractères"
+		},
+		"toggle": {
+			"deactivation-title": "Pourquoi voulez-vous désactiver le compte de {organization}?",
+			"deactivation-title-no-organization": "Pourquoi voulez-vous désactiver le compte?",
+			"activation-title": "Êtes-vous sûr de vouloir activer le compte de {organization}?",
+			"activation-title-no-organization": "Êtes-vous sûr de vouloir activer le compte?",
+			"delete-title": "Êtes-vous sûr de vouloir supprimer le compte de {organization}?",
+			"delete-title-no-organization": "Êtes-vous sûr de vouloir supprimer le compte de {organization}?",
+			"close": "Fermer",
+			"deactivate": "Désactiver le compte",
+			"activate": "Activer le compte",
+			"delete": "Supprimer",
+			"input-title": "Raison",
+			"give-reason": "Veuillez donner une raison pour la désactivation de ce compte"
+		},
+		"error-fetching-users": "Une erreur est survenue lors du chargement des comptes",
+		"none": "Aucune"
+	},
+	"settings": {
+		"title": "Paramètres",
+		"save": "Enregistrer",
+		"400": "Les mots de passe ne correspondent pas",
+		"200": "Paramètres enregistrés",
+		"socials": "Réseaux sociaux",
+		"appearance": "Apparence",
+		"password": "Mot de passe",
+		"profile": "Profil",
+		"socials-section": {
+			"title": "Réseaux sociaux",
+			"info": "Les réseaux sociaux que vous choisissez seront affichées sur votre profil, lequel est accessible publiquement aux autres utilisateurs. Nous tenons à vous rassurer que nous ne publierons rien sur vos réseaux.",
+			"save": "Enregistrer",
+			"changes": "Changements détectés, enregistrez pour appliquer les modifications",
+			"cancel": "Annuler"
+		},
+		"profile-section": {
+			"title": "Profil",
+			"drop-picture": "Cliquez pour téléverser ou glissez-déposez une image ici",
+			"delete-picture": "Supprimer l'image",
+			"company-name": "Nom de l'organisation",
+			"email": "Courriel",
+			"activity": "Secteur d'activité",
+			"scientific-club": "Club scientifique",
+			"ets": "ETS",
+			"sve": "Service à la vie étudiante",
+			"aeets": "AEETS",
+			"description": "Description",
+			"website": "Site web",
+			"save": "Enregistrer",
+			"200": "Profil enregistré",
+			"changes": "Changements détectés, enregistrez pour appliquer les modifications",
+			"cancel": "Annuler",
+			"field-required": "Un {field} est obligatoire"
+		},
+		"password-section": {
+			"title": "Mot de passe",
+			"new-password": "Nouveau mot de passe",
+			"confirm-new-password": "Confirmer le nouveau mot de passe",
+			"save": "Enregistrer",
+			"200": "Mot de passe enregistré",
+			"changes": "Changements détectés, enregistrez pour appliquer les modifications",
+			"cancel": "Annuler",
+			"passwords-must-match": "Les mots de passe ne correspondent pas"
+		},
+		"display-section": {
+			"title": "Apparence",
+			"language": "Langue",
+			"theme": "Thème",
+			"save": "Enregistrer",
+			"light": "Pâle",
+			"dark": "Foncé",
+			"english": "Anglais",
+			"french": "Français"
+		},
+		"dialog": {
+			"title": "Réinitialiser les changements?",
+			"message": "Êtes-vous sûr de vouloir réinitialiser les changements? Toutes les modifications non enregistrées seront perdues.",
+			"yes": "Oui",
+			"no": "Non"
+		}
+	},
+	"calendar": {
+		"filters": "Secteurs d'activité",
+		"week": "Semaine",
+		"month": "Mois",
+		"day": "Jour"
+	},
+	"help": {
+		"title": "Besoin d'aide?",
+		"contact-us": "Contactez-nous à "
+	},
+	"unsubscribeEmail": {
+		"title": "Vous vous êtes désabonné avec succès des courriels!",
+		"message": "N'hésitez pas à vous réabonner dans la page de profil de l'auteur.",
+		"error-title": "Désabonnement échoué",
+		"error-message": "Une erreur s'est produite lors du traitement de votre désabonnement. Veuillez réessayer ultérieurement ou contacter le support si le problème persiste.",
+		"back": "Retour à l'accueil",
+		"retry": "Réessayer"
+	},
+	"pagination": {
+		"page": "Page",
+		"of": "de",
+		"goToPage": "Aller à la page",
+		"show": "Afficher {count}"
+	},
+	"none": "Aucune",
+	"MDXEditor": {
+		"link-text": "Texte du lien",
+		"link-url": "Lien"
+	}
+}
