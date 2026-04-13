@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ThemeService } from './theme-service';
 import { RendererFactory2 } from '@angular/core';
 
@@ -33,7 +32,7 @@ describe('ThemeService', () => {
   it('should update DOM and localStorage when isDark have been changed to true', () => {
     service.isDark.set(false);
 
-    service.onChange();
+    service.onToogleDarkMode();
     TestBed.tick();
 
     expect(rendererMock.setAttribute).toHaveBeenCalledWith(expect.any(HTMLElement), 'data-theme', 'dark');
@@ -44,7 +43,7 @@ describe('ThemeService', () => {
   it('should update DOM and localStorage when isDark have been changed to false', () => {
     service.isDark.set(true);
 
-    service.onChange();
+    service.onToogleDarkMode();
     TestBed.tick();
 
     expect(rendererMock.setAttribute).toHaveBeenCalledWith(expect.any(HTMLElement), 'data-theme', 'light');

@@ -27,7 +27,7 @@ export class ThemeService {
       localStorage.setItem('theme', currentTheme);
     });
   }
-  onChange = () => {
+  onToogleDarkMode = () => {
     this.isDark.update(value => !value);
   }
 }

@@ -7,12 +7,12 @@
   describe('ThemeSwitcher', () => {
     let component: ThemeSwitcher;
     let fixture: ComponentFixture<ThemeSwitcher>;
-    let mockThemeService: { isDark: WritableSignal<boolean>, onChange(): void };
+    let mockThemeService: { isDark: WritableSignal<boolean>, onToogleDarkMode(): void };
 
     beforeEach(async () => {
       mockThemeService = {
         isDark: signal(false),
-        onChange: ()=>{mockThemeService.isDark.update(value => !value)},
+        onToogleDarkMode: ()=>{mockThemeService.isDark.update(value => !value)},
       };
 
       await TestBed.configureTestingModule({
