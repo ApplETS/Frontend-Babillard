@@ -1,1 +1,5 @@
-<p>lang-switcher works!</p>
+<select class="select select-secondary font-semibold uppercase" [(ngModel)]="selectedLang" >
+  @for (l of lang ; track l) {
+    <option [value]="l">{{l}}</option>
+  }
+</select>

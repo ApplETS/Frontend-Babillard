@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { LangSwitcher } from './components/lang-switcher/lang-switcher';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TranslocoPipe],
+  imports: [RouterOutlet, TranslocoPipe, LangSwitcher],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
