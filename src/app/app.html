@@ -3,6 +3,15 @@
     <app-lang-switcher/>
     <app-theme-switcher/>
      <h1 class="text-2xl">{{'localeLayout.title' | transloco}}, {{ title() }}</h1>
+
+    <button (click)="login()">Tester la connexion Authentik</button>
+    @if (userData | async; as user) {
+      <div>
+        <h3>Connecté en tant que : {{ user.userData?.preferred_username }}</h3>
+        <pre>{{ userData | json }}</pre>
+        <button (click)="logout()">Déconnexion</button>
+      </div>
+    }
   </div>
 </main>
 <router-outlet />

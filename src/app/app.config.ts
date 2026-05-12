@@ -8,6 +8,9 @@ import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './core/systems/i18n/transloco-loader';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
+import { authConfig } from './auth/auth.config';
+import { provideAuth } from 'angular-auth-oidc-client';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,5 +38,6 @@ export const appConfig: ApplicationConfig = {
     provideTranslocoLocale(),
 
     provideRouter(routes),
+    provideAuth(authConfig),
   ],
 };
