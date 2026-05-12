@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ThemeSwitcher, TranslocoPipe, LangSwitcher, JsonPipe, AsyncPipe],
+  imports: [RouterOutlet, ThemeSwitcher, TranslocoPipe, LangSwitcher, AsyncPipe],
   templateUrl: './app.html',
 })
 export class App implements OnInit {
@@ -18,9 +18,9 @@ export class App implements OnInit {
   userData = this.oidcSecurityService.userData$;
 
   ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, userData }) => {
+    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
       console.log('Est authentifié :', isAuthenticated);
-      console.log('Données utilisateur :', userData);
+      console.log('Access Token :', accessToken);
     });
   }
 

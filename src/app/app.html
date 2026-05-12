@@ -8,7 +8,6 @@
     @if (userData | async; as user) {
       <div>
         <h3>Connecté en tant que : {{ user.userData?.preferred_username }}</h3>
-        <pre>{{ userData | json }}</pre>
         <button (click)="logout()">Déconnexion</button>
       </div>
     }

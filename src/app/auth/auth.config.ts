@@ -5,12 +5,11 @@ export const authConfig: PassedInitialConfig = {
   config: {
     authority: environment.OPENID_ISSUER,
     redirectUrl: environment.REDIRECT_URL,
-    postLogoutRedirectUri: environment.REDIRECT_URL,
+    postLogoutRedirectUri: 'https://localhost:8080',
     clientId: environment.OPENID_CLIENT_ID,
     scope: 'openid profile email offline_access',
     responseType: 'code',
     silentRenew: true,
     useRefreshToken: true,
-    renewTimeBeforeTokenExpiresInSeconds: 30,
   },
 };
