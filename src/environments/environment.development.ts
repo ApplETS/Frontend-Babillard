@@ -1,0 +1,7 @@
+export const environment = {
+  REDIRECT_URL: import.meta.env.NG_APP_REDIRECT_URL,
+  OPENID_CLIENT_SECRET: import.meta.env.NG_APP_OPENID_CLIENT_SECRET,
+  OPENID_CLIENT_ID: import.meta.env.NG_APP_OPENID_CLIENT_ID,
+  OPENID_BASE_URL: import.meta.env.NG_APP_OPENID_BASE_URL,
+  OPENID_ISSUER: import.meta.env.NG_APP_OPENID_ISSUER
+};
