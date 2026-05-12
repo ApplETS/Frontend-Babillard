@@ -2,7 +2,15 @@ import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 describe('App', () => {
+  const localStorageMock = {
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    clear: vi.fn(),
+  };
   beforeEach(async () => {
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+    });
     await TestBed.configureTestingModule({
       imports: [App,TranslocoTestingModule.forRoot({
         langs: { en: {localeLayout:{title:'Hello'}}, fr: {localeLayout:{title:'Bonjour'}}},
@@ -24,6 +32,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Babillard-Frontend');
+    expect(compiled.querySelector('h1')?.textContent).toContain(' Bienvenue sur Babillard ');
   });
 });
