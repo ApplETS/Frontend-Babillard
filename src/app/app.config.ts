@@ -9,7 +9,7 @@ import { TranslocoHttpLoader } from './core/systems/i18n/transloco-loader';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
 import { authConfig } from './auth/auth.config';
-import { provideAuth } from 'angular-auth-oidc-client';
+import { AbstractSecurityStorage, DefaultLocalStorageService, provideAuth } from 'angular-auth-oidc-client';
 
 
 export const appConfig: ApplicationConfig = {
@@ -39,5 +39,6 @@ export const appConfig: ApplicationConfig = {
 
     provideRouter(routes),
     provideAuth(authConfig),
+    { provide: AbstractSecurityStorage, useClass: DefaultLocalStorageService },
   ],
 };
