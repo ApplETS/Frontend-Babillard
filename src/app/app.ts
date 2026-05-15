@@ -21,7 +21,7 @@ export class App implements OnInit {
   userData = this.oidcSecurityService.userData$;
 
   ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken, userData, idToken }) => {
+    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken, idToken }) => {
       console.log('Est authentifié :', isAuthenticated);
       console.log('Access Token :', accessToken);
       console.log('Data :', idToken);
