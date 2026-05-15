@@ -4,5 +4,5 @@ export const environment = {
   OPENID_CLIENT_ID:import.meta.env.NG_APP_OPENID_CLIENT_ID,
   OPENID_BASE_URL:import.meta.env.NG_APP_OPENID_BASE_URL,
   OPENID_ISSUER:import.meta.env.NG_APP_OPENID_ISSUER,
-  API_URL:import.meta.env.NG_APP_API_URL,
+  API_URL:import.meta.env.NG_APP_API_URL_PROD,
 };

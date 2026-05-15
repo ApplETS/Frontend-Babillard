@@ -1,5 +1,5 @@
 declare interface Env {
-  NG_APP_API_URL:string;
+  NG_APP_API_URL_PROD:string;
   NG_APP_API_URL_DEV:string;
   NODE_ENV: string;
   NG_APP_REDIRECT_URL: string;
