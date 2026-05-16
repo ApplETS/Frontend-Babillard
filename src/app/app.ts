@@ -6,7 +6,7 @@ import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
 import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { Api } from './services/apiService/api';
+import { Api } from './services/apiService/api.service';
 
 @Component({
   selector: 'app-root',
@@ -16,17 +16,16 @@ import { Api } from './services/apiService/api';
 export class App implements OnInit {
   protected readonly title = signal('Babillard-Frontend');
   private readonly oidcSecurityService = inject(OidcSecurityService);
-  private api = inject(Api);
+  private api: Api = inject(Api);
   private accessToken: string | undefined;
   userData = this.oidcSecurityService.userData$;
 
   ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken, idToken }) => {
+    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
       console.log('Est authentifié :', isAuthenticated);
       console.log('Access Token :', accessToken);
-      console.log('Data :', idToken);
       this.accessToken = accessToken;
-      // this.api.getUserInfo(idToken).then(r => console.log(r));
+      this.api.getUserInfo(accessToken).then();
     });
   }
 
@@ -38,6 +37,6 @@ export class App implements OnInit {
     this.oidcSecurityService.logoff().subscribe();
   }
   getData(){
-    this.api.getUserInfo(this.accessToken).then(r => console.log(r));
+    this.api.getUserInfo(this.accessToken).then();
   }
 }
