@@ -1,42 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TranslocoPipe } from '@jsverse/transloco';
-import { LangSwitcher } from './components/lang-switcher/lang-switcher';
-import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
-import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
-import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Observable } from 'rxjs';
-import { Api } from './services/apiService/api.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ThemeSwitcher, TranslocoPipe, LangSwitcher, AsyncPipe],
+  standalone: true,
+  imports: [RouterOutlet],
   templateUrl: './app.html',
 })
-export class App implements OnInit {
-  protected readonly title = signal('Babillard-Frontend');
-  private readonly oidcSecurityService = inject(OidcSecurityService);
-  private api: Api = inject(Api);
-  private accessToken: string | undefined;
-  userData = this.oidcSecurityService.userData$;
-
-  ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
-      console.log('Est authentifié :', isAuthenticated);
-      console.log('Access Token :', accessToken);
-      this.accessToken = accessToken;
-      this.api.getUserInfo(accessToken).then();
-    });
-  }
-
-  login() {
-    this.oidcSecurityService.authorize();
-  }
-
-  logout() {
-    this.oidcSecurityService.logoff().subscribe();
-  }
-  getData(){
-    this.api.getUserInfo(this.accessToken).then();
-  }
-}
+export class App {}

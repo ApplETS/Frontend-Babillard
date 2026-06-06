@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 import { App } from './app';
+import { Home } from './components/home/home';
 
 export const routes: Routes = [
-  { path: 'api/auth/callback/authentik', component: App },
-  { path: 'unauthorized', component: App },
-  { path: '', component: App }
+  { path: 'signin-oidc', component: Home },
+  { path: '', component: Home },
+  { path: '**', redirectTo: '' }
 ];

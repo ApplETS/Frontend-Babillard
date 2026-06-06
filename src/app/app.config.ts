@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideTransloco } from '@jsverse/transloco';
 import { provideTranslocoPersistTranslations } from '@jsverse/transloco-persist-translations';
 
@@ -9,13 +9,19 @@ import { TranslocoHttpLoader } from './core/systems/i18n/transloco-loader';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
 import { authConfig } from './auth/auth.config';
-import { AbstractSecurityStorage, DefaultLocalStorageService, provideAuth } from 'angular-auth-oidc-client';
+import {
+  AbstractSecurityStorage,
+  authInterceptor,
+  DefaultLocalStorageService,
+  provideAuth
+} from 'angular-auth-oidc-client';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor()])),
     provideTransloco({
       config: {
         availableLangs: ['en', 'fr'],
