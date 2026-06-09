@@ -10,6 +10,6 @@ export class EventsService extends ApiService {
   protected override apiController: string = "events";
 
   async getEvents(): Promise<Event[]> {
-    return await this.get<Event[]>("getEvents", [], new HttpParams());
+    return await this.get<Event[]>(this.getActionUrl(""), [], new HttpParams());
   } 
 }

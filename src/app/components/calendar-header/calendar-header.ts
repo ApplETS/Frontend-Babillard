@@ -30,6 +30,7 @@ export class CalendarHeader {
   }
 
   get timeFrame(): string {
+    // TODO : Utiliser un format à partir de la localisation client
     switch (this.viewType()) {
       case TimeGridType.month:
         return this.currentDate.format("MMMM YYYY");

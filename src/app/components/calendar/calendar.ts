@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild, effect } from '@angular/core';
+import { Component, signal, ViewChild, effect, inject } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
@@ -10,16 +10,19 @@ import timeGridDay from '@fullcalendar/timegrid';
 import momentPlugin from '@fullcalendar/moment';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
+import { EventsService } from '@services/dashboard.service/events.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-calendar',
-  imports: [CalendarHeader, FullCalendarModule],
+  imports: [CalendarHeader, FullCalendarModule, AsyncPipe],
   templateUrl: './calendar.html',
 })
 export class Calendar {
 
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
-  
+  eventService = inject(EventsService);
+
   view = signal(TimeGridType.month);
   options: CalendarOptions = {
     locales: [frLocale, enLocale],
@@ -44,6 +47,7 @@ export class Calendar {
     eventOrder: "start",
   };
   selectedCalendarDate = moment(Date.now());
+  events = this.eventService.getEvents();
   
   constructor() {
     effect(() => {
@@ -54,7 +58,6 @@ export class Calendar {
       }
     });
   }
-
 
   calendarChange(action: CalendarAction): void {
     const calendarApi = this.calendarComponent.getApi();
