@@ -5,3 +5,7 @@
   themes: light --default, dark ;
 }
 
+@theme {
+  --color-gray-700: #424242;
+  --color-gray-900: #303030;
+}
