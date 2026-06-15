@@ -7,7 +7,15 @@ import { Event } from '@models/event';
   selector: 'app-publications',
   imports: [FontAwesomeModule],
   templateUrl: './publications.html',
-  styles: ``,
+  styles: `
+    .selected {
+      @apply scale-[1.07] transition-all z-10 duration-350;
+    }
+
+    .notSelected {
+      @apply scale-100 opacity-[80%] transition-all duration-350;
+    }
+  `,
 })
 export class Publications {
   @Input({ required: true }) events: Event[] | null = [];

@@ -5,9 +5,9 @@
     @for (event of events; track event.id) {
     <div class="card relative block items-center h-fit w-4/5 my-7 mx-auto rounded-md cursor-pointer"
       key="{event.cardId}" ref="{(el) => cardRefs.current.push(el)}"
-      onMouseUp="{(e) => handleCardMouseUp(e, event.cardId)}" variants="{cardVariants}"
-      animate="{selectedCard === event.cardId ? 'selected' : 'notSelected'}"
-      custom="{selectedCard ? selectedCard - (event.cardId ?? 0) : 0}">
+      onMouseUp="{(e) => handleCardMouseUp(e, event.cardId)}"
+      [class.selected]="selectedCard() === event.cardId"
+      [class.notSelected]="selectedCard() !== event.cardId">
       <div class="flex flex-col justify-around bg-base-200 rounded-3xl h-full">
         <div class="card justify-center w-full rounded-lg bg-base-200">
           <div class="flex flex-row justify-between">
@@ -15,7 +15,7 @@
               <div class="mb-2">event.title</div>
             </div>
             <fa-icon class="text-lg p-4"
-              [icon]="selectedCard === event.cardId ? faDownLeftAndUpRightToCenter : faUpRightAndDownLeftFromCenter" />
+              [icon]="selectedCard() === event.cardId ? faDownLeftAndUpRightToCenter : faUpRightAndDownLeftFromCenter" />
           </div>
         </div>
         <EventDateAndImage eventStartDate="event.eventStartDate" eventEndDate="event.eventEndDate"
@@ -30,16 +30,16 @@
               event.organizer?.activityArea ? getActivityAreaName(event.organizer.activityArea, locale) : ''
             </p>
           </div>
-          @if (selectedCard === event.cardId) {
-          <Link class="font-normal ml-auto btn btn-primary" href="{`/fr/dashboard/profile/${event.organizer?.id}`}">
-          t('view-profile')
-          </Link>
+          @if (selectedCard() === event.cardId) {
+            <a class="font-normal ml-auto btn btn-primary" href="{`/fr/dashboard/profile/${event.organizer?.id}`}">
+            t('view-profile')
+            </a>
           }
         </div>
-        @if (selectedCard === event.cardId) {
+        @if (selectedCard() === event.cardId) {
 
         <div class="text-sm text-justify font-light px-2 whitespace-normal overflow-y-auto markdown-custom-styling h-44"
-          [class]="event.tags.length > 0 : 'mb-2' : 'mb-4'">
+          [class]="event.tags.length > 0 ? 'mb-2' : 'mb-4'">
           <Markdown class="{`${style.reactMarkDown} p-2`}">{{event.content}}</Markdown>
         </div>
         <div class="flex flex-wrap gap-2 self-start w-full px-6 mb-6">
