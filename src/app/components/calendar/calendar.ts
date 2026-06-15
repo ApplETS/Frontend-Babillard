@@ -1,7 +1,7 @@
-import { Component, signal, ViewChild, effect, inject } from '@angular/core';
+import { Component, signal, ViewChild, effect, inject, Input } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
-import { CalendarOptions } from '@fullcalendar/core/index.js';
+import { CalendarOptions, EventSourceInput } from '@fullcalendar/core/index.js';
 import frLocale from '@fullcalendar/core/locales/fr';
 import enLocale from '@fullcalendar/core/locales/en-gb';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -11,17 +11,15 @@ import momentPlugin from '@fullcalendar/moment';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
 import { EventsService } from '@services/dashboard.service/events.service';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-calendar',
-  imports: [CalendarHeader, FullCalendarModule, AsyncPipe],
+  imports: [CalendarHeader, FullCalendarModule],
   templateUrl: './calendar.html',
 })
 export class Calendar {
 
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
-  eventService = inject(EventsService);
 
   view = signal(TimeGridType.month);
   options: CalendarOptions = {
@@ -47,7 +45,7 @@ export class Calendar {
     eventOrder: "start",
   };
   selectedCalendarDate = moment(Date.now());
-  events = this.eventService.getEvents();
+  @Input({ required: true }) events: EventSourceInput | null = null;
   
   constructor() {
     effect(() => {

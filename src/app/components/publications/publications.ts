@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Event } from '@models/event';
 
 @Component({
   selector: 'app-publications',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './publications.html',
   styles: ``,
 })
-export class Publications {}
+export class Publications {
+  @Input({ required: true }) events: Event[] | null = [];
+}
