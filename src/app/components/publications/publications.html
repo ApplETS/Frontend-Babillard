@@ -1,1 +1,63 @@
-<p>publications works!</p>
+<div class="h-full w-full flex flex-col items-center justify-center max-w-2xl relative" onMouseDown="{handleMouseDown}"
+  onMouseUp="{() => setDragStart((prev) => ({ ...prev, isDragging: false }))}" onMouseMove="{handleMouseMove}">
+  <div class="overflow-y-scroll w-full h-full no-visible-scrollbar relative" style="perspective: '150px'"
+    ref="{containerRef}">
+    @for (event of events; track event.id) {
+    <div class="card relative block items-center h-fit w-4/5 my-7 mx-auto rounded-md cursor-pointer"
+      key="{event.cardId}" ref="{(el) => cardRefs.current.push(el)}"
+      onMouseUp="{(e) => handleCardMouseUp(e, event.cardId)}" variants="{cardVariants}"
+      animate="{selectedCard === event.cardId ? 'selected' : 'notSelected'}"
+      custom="{selectedCard ? selectedCard - (event.cardId ?? 0) : 0}">
+      <div class="flex flex-col justify-around bg-base-200 rounded-3xl h-full">
+        <div class="card justify-center w-full rounded-lg bg-base-200">
+          <div class="flex flex-row justify-between">
+            <div class="text-xl font-bold px-4 pt-4 overflow-hidden line-clamp-3">
+              <div class="mb-2">event.title</div>
+            </div>
+            <fa-icon class="text-lg p-4"
+              [icon]="selectedCard === event.cardId ? faDownLeftAndUpRightToCenter : faUpRightAndDownLeftFromCenter" />
+          </div>
+        </div>
+        <EventDateAndImage eventStartDate="event.eventStartDate" eventEndDate="event.eventEndDate"
+          imageUrl="event.imageUrl" [alt]="event.imageAltText" locale="{locale}" />
+        <div class="flex flex-row gap-2 px-6 py-2 items-center">
+          <div class="avatar">
+            <Avatar userProfile="event.organizer" size="w-14 h-14" textSize="text-2xl" />
+          </div>
+          <div class="flex flex-col pt-2 pl-2">
+            <p class="text-base font-bold">event.organizer?.organization ?? 'Organisateur'</p>
+            <p class="text-xs text-secondary">
+              event.organizer?.activityArea ? getActivityAreaName(event.organizer.activityArea, locale) : ''
+            </p>
+          </div>
+          @if (selectedCard === event.cardId) {
+          <Link class="font-normal ml-auto btn btn-primary" href="{`/fr/dashboard/profile/${event.organizer?.id}`}">
+          t('view-profile')
+          </Link>
+          }
+        </div>
+        @if (selectedCard === event.cardId) {
+
+        <div class="text-sm text-justify font-light px-2 whitespace-normal overflow-y-auto markdown-custom-styling h-44"
+          [class]="event.tags.length > 0 : 'mb-2' : 'mb-4'">
+          <Markdown class="{`${style.reactMarkDown} p-2`}">{{event.content}}</Markdown>
+        </div>
+        <div class="flex flex-wrap gap-2 self-start w-full px-6 mb-6">
+          @for (tag of event.tags; track tag.id) {
+          <div key="{tag.id}"
+            class="{`badge ${Constants.colors[index]} text-black py-4 px-4 flex items-center whitespace-nowrap`}">
+            tag.name
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    }
+    @empty {
+    <div class="flex items-center justify-center h-full">
+      <div class="text-center">t('no-events-message') </div>
+    </div>
+    }
+  </div>
+</div>
