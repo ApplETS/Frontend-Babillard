@@ -12,7 +12,7 @@
         @if (isModerator) {
           M
         } @else {
-          {{ user?.organization?.substring(0, 1) }}
+          {{ user?.organization?.at(0) }}
         }
       </span>
     </div>

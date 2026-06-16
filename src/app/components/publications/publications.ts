@@ -7,6 +7,7 @@ import { Avatar } from "@components/avatar/avatar";
 import { MarkdownComponent } from 'ngx-markdown';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { PaginatedResponse } from '@services/api.service/api.service';
+import { getActivityAreaName } from '@models/activity-area';
 
 @Component({
   selector: 'app-publications',
@@ -115,4 +116,6 @@ export class Publications {
 			});
 		}, delay);
 	}
+
+  getActivityAreaName = getActivityAreaName;
 }

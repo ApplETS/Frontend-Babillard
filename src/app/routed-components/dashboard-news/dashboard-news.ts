@@ -15,4 +15,5 @@ export class DashboardNews {
   eventService = inject(EventsService);
 
   events = this.eventService.getEvents();
+  selectedCardId: number | null = null;
 }
