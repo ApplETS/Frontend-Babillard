@@ -13,10 +13,11 @@ import moment from 'moment';
 import { EventsService } from '@services/dashboard.service/events.service';
 import { PaginatedResponse } from '@services/api.service/api.service';
 import { Event } from '@models/event';
+import { EventContainer } from "@components/event-container/event-container";
 
 @Component({
   selector: 'app-calendar',
-  imports: [CalendarHeader, FullCalendarModule],
+  imports: [CalendarHeader, FullCalendarModule, EventContainer],
   templateUrl: './calendar.html',
 })
 export class Calendar {
@@ -24,6 +25,7 @@ export class Calendar {
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
 
   view = signal(TimeGridType.month);
+  readonly TimeGridType = TimeGridType;
   options = signal<CalendarOptions>({
     locales: [frLocale, enLocale],
     locale: "fr",
@@ -81,7 +83,12 @@ export class Calendar {
       title: event.title,
       start: event.eventStartDate,
       end: event.eventEndDate,
+      date: new Date(event.eventStartDate),
     })) ?? [];
+  }
+
+  get shownEvents(): Event[] {
+    return [];
   }
 }
 

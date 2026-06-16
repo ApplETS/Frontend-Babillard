@@ -10,6 +10,12 @@ export class EventsService extends ApiService {
   protected override apiController: string = "events";
 
   async getEvents(): Promise<PaginatedResponse<Event>> {
-    return await this.get<PaginatedResponse<Event>>(this.getActionUrl(""), [], new HttpParams());
+    return await this.get<PaginatedResponse<Event>>(this.getActionUrl(""), [], new HttpParams({
+      fromObject: {
+        page: 1,
+        pageSize: 1000,
+        
+      }
+    }));
   } 
 }
