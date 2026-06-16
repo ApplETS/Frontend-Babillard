@@ -6,7 +6,7 @@ export interface Event {
   title?: string;
   content?: string;
   imageUrl: string;
-  imageAlt: string;
+  imageAltText: string;
   cardId?: number;
   eventStartDate: string;
  	eventEndDate: string;

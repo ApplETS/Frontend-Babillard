@@ -10,9 +10,9 @@
     <div class="mb-1">
       <span>
         {{ startDate.toLocaleDateString(locale,formatStartDate) }}
-        De
+        {{'profile.from' | transloco}}
         {{ getHourMinute(startDate) }}
-        À
+        {{ 'profile.to' | transloco }}
         {{ getHourMinute(endDate!) }}
       </span>
     </div>
@@ -23,9 +23,9 @@
         {{ startDate.toLocaleDateString(locale, formatStartDate) }}
         -
         {{ endDate?.toLocaleDateString(locale, formatEndDate) }}
-        De
+        {{ 'profile.from' | transloco }}
         {{ getHourMinute(startDate) }}
-        À
+        {{ 'profile.to' | transloco }}
         {{ getHourMinute(endDate!) }}
       </span>
     </div>
@@ -35,11 +35,11 @@
     <div class="mb-1">
       <span>
         {{ startDate.toLocaleDateString(locale, formatStartDate) }}
-        À
+        {{ 'profile.to' | transloco }}
         {{ getHourMinute(startDate) }}
-        Jusqu'au
+        {{ 'profile.until' | transloco}}
         {{ endDate?.toLocaleDateString(locale, formatEndDate) }}
-        À
+        {{ 'profile.to' | transloco}}
         {{ getHourMinute(endDate!) }}
       </span>
     </div>

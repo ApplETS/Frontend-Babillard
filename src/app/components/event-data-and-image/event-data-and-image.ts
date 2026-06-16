@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-event-data-and-image',
-  imports: [],
+  imports: [TranslocoPipe],
   templateUrl: './event-data-and-image.html',
 })
 export class EventDataAndImage {
@@ -12,9 +13,14 @@ export class EventDataAndImage {
   @Input({ required: true }) imageAlt: string | null = null;
   protected readonly EventDateStatus = EventDateStatus;
   readonly locale = "fr-CA";
-  readonly startDate = new Date(this.eventStartDate);
-  readonly endDate = this.eventEndDate ? new Date(this.eventEndDate) : null;
+  get startDate(): Date {
+    return new Date(this.eventStartDate);
+  }
 
+  get endDate(): Date | null {
+    return this.eventEndDate ? new Date(this.eventEndDate) : null;
+  }
+  
   get eventDateStatus(): EventDateStatus {
     if (!this.eventEndDate) {
       return EventDateStatus.onlyStartDate;
