@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild, effect, inject, Input } from '@angular/core';
+import { Component, signal, ViewChild, effect, inject, Input, model } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, EventSourceInput } from '@fullcalendar/core/index.js';
@@ -24,7 +24,7 @@ export class Calendar {
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
 
   view = signal(TimeGridType.month);
-  options: CalendarOptions = {
+  options = signal<CalendarOptions>({
     locales: [frLocale, enLocale],
     locale: "fr",
     height: "100%",
@@ -45,7 +45,7 @@ export class Calendar {
     },
     eventDisplay: "block",
     eventOrder: "start",
-  };
+  });
   selectedCalendarDate = moment(Date.now());
   @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
   
@@ -73,6 +73,15 @@ export class Calendar {
         break;
     }
     this.selectedCalendarDate = moment(calendarApi.getDate());
+  }
+
+  get calendarEvents(): EventSourceInput {
+    return this.events?.data.map((event) => ({
+      id: event.id,
+      title: event.title,
+      start: event.eventStartDate,
+      end: event.eventEndDate,
+    })) ?? [];
   }
 }
 

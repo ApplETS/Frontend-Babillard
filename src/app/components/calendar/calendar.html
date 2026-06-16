@@ -1,20 +1,10 @@
 		<div class="flex flex-col flex-grow h-full">
       <app-calendar-header [viewType]="view" [currentDate]="selectedCalendarDate" (calendarChanged)="calendarChange($event)"></app-calendar-header>
-      <full-calendar [options]="options" [events]="events?.data">
-				<ng-template #eventContent let-event>
-					@if (event.extendedProps.isShowMore) {
-						<div class="p-1 w-full text-center z-0">
-							Show more		
-						</div>
-					} @else {
-						<div class="p-1 cursor-pointer w-full text-center z-0">
-						All good
-						</div>
-					}
-					<div class="p-1 cursor-pointer w-full text-center z-0">
-						{{ event.title }}
-					</div>
-				</ng-template>
+      <full-calendar [options]="options()" [events]="calendarEvents">
+      <ng-template #eventContent let-arg>
+        <b>{{ arg.timeText }}</b>
+        <i>{{ arg.event.title }}</i>
+      </ng-template>
 			</full-calendar>
 			<!--<CalendarHeader
 				calendarRef={calendarRef}
