@@ -3,10 +3,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faDownLeftAndUpRightToCenter, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import { Event } from '@models/event';
 import { EventDataAndImage } from "@components/event-data-and-image/event-data-and-image";
+import { Avatar } from "@components/avatar/avatar";
 
 @Component({
   selector: 'app-publications',
-  imports: [FontAwesomeModule, EventDataAndImage],
+  imports: [FontAwesomeModule, EventDataAndImage, Avatar],
   templateUrl: './publications.html',
   styles: `
     .selected {

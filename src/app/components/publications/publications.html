@@ -22,7 +22,7 @@
           [imageAlt]="event.imageAlt" />
         <div class="flex flex-row gap-2 px-6 py-2 items-center">
           <div class="avatar">
-            <Avatar userProfile="event.organizer" size="w-14 h-14" textSize="text-2xl" />
+            <app-avatar size="w-14 h-14" textSize="text-2xl" [user]="event.organizer" ></app-avatar>
           </div>
           <div class="flex flex-col pt-2 pl-2">
             <p class="text-base font-bold">event.organizer?.organization ?? 'Organisateur'</p>

@@ -1,0 +1,21 @@
+<div class="rounded-full mask mask-circle" [class]="size">
+  @if (user?.avatarUrl != null && !usePlaceholder()) {
+    <div [class.hidden]="!loading()" [class.block]="loading()" [class]="size" 
+      class="skeleton rounded-full shrink-0"></div>
+    <img alt="Avatar" [class.hidden]="loading()" [class.block]="!loading()" [src]="user.avatarUrl + '?ver=' + now.getTime()"
+    (error)="setPlaceholder()"
+    (load)="loading.set(false)" />
+  } @else {
+  <div class="avatar placeholder">
+    <div class="text-white rounded-full" [class]="size" [class.bg-base-content]="isLightTheme" [class]="color">
+      <span [class]="textSize">
+        @if (isModerator) {
+          M
+        } @else {
+          {{ user?.organization?.substring(0, 1) }}
+        }
+      </span>
+    </div>
+  </div>
+  }
+</div>

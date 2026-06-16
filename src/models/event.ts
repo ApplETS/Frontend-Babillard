@@ -1,4 +1,5 @@
 import { Tag } from "./tag";
+import { User } from "./user";
 
 export interface Event {
   id: string;
@@ -9,5 +10,6 @@ export interface Event {
   cardId?: number;
   eventStartDate: string;
  	eventEndDate: string;
+  organizer: User | null;
   tags: Tag[];
 }
