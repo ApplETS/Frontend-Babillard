@@ -1,0 +1,52 @@
+<div class="mx-4 my-2">
+  <div class="text-sm font-normal">
+    @switch (eventDateStatus) {
+    @case (EventDateStatus.onlyStartDate) {
+    <p>
+      {{ startDate.toLocaleDateString(locale, formatStartDate)}}
+    </p>
+    }
+    @case (EventDateStatus.withBothAndSameDay) {
+    <div class="mb-1">
+      <span>
+        {{ startDate.toLocaleDateString(locale,formatStartDate) }}
+        De
+        {{ getHourMinute(startDate) }}
+        À
+        {{ getHourMinute(endDate!) }}
+      </span>
+    </div>
+    }
+    @case (EventDateStatus.withBothAndSameMonth) {
+    <div class="mb-1">
+      <span>
+        {{ startDate.toLocaleDateString(locale, formatStartDate) }}
+        -
+        {{ endDate?.toLocaleDateString(locale, formatEndDate) }}
+        De
+        {{ getHourMinute(startDate) }}
+        À
+        {{ getHourMinute(endDate!) }}
+      </span>
+    </div>
+
+    }
+    @case (EventDateStatus.withBothAndDifferentMonth) {
+    <div class="mb-1">
+      <span>
+        {{ startDate.toLocaleDateString(locale, formatStartDate) }}
+        À
+        {{ getHourMinute(startDate) }}
+        Jusqu'au
+        {{ endDate?.toLocaleDateString(locale, formatEndDate) }}
+        À
+        {{ getHourMinute(endDate!) }}
+      </span>
+    </div>
+    }
+    }
+  </div>
+</div>
+<div class="w-full aspect-[2/1] bg-base-300">
+  <img [src]="imageUrl" [alt]="imageAlt" class="w-full h-full object-cover" />
+</div>

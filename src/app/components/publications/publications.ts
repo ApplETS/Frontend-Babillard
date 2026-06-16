@@ -2,10 +2,11 @@ import { Component, Input, model } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faDownLeftAndUpRightToCenter, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import { Event } from '@models/event';
+import { EventDataAndImage } from "@components/event-data-and-image/event-data-and-image";
 
 @Component({
   selector: 'app-publications',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, EventDataAndImage],
   templateUrl: './publications.html',
   styles: `
     .selected {

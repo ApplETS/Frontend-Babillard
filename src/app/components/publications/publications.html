@@ -18,8 +18,8 @@
               [icon]="selectedCard() === event.cardId ? faDownLeftAndUpRightToCenter : faUpRightAndDownLeftFromCenter" />
           </div>
         </div>
-        <EventDateAndImage eventStartDate="event.eventStartDate" eventEndDate="event.eventEndDate"
-          imageUrl="event.imageUrl" [alt]="event.imageAltText" locale="{locale}" />
+        <app-event-data-and-image [eventStartDate]="event.eventStartDate" [eventEndDate]="event.eventEndDate" [imageUrl]="event.imageUrl"
+          [imageAlt]="event.imageAlt" />
         <div class="flex flex-row gap-2 px-6 py-2 items-center">
           <div class="avatar">
             <Avatar userProfile="event.organizer" size="w-14 h-14" textSize="text-2xl" />
