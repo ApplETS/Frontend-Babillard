@@ -4,8 +4,8 @@
   <div class="overflow-y-scroll w-full h-full no-visible-scrollbar relative" style="perspective: '150px'">
     @for (event of events?.data; track event.id) {
     <div class="card relative block items-center h-fit w-4/5 my-7 mx-auto rounded-md cursor-pointer"
-      (mouseup)="handleCardMouseUp($event, event.cardId)" [class.selected]="selectedCard() === event.cardId"
-      [class.notSelected]="selectedCard() !== event.cardId">
+      (mouseup)="handleCardMouseUp($event, event.id)" [class.selected]="selectedCardId() === event.id"
+      [class.notSelected]="selectedCardId() !== event.id">
       <div class="flex flex-col justify-around bg-base-200 rounded-3xl h-full">
         <div class="card justify-center w-full rounded-lg bg-base-200">
           <div class="flex flex-row justify-between">
@@ -13,7 +13,7 @@
               <div class="mb-2">{{ event.title }}</div>
             </div>
             <fa-icon class="text-lg p-4"
-              [icon]="selectedCard() === event.cardId ? faDownLeftAndUpRightToCenter : faUpRightAndDownLeftFromCenter" />
+              [icon]="selectedCardId() === event.id ? faDownLeftAndUpRightToCenter : faUpRightAndDownLeftFromCenter" />
           </div>
         </div>
         <app-event-data-and-image [eventStartDate]="event.eventStartDate" [eventEndDate]="event.eventEndDate"
@@ -28,13 +28,13 @@
               {{ getActivityAreaName(event.organizer?.activityArea, translocoService.activeLang()) }}
             </p>
           </div>
-          @if (selectedCard() === event.cardId) {
+          @if (selectedCardId() === event.id) {
           <a class="font-normal ml-auto btn btn-primary" href="/fr/dashboard/profile/${event.organizer?.id}">
             {{ 'newsPage.view-profile' | transloco }}
           </a>
           }
         </div>
-        @if (selectedCard() === event.cardId) {
+        @if (selectedCardId() === event.id) {
         <div class="text-sm text-justify font-light px-2 whitespace-normal overflow-y-auto markdown-custom-styling h-44"
           [class]="event.tags.length > 0 ? 'mb-2' : 'mb-4'">
           <markdown [data]="event.content" class="p-2" />

@@ -26,7 +26,7 @@ import { getActivityAreaName } from '@models/activity-area';
 export class Publications {
   @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
   translocoService = inject(TranslocoService);
-  selectedCard = model<number | null>(null);
+  selectedCardId = model<string | null>(null);
 
   @ViewChild('cardContainer') containerRef!: { nativeElement: HTMLDivElement };
   cardRefs = viewChildren<HTMLDivElement>(".card");
@@ -43,15 +43,15 @@ export class Publications {
     isDragging: false,
   });
 
-	selectCard(cardId?: number) {
-		this.selectedCard.update((value) => cardId === this.selectedCard() ? null : cardId ?? null);
+	selectCard(cardId?: string) {
+		this.selectedCardId.update((value) => cardId === this.selectedCardId() ? null : cardId ?? null);
 
-		if (cardId && !this.selectedCard()) {
-			this.scrollToCard(this.events?.data?.findIndex((e) => e.cardId === cardId) ?? 0 + 1);
+		if (cardId && !this.selectedCardId()) {
+			this.scrollToCard(this.events?.data?.findIndex((e) => e.id === cardId) ?? 0 + 1);
 		}
 	};
 
-  handleCardMouseUp(e: MouseEvent, cardId?: number) {
+  handleCardMouseUp(e: MouseEvent, cardId?: string) {
   	if ((e.target as HTMLElement).closest('a')) {
 			return;
 		}
@@ -76,7 +76,7 @@ export class Publications {
 	}
 
 	handleMouseMove(e: MouseEvent) {
-		if (!this.dragStart().isDragging || this.selectedCard()) return;
+		if (!this.dragStart().isDragging || this.selectedCardId()) return;
 		const y = e.pageY - this.containerRef.nativeElement.offsetTop;
 		const walk = y - this.dragStart().startY;
 		this.containerRef.nativeElement.scrollTop = this.dragStart().startScrollTop - walk;
@@ -102,7 +102,7 @@ export class Publications {
       const containerRect = container.getBoundingClientRect();
 			const cardRect = cardElement.getBoundingClientRect();
 
-			const scale = this.selectedCard() === event?.cardId ? 1.07 : 1;
+			const scale = this.selectedCardId() === event?.id ? 1.07 : 1;
 			const scaledCardHeight = cardRect.height * scale;
 
 			const scaledCardTop = cardRect.top + (cardRect.height - scaledCardHeight) / 2;

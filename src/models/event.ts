@@ -7,7 +7,6 @@ export interface Event {
   content?: string;
   imageUrl: string;
   imageAltText: string;
-  cardId?: number;
   eventStartDate: string;
  	eventEndDate: string;
   organizer: User | null;
