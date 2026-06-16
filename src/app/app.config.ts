@@ -8,6 +8,7 @@ import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './core/systems/i18n/transloco-loader';
 import { provideTranslocoLocale } from '@jsverse/transloco-locale';
 import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
+import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,13 +28,12 @@ export const appConfig: ApplicationConfig = {
         useValue: localStorage,
       },
     }),
-
     provideTranslocoPersistTranslations({
       loader: TranslocoHttpLoader, // Auto-generated via ng add
       storage: { useValue: localStorage },
     }),
     provideTranslocoLocale(),
-
     provideRouter(routes),
+    provideMarkdown()
   ],
 };

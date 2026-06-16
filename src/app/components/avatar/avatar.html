@@ -2,7 +2,7 @@
   @if (user?.avatarUrl != null && !usePlaceholder()) {
     <div [class.hidden]="!loading()" [class.block]="loading()" [class]="size" 
       class="skeleton rounded-full shrink-0"></div>
-    <img alt="Avatar" [class.hidden]="loading()" [class.block]="!loading()" [src]="user.avatarUrl + '?ver=' + now.getTime()"
+    <img alt="Avatar" [class.hidden]="loading()" [class.block]="!loading()" [src]="user?.avatarUrl + '?ver=' + now.getTime()"
     (error)="setPlaceholder()"
     (load)="loading.set(false)" />
   } @else {

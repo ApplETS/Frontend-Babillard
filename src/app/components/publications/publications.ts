@@ -4,10 +4,11 @@ import { faDownLeftAndUpRightToCenter, faUpRightAndDownLeftFromCenter } from '@f
 import { Event } from '@models/event';
 import { EventDataAndImage } from "@components/event-data-and-image/event-data-and-image";
 import { Avatar } from "@components/avatar/avatar";
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'app-publications',
-  imports: [FontAwesomeModule, EventDataAndImage, Avatar],
+  imports: [FontAwesomeModule, EventDataAndImage, Avatar, MarkdownComponent],
   templateUrl: './publications.html',
   styles: `
     .selected {

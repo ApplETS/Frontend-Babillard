@@ -8,5 +8,4 @@ import { HeaderComponent } from "@components/header/header";
   templateUrl: './app.html'
 })
 export class App {
-  protected readonly title = signal('Babillard-Frontend');
 }
