@@ -11,6 +11,8 @@ import momentPlugin from '@fullcalendar/moment';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
 import { EventsService } from '@services/dashboard.service/events.service';
+import { PaginatedResponse } from '@services/api.service/api.service';
+import { Event } from '@models/event';
 
 @Component({
   selector: 'app-calendar',
@@ -45,7 +47,7 @@ export class Calendar {
     eventOrder: "start",
   };
   selectedCalendarDate = moment(Date.now());
-  @Input({ required: true }) events: EventSourceInput | null = null;
+  @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
   
   constructor() {
     effect(() => {

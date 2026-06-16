@@ -1,10 +1,10 @@
-<div class="h-full w-full flex flex-col items-center justify-center max-w-2xl relative" (mousedown)="handleMouseDown($event)"
-  (mouseup)="dragStart.update((prev) => ({ ...prev, isDragging: false }))" (mousemove)="handleMouseMove($event)">
+<div class="h-full w-full flex flex-col items-center justify-center max-w-2xl relative"
+  (mousedown)="handleMouseDown($event)" (mouseup)="dragStart.update((prev) => ({ ...prev, isDragging: false }))"
+  (mousemove)="handleMouseMove($event)" #cardContainer>
   <div class="overflow-y-scroll w-full h-full no-visible-scrollbar relative" style="perspective: '150px'">
-    @for (event of events; track event.id) {
+    @for (event of events?.data; track event.id) {
     <div class="card relative block items-center h-fit w-4/5 my-7 mx-auto rounded-md cursor-pointer"
-      (mouseup)="handleCardMouseUp($event, event.cardId)"
-      [class.selected]="selectedCard() === event.cardId"
+      (mouseup)="handleCardMouseUp($event, event.cardId)" [class.selected]="selectedCard() === event.cardId"
       [class.notSelected]="selectedCard() !== event.cardId">
       <div class="flex flex-col justify-around bg-base-200 rounded-3xl h-full">
         <div class="card justify-center w-full rounded-lg bg-base-200">
@@ -16,11 +16,11 @@
               [icon]="selectedCard() === event.cardId ? faDownLeftAndUpRightToCenter : faUpRightAndDownLeftFromCenter" />
           </div>
         </div>
-        <app-event-data-and-image [eventStartDate]="event.eventStartDate" [eventEndDate]="event.eventEndDate" [imageUrl]="event.imageUrl"
-          [imageAlt]="event.imageAlt" />
+        <app-event-data-and-image [eventStartDate]="event.eventStartDate" [eventEndDate]="event.eventEndDate"
+          [imageUrl]="event.imageUrl" [imageAlt]="event.imageAlt" />
         <div class="flex flex-row gap-2 px-6 py-2 items-center">
           <div class="avatar">
-            <app-avatar size="w-14 h-14" textSize="text-2xl" [user]="event.organizer" ></app-avatar>
+            <app-avatar size="w-14 h-14" textSize="text-2xl" [user]="event.organizer"></app-avatar>
           </div>
           <div class="flex flex-col pt-2 pl-2">
             <p class="text-base font-bold">event.organizer?.organization ?? 'Organisateur'</p>
@@ -29,21 +29,19 @@
             </p>
           </div>
           @if (selectedCard() === event.cardId) {
-            <a class="font-normal ml-auto btn btn-primary" href="/fr/dashboard/profile/${event.organizer?.id}">
+          <a class="font-normal ml-auto btn btn-primary" href="/fr/dashboard/profile/${event.organizer?.id}">
             {{ 'newsPage.view-profile' | transloco }}
-            </a>
+          </a>
           }
         </div>
         @if (selectedCard() === event.cardId) {
-
         <div class="text-sm text-justify font-light px-2 whitespace-normal overflow-y-auto markdown-custom-styling h-44"
           [class]="event.tags.length > 0 ? 'mb-2' : 'mb-4'">
-          <markdown [data]="event.content" class="p-2"/>
+          <markdown [data]="event.content" class="p-2" />
         </div>
         <div class="flex flex-wrap gap-2 self-start w-full px-6 mb-6">
           @for (tag of event.tags; track tag.id) {
-          <div key="{tag.id}"
-            class="badge text-black py-4 px-4 flex items-center whitespace-nowrap">
+          <div key="{tag.id}" class="badge text-black py-4 px-4 flex items-center whitespace-nowrap">
             {{ tag.name }}
           </div>
           }

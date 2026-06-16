@@ -22,3 +22,11 @@ export abstract class ApiService {
         return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters}));
     }
 }
+
+export interface PaginatedResponse<T> {
+    data: T[];
+    pageSize: number;
+    totalRecords: number;
+    totalPages: number;
+    error: string | null;
+}
