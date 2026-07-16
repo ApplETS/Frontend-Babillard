@@ -12,8 +12,12 @@
 	},
 	"navbar": {
 		"settings": "Paramètres",
-		"sign-out": "Déconnexion",
-		"moderator": "Modérateur"
+		"logout": "Déconnexion",
+		"moderator": "Modérateur",
+    "news": "Annonce",
+    "publication": "Publication",
+    "approval": "Approbation",
+    "profile": "Profil"
 	},
 	"login": {
 		"welcome": "Bienvenue !",

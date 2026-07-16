@@ -1,0 +1,53 @@
+<div class="navbar bg-base-100 shadow-sm">
+  <div class="flex-1">
+    @if (authService.isAuthenticated()){
+      <a class="btn btn-ghost text-lg">{{'navbar.news' | transloco}}</a>
+      <a class="btn btn-ghost text-lg">{{'navbar.publication' | transloco}}</a>
+      @if(authService.userData$ | async; as user){
+<!--        not sure if its the right attribute-->
+        @if (user.userData?.type == "moderateur") {
+          <a class="btn btn-ghost text-lg">{{'navbar.approval' | transloco}}</a>
+        }
+      }
+
+    }@else {
+      <a class="btn btn-ghost text-xl">Babillard</a>
+    }
+
+  </div>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1 items-center">
+      <li><app-lang-switcher/></li>
+      <li><app-theme-switcher/></li>
+      <li>
+        @if (!authService.isAuthenticated()){
+          <button class="avatar" (click)="authService.login()">
+            <div class="w-24 rounded-full">
+              <img src="/assets/profile_placeholder.png"  alt="profile placeholder"/>
+            </div>
+          </button>
+        }@else {
+          <details>
+            <summary>
+              @if (authService.userData$ | async; as user) {
+                <div class="avatar">
+                  <div class="w-24 rounded-full">
+                    @if(user.userData?.avatarUrl){
+
+                      <img ngSrc="{{user.userData?.avatarUrl}}" alt="Profile picture" fill />
+                    }
+                    @else{<img src="/assets/profile_placeholder.png"  alt="profile placeholder"/>}
+                  </div>
+                </div>
+              }
+            </summary>
+            <ul class="bg-base-100 rounded-t-none p-2">
+              <li><a>{{'navbar.profile' | transloco}}</a></li>
+              <li><button (click)="authService.logout()">{{'navbar.logout' | transloco}}</button></li>
+            </ul>
+          </details>
+        }
+      </li>
+    </ul>
+  </div>
+</div>

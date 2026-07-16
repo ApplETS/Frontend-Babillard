@@ -1,16 +1,6 @@
 <main class="main">
+  <app-nav-bar/>
   <div class="flex flex-col items-center justify-center min-h-screen gap-4">
-    <app-lang-switcher/>
-    <app-theme-switcher/>
-    <h1 class="text-2xl">{{'localeLayout.title' | transloco}}, {{ title() }}</h1>
-
-    <button (click)="authService.login()">Tester la connexion Authentik</button>
-
-    @if (authService.userData$ | async; as user) {
-      <div>
-        <h3>Connecté en tant que : {{ user.userData?.preferred_username }}</h3>
-        <button (click)="authService.logout()">Déconnexion</button>
-      </div>
-    }
+    <h1 class="text-2xl">{{'localeLayout.title' | transloco}}</h1>
   </div>
 </main>
