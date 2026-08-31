@@ -9,7 +9,7 @@ export abstract class ApiService {
     private readonly httpService = inject(HttpClient);
 
     protected getActionUrl(action: string): string {
-        return `${environment.apiUrl}/api/${this.apiController}/${action}`;
+        return `${environment.API_URL}/api/${this.apiController}/${action}`;
     }
 
     protected async get<T>(action: string, routeParameters: unknown[], queryParameters: HttpParams): Promise<T> {

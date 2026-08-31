@@ -6,7 +6,7 @@
     (error)="setPlaceholder()"
     (load)="loading.set(false)" />
   } @else {
-  <div class="avatar placeholder">
+  <div class="avatar placeholder block">
     <div class="text-white rounded-full" [class]="size" [class.bg-base-content]="isLightTheme" [class]="color">
       <span [class]="textSize">
         @if (isModerator) {
