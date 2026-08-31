@@ -4,8 +4,12 @@ import { Component, Input } from '@angular/core';
   selector: 'app-event-container',
   imports: [],
   templateUrl: './event-container.html',
-  styles: ``,
 })
 export class EventContainer {
   @Input({ required: true }) isMonthView: boolean = false;
+  @Input({ required: true }) event!: {
+    publicId: string;
+    title: string;
+  };
+
 }
