@@ -43,6 +43,7 @@ export class Calendar {
     },
     eventDisplay: "block",
     eventOrder: "start",
+    eventClassNames: ["mb-3"]
   });
   selectedCalendarDate = moment(Date.now());
   @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
