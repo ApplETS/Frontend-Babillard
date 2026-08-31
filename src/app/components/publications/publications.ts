@@ -55,7 +55,7 @@ export class Publications {
 		this.selectedCardId.update((value) => cardId === value && !fromCalendar ? null : cardId);
 
 		if (fromCalendar) {
-			this.scrollToCard(this.events?.data?.findIndex((e) => e.id === cardId) ?? 0 + 1);
+			this.scrollToCard(this.events?.data?.findIndex((e) => e.id === cardId) ?? 0);
 		}
 	};
 
@@ -85,20 +85,20 @@ export class Publications {
 
 	handleMouseMove(e: MouseEvent) {
 		if (!this.dragStart().isDragging || this.selectedCardId()) return;
-		const y = e.pageY - this.containerRef().nativeElement.offsetTop;
+		const y = e.clientY - this.containerRef().nativeElement.offsetTop;
 		const walk = y - this.dragStart().startY;
 		this.containerRef().nativeElement.scrollTop = this.dragStart().startScrollTop - walk;
 	}
 
   scrollToCard(cardIndex: number) {
-    const event = this.events?.data?.at(cardIndex - 1);
-		const cardElement = this.cardRefs()[cardIndex - 1].nativeElement;
+    const event = this.events?.data?.at(cardIndex);
+		const cardElement = this.cardRefs().at(cardIndex)?.nativeElement;
 		if (!cardElement) return;
 
 		const container = this.containerRef().nativeElement;
 		if (!container) return;
 
-		if (cardIndex === 1) {
+		if (cardIndex === 0) {
 			container.scrollTo({
 				top: 0,
 				behavior: 'smooth',
@@ -107,19 +107,15 @@ export class Publications {
 		}
 		const delay = 100;
 		setTimeout(() => {
-      const containerRect = container.getBoundingClientRect();
-			const cardRect = cardElement.getBoundingClientRect();
-
 			const scale = this.selectedCardId() === event?.id ? 1.07 : 1;
-			const scaledCardHeight = cardRect.height * scale;
-
-			const scaledCardTop = cardRect.top + (cardRect.height - scaledCardHeight) / 2;
-
-			const scrollPosition =
-				scaledCardTop - containerRect.top + container.scrollTop - (containerRect.height - scaledCardHeight) / 2;
+			const scaledCardHeight = cardElement.offsetHeight * scale;
+			const cardCenter = cardElement.offsetTop + scaledCardHeight / 2;
+			const scrollPosition = cardCenter - container.clientHeight / 2;
+			const maxScrollTop = container.scrollHeight - container.clientHeight;
+			const clampedScrollPosition = Math.max(0, Math.min(scrollPosition, maxScrollTop));
 
 			container.scrollTo({
-				top: scrollPosition,
+				top: clampedScrollPosition,
 				behavior: 'smooth',
 			});
 		}, delay);

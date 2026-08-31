@@ -1,7 +1,7 @@
-<div class="h-full w-full flex flex-col items-center justify-center max-w-2xl relative"
-  (mousedown)="handleMouseDown($event)" (mouseup)="dragStart.update((prev) => ({ ...prev, isDragging: false }))"
-  (mousemove)="handleMouseMove($event)" #cardContainer>
-  <div class="overflow-y-scroll w-full h-full no-visible-scrollbar relative" style="perspective: '150px'">
+<div class="h-full w-full flex flex-col items-center justify-center max-w-2xl relative">
+  <div class="overflow-y-scroll w-full h-full no-visible-scrollbar relative perspective-[150px]"
+    (mousedown)="handleMouseDown($event)" (mouseup)="dragStart.update((prev) => ({ ...prev, isDragging: false }))"
+    (mousemove)="handleMouseMove($event)" #cardContainer>
     @for (event of events?.data; track event.id) {
     <div class="relative block items-center h-fit w-4/5 my-7 mx-auto rounded-md cursor-pointer" #card
       (mouseup)="handleCardMouseUp($event, event.id)" [class.selected]="selectedCardId() === event.id"
