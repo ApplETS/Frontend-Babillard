@@ -1,4 +1,4 @@
-import { Component, effect, inject, Input, model, signal, ViewChild, viewChildren } from '@angular/core';
+import { Component, effect, ElementRef, inject, Input, model, signal, viewChild, ViewChild, viewChildren } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faDownLeftAndUpRightToCenter, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import { Event } from '@models/event';
@@ -8,6 +8,8 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { PaginatedResponse } from '@services/api.service/api.service';
 import { getActivityAreaName } from '@models/activity-area';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { skip } from 'rxjs';
 
 @Component({
   selector: 'app-publications',
@@ -28,8 +30,8 @@ export class Publications {
   translocoService = inject(TranslocoService);
   selectedCardId = model<string | null>(null);
 
-  @ViewChild('cardContainer') containerRef!: { nativeElement: HTMLDivElement };
-  cardRefs = viewChildren<HTMLDivElement>(".card");
+  containerRef = viewChild.required<ElementRef<HTMLDivElement>>("cardContainer");
+  cardRefs = viewChildren<ElementRef<HTMLDivElement>>("card");
   readonly faDownLeftAndUpRightToCenter = faDownLeftAndUpRightToCenter;
   readonly faUpRightAndDownLeftFromCenter = faUpRightAndDownLeftFromCenter;
 
@@ -43,15 +45,21 @@ export class Publications {
     isDragging: false,
   });
 
-	selectCard(cardId?: string) {
-		this.selectedCardId.update((value) => cardId === this.selectedCardId() ? null : cardId ?? null);
+	constructor() {
+		toObservable(this.selectedCardId).pipe(skip(1)).subscribe((cardId) => {
+			this.selectCard(cardId, true);
+		});
+	}
 
-		if (cardId && !this.selectedCardId()) {
+	selectCard(cardId: string | null, fromCalendar: boolean = false) {
+		this.selectedCardId.update((value) => cardId === value && !fromCalendar ? null : cardId);
+
+		if (fromCalendar) {
 			this.scrollToCard(this.events?.data?.findIndex((e) => e.id === cardId) ?? 0 + 1);
 		}
 	};
 
-  handleCardMouseUp(e: MouseEvent, cardId?: string) {
+  handleCardMouseUp(e: MouseEvent, cardId: string | null) {
   	if ((e.target as HTMLElement).closest('a')) {
 			return;
 		}
@@ -59,7 +67,7 @@ export class Publications {
 			return;
 		}
 		if (this.dragStart().isDragging) {
-			const y = e.pageY - this.containerRef.nativeElement.offsetTop;
+			const y = e.pageY - this.containerRef().nativeElement.offsetTop;
 			const walk = y - this.dragStart().startY;
 			if (Math.abs(walk) < 5) this.selectCard(cardId);
 		} else {
@@ -69,25 +77,25 @@ export class Publications {
 
   handleMouseDown(e: MouseEvent) {
 		this.dragStart.set({
-			startY: e.pageY - this.containerRef.nativeElement.offsetTop,
-			startScrollTop: this.containerRef.nativeElement.scrollTop,
+			startY: e.pageY - this.containerRef().nativeElement.offsetTop,
+			startScrollTop: this.containerRef().nativeElement.scrollTop,
 			isDragging: true,
 		});
 	}
 
 	handleMouseMove(e: MouseEvent) {
 		if (!this.dragStart().isDragging || this.selectedCardId()) return;
-		const y = e.pageY - this.containerRef.nativeElement.offsetTop;
+		const y = e.pageY - this.containerRef().nativeElement.offsetTop;
 		const walk = y - this.dragStart().startY;
-		this.containerRef.nativeElement.scrollTop = this.dragStart().startScrollTop - walk;
+		this.containerRef().nativeElement.scrollTop = this.dragStart().startScrollTop - walk;
 	}
 
   scrollToCard(cardIndex: number) {
     const event = this.events?.data?.at(cardIndex - 1);
-		const cardElement = this.cardRefs()[cardIndex - 1];
+		const cardElement = this.cardRefs()[cardIndex - 1].nativeElement;
 		if (!cardElement) return;
 
-		const container = this.containerRef.nativeElement;
+		const container = this.containerRef().nativeElement;
 		if (!container) return;
 
 		if (cardIndex === 1) {
