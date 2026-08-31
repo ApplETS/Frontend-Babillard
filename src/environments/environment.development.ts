@@ -1,3 +1,9 @@
 export const environment = {
-    apiUrl: "http://localhost:8081"
+  REDIRECT_URL: import.meta.env.NG_APP_REDIRECT_URL,
+  OPENID_CLIENT_ID: import.meta.env.NG_APP_OPENID_CLIENT_ID,
+  OPENID_BASE_URL: import.meta.env.NG_APP_OPENID_BASE_URL,
+  OPENID_ISSUER: import.meta.env.NG_APP_OPENID_ISSUER,
+  OPENID_WELLKNOWN: import.meta.env.NG_APP_OPENID_WELLKNOWN,
+  POST_LOGOUT_REDIRECT_URI: import.meta.env.NG_APP_POST_LOGOUT_REDIRECT_URI,
+  API_URL: import.meta.env.NG_APP_API_URL_DEV,
 };
