@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { Calendar } from "@components/calendar/calendar";
 import { Publications } from "@components/publications/publications";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
@@ -15,5 +15,5 @@ export class DashboardNews {
   eventService = inject(EventsService);
 
   events = this.eventService.getEvents();
-  selectedCardId: string | null = null;
+  selectedCardId = signal<string | null>(null);
 }

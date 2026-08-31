@@ -13,7 +13,7 @@
 					</div>			
 				} @else {
 					<div className="p-1 cursor-pointer w-full text-center z-0">
-						<app-event-container [isMonthView]="view() === TimeGridType.month" [title]="arg.event.title"></app-event-container>
+						<app-event-container [isMonthView]="view() === TimeGridType.month" [title]="arg.event.title" (click)="selectEvent(arg.event._def)"></app-event-container>
 					</div>
 				}
       </ng-template>

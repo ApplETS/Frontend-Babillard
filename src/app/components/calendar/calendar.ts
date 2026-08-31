@@ -32,10 +32,6 @@ export class Calendar {
     height: "100%",
     headerToolbar: false,
     initialView: this.view(),
-    events: [
-      { title: 'event 1', date: '2024-06-01' },
-      { title: 'event 2', date: '2024-06-02' }
-    ],
     viewClassNames: () => {
       return ["rounded-lg", "border", "border-gray-300", "overflow-hidden"];
     },
@@ -50,7 +46,8 @@ export class Calendar {
   });
   selectedCalendarDate = moment(Date.now());
   @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
-  
+  selectedCardId = model<string | null>(null);
+
   constructor() {
     effect(() => {
       const currentView = this.view();
@@ -89,6 +86,10 @@ export class Calendar {
 
   get shownEvents(): Event[] {
     return [];
+  }
+
+  selectEvent(arg: any): void {
+    this.selectedCardId.set(arg.publicId);
   }
 }
 
