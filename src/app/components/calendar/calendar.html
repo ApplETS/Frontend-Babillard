@@ -3,7 +3,7 @@
       <full-calendar [options]="options()" [events]="shownEvents">
       <ng-template #eventContent let-arg>		
 					<div className="p-1 cursor-pointer w-full text-center z-0">
-						<app-event-container [isMonthView]="view() === TimeGridType.month" [event]="arg.event._def" (click)="selectEvent(arg.event._def)"></app-event-container>
+						<app-event-container [isMonthView]="view() === TimeGridType.month" [event]="arg.event._def" [(selectedCardId)]="selectedCardId"></app-event-container>
 					</div>
 				
       </ng-template>

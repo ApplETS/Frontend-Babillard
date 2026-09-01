@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, model, signal } from '@angular/core';
 import { EventInput } from '@fullcalendar/core/index.js';
 
 @Component({
@@ -16,4 +16,12 @@ export class EventContainer {
       extraEvents?: EventInput[];
     }
   };
+  selectedCardId = model.required<string | null>();
+  expandView() {
+    if (this.event.extendedProps.showMore) {
+      this.expandViewExtra.set(true);
+    } else {
+      this.selectedCardId.set(this.event.extendedProps.eventId ?? null);
+    }
+  }
 }
