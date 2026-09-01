@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { EventInput } from '@fullcalendar/core/index.js';
 
 @Component({
   selector: 'app-event-container',
@@ -10,6 +11,9 @@ export class EventContainer {
   @Input({ required: true }) event!: {
     publicId: string;
     title: string;
+    extendedProps: {
+      showMore?: boolean;
+      extraEvents?: EventInput[];
+    }
   };
-
 }

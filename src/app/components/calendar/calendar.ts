@@ -1,7 +1,7 @@
 import { Component, signal, ViewChild, effect, inject, Input, model } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
-import { CalendarOptions, EventSourceInput } from '@fullcalendar/core/index.js';
+import { CalendarOptions, EventInput, EventSourceInput } from '@fullcalendar/core/index.js';
 import frLocale from '@fullcalendar/core/locales/fr';
 import enLocale from '@fullcalendar/core/locales/en-gb';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -47,6 +47,7 @@ export class Calendar {
   selectedCalendarDate = moment(Date.now());
   @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
   selectedCardId = model<string | null>(null);
+  private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
 
   constructor() {
     effect(() => {
@@ -74,7 +75,7 @@ export class Calendar {
     this.selectedCalendarDate = moment(calendarApi.getDate());
   }
 
-  get calendarEvents(): EventSourceInput {
+  private get calendarEvents(): EventInput[] {
     return this.events?.data.flatMap((event) => {
       const start = moment(event.eventStartDate);
       const end = moment(event.eventEndDate);
@@ -103,7 +104,7 @@ export class Calendar {
         const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf('day');
 
         daySegments.push({
-          id: `${event.id}-${currentDay.format('YYYY-MM-DD')}`,
+          id: `${currentDay.format('YYYY-MM-DD')}-${event.id}`,
           title: event.title,
           start: segmentStart.toISOString(),
           end: segmentEnd.toISOString(),
@@ -119,8 +120,36 @@ export class Calendar {
     }) ?? [];
   }
 
-  get shownEvents(): Event[] {
-    return [];
+  get shownEvents(): EventSourceInput {
+    let events: EventInput[] = [];
+    const sortedEvents = this.calendarEvents.sort((a, b) => {
+      const startA = moment(a.start);
+      const startB = moment(b.start);
+      return startA.diff(startB);
+    });
+
+    while (sortedEvents.length > 0) {
+      const eventsOfDay = sortedEvents.filter((e) => moment(e.start).isSame(moment(sortedEvents[0].start), 'day'));
+
+      if (this.view() !== TimeGridType.month || eventsOfDay.length <= this.eventTreshold) {
+        events = events.concat(eventsOfDay);
+      } else {
+        events = events.concat(eventsOfDay.slice(0, this.eventTreshold));
+        events.push({
+          title: "Show more +",
+          backgroundColor: "gray",
+          start: moment(sortedEvents[0].start).toISOString(),
+          end: moment(sortedEvents[0].start).add(1, "second").toISOString(),
+          extendedProps: {
+            showMore: eventsOfDay.length > this.eventTreshold,
+            extraEvents: eventsOfDay.slice(this.eventTreshold, eventsOfDay.length)
+          }
+        });
+      }
+      sortedEvents.splice(0, eventsOfDay.length);
+    }
+
+    return events;
   }
 
   selectEvent(arg: any): void {
