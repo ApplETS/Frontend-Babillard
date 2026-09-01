@@ -2,18 +2,16 @@
       <app-calendar-header [viewType]="view" [currentDate]="selectedCalendarDate" (calendarChanged)="calendarChange($event)"></app-calendar-header>
       <full-calendar [options]="options()" [events]="calendarEvents">
       <ng-template #eventContent let-arg>
-				@if (arg.event.extendedProps.isShowMore) {
+				@if (arg.event._def.extendedProps.isShowMore) {
 					<div className="p-1 w-full text-center z-0">
-						<!-- <app-event-container
-							[title]="arg.event.title"
-							[showMoreEvents]="arg.event.extendedProps.events"
-							[date]="arg.event.start"
-							[isMonthView]="true"
-						></app-event-container> -->
+						<app-event-container
+							[isMonthView]="view() === TimeGridType.month"
+							[event]="arg.event._def"
+						></app-event-container>
 					</div>			
 				} @else {
 					<div className="p-1 cursor-pointer w-full text-center z-0">
-						<app-event-container [isMonthView]="view() === TimeGridType.month" [title]="arg.event.title" [event]="arg.event._def" (click)="selectEvent(arg.event._def)"></app-event-container>
+						<app-event-container [isMonthView]="view() === TimeGridType.month" [event]="arg.event._def" (click)="selectEvent(arg.event._def)"></app-event-container>
 					</div>
 				}
       </ng-template>

@@ -10,7 +10,6 @@ import timeGridDay from '@fullcalendar/timegrid';
 import momentPlugin from '@fullcalendar/moment';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
-import { EventsService } from '@services/dashboard.service/events.service';
 import { PaginatedResponse } from '@services/api.service/api.service';
 import { Event } from '@models/event';
 import { EventContainer } from "@components/event-container/event-container";
@@ -43,7 +42,7 @@ export class Calendar {
     },
     eventDisplay: "block",
     eventOrder: "start",
-    eventClassNames: ["mb-3"]
+    eventClassNames: ["mb-3"],
   });
   selectedCalendarDate = moment(Date.now());
   @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
@@ -76,13 +75,48 @@ export class Calendar {
   }
 
   get calendarEvents(): EventSourceInput {
-    return this.events?.data.map((event) => ({
-      id: event.id,
-      title: event.title,
-      start: event.eventStartDate,
-      end: event.eventEndDate,
-      date: new Date(event.eventStartDate),
-    })) ?? [];
+    return this.events?.data.flatMap((event) => {
+      const start = moment(event.eventStartDate);
+      const end = moment(event.eventEndDate);
+
+      // If dates are invalid (or end precedes start), keep a single fallback event.
+      if (!start.isValid() || !end.isValid() || end.isBefore(start)) {
+        return [{
+          id: event.id,
+          title: event.title,
+          start: event.eventStartDate,
+          end: event.eventEndDate,
+          extendedProps: {
+            eventId: event.id,
+          },
+        }];
+      }
+
+      const daySegments = [];
+      const currentDay = start.clone().startOf('day');
+      const lastDay = end.clone().startOf('day');
+
+      while (currentDay.isSameOrBefore(lastDay, 'day')) {
+        const isFirstDay = currentDay.isSame(start, 'day');
+        const isLastDay = currentDay.isSame(end, 'day');
+        const segmentStart = isFirstDay ? start.clone() : currentDay.clone();
+        const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf('day');
+
+        daySegments.push({
+          id: `${event.id}-${currentDay.format('YYYY-MM-DD')}`,
+          title: event.title,
+          start: segmentStart.toISOString(),
+          end: segmentEnd.toISOString(),
+          extendedProps: {
+            eventId: event.id,
+          },
+        });
+
+        currentDay.add(1, 'day');
+      }
+
+      return daySegments;
+    }) ?? [];
   }
 
   get shownEvents(): Event[] {
@@ -90,7 +124,7 @@ export class Calendar {
   }
 
   selectEvent(arg: any): void {
-    this.selectedCardId.set(arg.publicId);
+    this.selectedCardId.set(arg.extendedProps.eventId);
   }
 }
 
