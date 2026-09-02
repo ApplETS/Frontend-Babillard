@@ -6,7 +6,7 @@ import { EventDataAndImage } from "@components/event-data-and-image/event-data-a
 import { Avatar } from "@components/avatar/avatar";
 import { MarkdownComponent } from 'ngx-markdown';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { PaginatedResponse } from '@services/api.service/api.service';
+import { PaginatedResponse } from '@services/apiService/api.service';
 import { getActivityAreaName } from '@models/activity-area';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { skip } from 'rxjs';

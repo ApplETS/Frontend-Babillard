@@ -15,8 +15,8 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@services/*": ["./src/services/*"],
-      "@environment/*": ["./src/environments/*"],
+      "@services/*": ["./src/app/services/*"],
+      "@environments/*": ["./src/environments/*"],
       "@models/*": ["./src/models/*"],
       "@components/*": ["./src/app/components/*"],
       "@routed-components/*": ["./src/app/routed-components/*"]

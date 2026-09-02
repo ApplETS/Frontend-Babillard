@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService, PaginatedResponse } from '@services/api.service/api.service';
+import { ApiService, PaginatedResponse } from '@services/apiService/api.service';
 import { Event } from '@models/event';
 import { HttpParams } from '@angular/common/http';
 
@@ -14,7 +14,6 @@ export class EventsService extends ApiService {
       fromObject: {
         page: 1,
         pageSize: 1000,
-        
       }
     }));
   } 

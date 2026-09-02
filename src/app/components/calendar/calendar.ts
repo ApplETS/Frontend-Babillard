@@ -10,7 +10,7 @@ import timeGridDay from '@fullcalendar/timegrid';
 import momentPlugin from '@fullcalendar/moment';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
-import { PaginatedResponse } from '@services/api.service/api.service';
+import { PaginatedResponse } from '@services/apiService/api.service';
 import { Event } from '@models/event';
 import { EventContainer } from "@components/event-container/event-container";
 

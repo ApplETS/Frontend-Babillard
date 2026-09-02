@@ -1,14 +1,16 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Api } from '../apiService/api.service';
+import { ApiService } from '@services/apiService/api.service';
 import { Router } from '@angular/router';
+import { HttpHeaders } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
+import { UserResponseDTO } from '@models/userResponseDTO.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  private readonly oidcSecurityService = inject(OidcSecurityService);
-  private api: Api = inject(Api);
+export class AuthService extends ApiService {
+  protected override apiController: string = "me";
   private router = inject(Router);
 
   public isAuthenticated = signal<boolean>(false);
@@ -24,7 +26,7 @@ export class AuthService {
       this.accessToken.set(accessToken);
 
       if (isAuthenticated && accessToken) {
-        this.api.getUserInfo(accessToken).then();
+        this.getUserInfo(accessToken).then();
       }
     });
   }
@@ -39,4 +41,20 @@ export class AuthService {
       this.accessToken.set(undefined);
     });
   }
+
+  public async getUserInfo(accessToken: string | undefined) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+    try {
+      const res = await 
+        this.get<{data: UserResponseDTO, error: any}>(this.getActionUrl(""));
+      console.log('Profil récupéré du backend:', res.data);
+      return res.data;
+    } catch (error) {
+      console.error('auth.service.ts: Erreur lors de la récupération du profil:', error);
+      throw error;
+    }
+  }
+
 }

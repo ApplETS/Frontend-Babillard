@@ -1,7 +1,6 @@
-import { KeyValue } from "@angular/common";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { environment } from "@environment/environment";
+import { environment } from "@environments/environment";
 import { lastValueFrom } from "rxjs";
 
 export abstract class ApiService {

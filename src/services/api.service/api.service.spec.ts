@@ -1,11 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ApiService } from './api.service';
-import { environment } from '@environment/environment';
+import { environment } from '@environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, provideHttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { MockedObject } from 'vitest';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -23,21 +25,53 @@ export class TestApiService extends ApiService{
 }
 
 describe('ApiService', () => {
+  let oidcSpy: any;
   let service: TestApiService;
-  let httpServiceSpy: MockedObject<HttpClient>;
+  let httpServiceSpy: HttpTestingController;
+  // beforeEach(() => {
+  //   oidcSpy = {
+  //     checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
+  //     authorize: vi.fn(),
+  //     logoff: vi.fn().mockReturnValue(of({})),
+  //     userData$: of({ name: 'Test User' })
+  //   };
+  //   apiSpy = {
+  //     getUserInfo: vi.fn().mockResolvedValue({})
+  //   };
+  //   routerSpy = {};
+
+  //   TestBed.configureTestingModule({
+  //     providers: [
+  //       TestApiService,
+  //       { provide: OidcSecurityService, useValue: oidcSpy },
+  //       provideHttpClient(),
+  //       provideHttpClientTesting()
+  //     ],
+  //   });
+  //   service = TestBed.inject(AuthService);
+  //   mockHttp = TestBed.inject(HttpTestingController);
+  // });
+
+
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: OidcSecurityService, useValue: {} },
+                provideHttpClient(),
+        provideHttpClientTesting()
+
+      ]
+    });
     service = TestBed.inject(TestApiService);
-    httpServiceSpy = vi.mockObject(HttpClient.prototype);
-    Object.defineProperty(httpServiceSpy, "httpService", { value: httpServiceSpy });
+    httpServiceSpy = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it(`should return "${environment.apiUrl}/api/test/testAction"`, () => {
-    const expectedUrl = `${environment.apiUrl}/api/test/testAction`;
+  it(`should return "${environment.API_URL}/api/test/testAction"`, () => {
+    const expectedUrl = `${environment.API_URL}/api/test/testAction`;
     
     const actionUrl = service.getActionUrl("testAction");
 
@@ -48,7 +82,7 @@ describe('ApiService', () => {
     const action = "testAction";
     const routeParameters = ["param1", "param2"];
     const queryParameters = new URLSearchParams({ key: "value" });
-    const expectedUrl = `${environment.apiUrl}/api/test/${action}/${routeParameters.join("/")}`;
+    const expectedUrl = `${environment.API_URL}/api/test/${action}/${routeParameters.join("/")}`;
 
     const httpGetSpy = vi.spyOn(httpServiceSpy, "get").mockReturnValue(of("response"));
     const response = service.get<string>(action, routeParameters, queryParameters as any);
