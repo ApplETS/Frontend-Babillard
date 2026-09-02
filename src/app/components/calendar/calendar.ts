@@ -20,6 +20,7 @@ import { EventContainer } from "@components/event-container/event-container";
   templateUrl: './calendar.html',
 })
 export class Calendar {
+  private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
 
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
 
@@ -43,6 +44,7 @@ export class Calendar {
     eventDisplay: "block",
     eventOrder: "start",
     eventClassNames: ["mb-3"],
+    dayMaxEvents: this.eventTreshold,
   });
   selectedCalendarDate = moment(Date.now());
   private _events: PaginatedResponse<Event> | null = null;
@@ -58,7 +60,6 @@ export class Calendar {
 
   shownEvents = signal<EventSourceInput>([]);
   selectedCardId = model<string | null>(null);
-  private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
 
   constructor() {
     effect(() => {
@@ -133,40 +134,8 @@ export class Calendar {
     }) ?? [];
   }
 
-  private buildShownEvents(): EventSourceInput {
-    let events: EventInput[] = [];
-    const sortedEvents = this.calendarEvents.sort((a, b) => {
-      const startA = moment(a.start);
-      const startB = moment(b.start);
-      return startA.diff(startB);
-    });
-
-    while (sortedEvents.length > 0) {
-      const eventsOfDay = sortedEvents.filter((e) => moment(e.start).isSame(moment(sortedEvents[0].start), 'day'));
-
-      if (this.view() !== TimeGridType.month || eventsOfDay.length <= this.eventTreshold) {
-        events = events.concat(eventsOfDay);
-      } else {
-        events = events.concat(eventsOfDay.slice(0, this.eventTreshold));
-        events.push({
-          title: "Show more +",
-          backgroundColor: "gray",
-          start: moment(sortedEvents[0].start).toISOString(),
-          end: moment(sortedEvents[0].start).add(1, "second").toISOString(),
-          extendedProps: {
-            showMore: eventsOfDay.length > this.eventTreshold,
-            extraEvents: eventsOfDay.slice(this.eventTreshold, eventsOfDay.length)
-          }
-        });
-      }
-      sortedEvents.splice(0, eventsOfDay.length);
-    }
-
-    return events;
-  }
-
   private updateShownEvents(): void {
-    this.shownEvents.set(this.buildShownEvents());
+    this.shownEvents.set(this.calendarEvents);
   }
 
   selectEvent(arg: any): void {
