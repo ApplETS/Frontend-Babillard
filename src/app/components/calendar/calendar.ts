@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild, effect, inject, Input, model } from '@angular/core';
+import { Component, signal, ViewChild, effect, Input, model } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput, EventSourceInput } from '@fullcalendar/core/index.js';
@@ -45,7 +45,18 @@ export class Calendar {
     eventClassNames: ["mb-3"],
   });
   selectedCalendarDate = moment(Date.now());
-  @Input({ required: true }) events: PaginatedResponse<Event> | null = null;
+  private _events: PaginatedResponse<Event> | null = null;
+  @Input({ required: true })
+  set events(value: PaginatedResponse<Event> | null) {
+    this._events = value;
+    this.updateShownEvents();
+  }
+
+  get events(): PaginatedResponse<Event> | null {
+    return this._events;
+  }
+
+  shownEvents = signal<EventSourceInput>([]);
   selectedCardId = model<string | null>(null);
   private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
 
@@ -56,6 +67,8 @@ export class Calendar {
         const calendarApi = this.calendarComponent.getApi();
         calendarApi.changeView(currentView);
       }
+
+      this.updateShownEvents();
     });
   }
 
@@ -120,7 +133,7 @@ export class Calendar {
     }) ?? [];
   }
 
-  get shownEvents(): EventSourceInput {
+  private buildShownEvents(): EventSourceInput {
     let events: EventInput[] = [];
     const sortedEvents = this.calendarEvents.sort((a, b) => {
       const startA = moment(a.start);
@@ -150,6 +163,10 @@ export class Calendar {
     }
 
     return events;
+  }
+
+  private updateShownEvents(): void {
+    this.shownEvents.set(this.buildShownEvents());
   }
 
   selectEvent(arg: any): void {

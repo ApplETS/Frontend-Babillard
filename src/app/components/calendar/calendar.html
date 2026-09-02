@@ -1,8 +1,8 @@
-		<div class="flex flex-col flex-grow h-full">
+	 <div class="flex flex-col flex-grow h-full">
       <app-calendar-header [viewType]="view" [currentDate]="selectedCalendarDate" (calendarChanged)="calendarChange($event)"></app-calendar-header>
-      <full-calendar [options]="options()" [events]="shownEvents">
+		<full-calendar [options]="options()" [events]="shownEvents()">
       <ng-template #eventContent let-arg>		
-					<div className="p-1 cursor-pointer w-full text-center z-0">
+					<div className="p-1 cursor-pointer w-full text-center">
 						<app-event-container [isMonthView]="view() === TimeGridType.month" [event]="arg.event._def" [(selectedCardId)]="selectedCardId"></app-event-container>
 					</div>
 				
