@@ -21,7 +21,9 @@ import { EventContainer } from "@components/event-container/event-container";
 })
 export class Calendar {
   private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
+	readonly colors = ['#E7A455', '#EA7CB7', '#06B6D4', '#64C788', '#EA7CB7', '#848BDB'];
 
+  activityAreas = model.required<{ id: string, name: string, selected: boolean }[]>();
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
 
   view = signal(TimeGridType.month);
@@ -125,6 +127,7 @@ export class Calendar {
           extendedProps: {
             eventId: event.id,
           },
+          color: this.colors[this.activityAreas().findIndex((activityArea) => activityArea.id == event.organizer?.activityArea?.id)]
         });
 
         currentDay.add(1, 'day');
