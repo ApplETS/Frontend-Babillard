@@ -1,17 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 
-import { Header } from './header';
+import { HeaderComponent } from './header';
 
 describe('Header', () => {
-  let component: Header;
-  let fixture: ComponentFixture<Header>;
+  let component: HeaderComponent;
+  let fixture: ComponentFixture<HeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Header],
+      imports: [
+        HeaderComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { en: {}, fr: {} },
+          translocoConfig: { defaultLang: 'en' },
+        }),
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Header);
+    fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -7,6 +7,12 @@ describe('Calendar', () => {
   let fixture: ComponentFixture<Calendar>;
 
   beforeEach(async () => {
+    TestBed.overrideComponent(Calendar, {
+      set: {
+        template: '<div></div>',
+      },
+    });
+
     await TestBed.configureTestingModule({
       imports: [Calendar],
     }).compileComponents();

@@ -11,19 +11,17 @@ import { environment } from '@environments/environment';
 describe('AuthService', () => {
   let service: AuthService;
   let oidcSpy: any;
-  let apiSpy: any;
   let routerSpy: any;
   let mockHttp: HttpTestingController;
 
   beforeEach(() => {
     oidcSpy = {
       checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
+      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
+      getAccessToken: vi.fn().mockReturnValue('mock-token'),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
       userData$: of({ name: 'Test User' })
-    };
-    apiSpy = {
-      getUserInfo: vi.fn().mockResolvedValue({})
     };
     routerSpy = {};
 
@@ -40,13 +38,19 @@ describe('AuthService', () => {
     mockHttp = TestBed.inject(HttpTestingController);
   });
 
+  afterEach(() => {
+    mockHttp.verify();
+  });
+
   it('should initialize authentification', () => {
+    const getUserInfoSpy = vi.spyOn(service, 'getUserInfo').mockResolvedValue(undefined as any);
+
     service.initAuth();
 
     expect(oidcSpy.checkAuth).toHaveBeenCalled();
     expect(service.isAuthenticated()).toBe(true);
     expect(service.accessToken()).toBe('mock-token');
-    expect(apiSpy.getUserInfo).toHaveBeenCalledWith('mock-token');
+    expect(getUserInfoSpy).toHaveBeenCalled();
   });
 
   it('should handle login', () => {
@@ -60,19 +64,17 @@ describe('AuthService', () => {
   describe('getUserInfo', () => {
 
     it('should return data on success', async () => {
-      const mockToken = 'fake-token';
       const mockResponse = {
         data: { id: 1, name: 'John Doe' },
         error: null
       };
 
       // Trigger the service method
-      const promise = service.getUserInfo(mockToken);
+      const promise = service.getUserInfo();
 
       // Expect a GET request to the specific URL
-      const req = mockHttp.expectOne(`${environment.API_URL}/me`);
+      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
       expect(req.request.method).toBe('GET');
-      expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`);
 
       // Provide the mock response
       req.flush(mockResponse);
@@ -82,11 +84,9 @@ describe('AuthService', () => {
     });
 
     it('should throw error on failure', async () => {
-      const mockToken = 'fake-token';
+      const promise = service.getUserInfo();
 
-      const promise = service.getUserInfo(mockToken);
-
-      const req = mockHttp.expectOne(`${environment.API_URL}/me`);
+      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
 
       // Simulate a 404 error
       req.error(new ProgressEvent('Error'), { status: 404, statusText: 'Not Found' });

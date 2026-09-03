@@ -26,7 +26,7 @@ export class AuthService extends ApiService {
       this.accessToken.set(accessToken);
 
       if (isAuthenticated && accessToken) {
-        this.getUserInfo(accessToken).then();
+        this.getUserInfo().then();
       }
     });
   }
@@ -42,10 +42,7 @@ export class AuthService extends ApiService {
     });
   }
 
-  public async getUserInfo(accessToken: string | undefined) {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
-    });
+  public async getUserInfo() {
     try {
       const res = await 
         this.get<{data: UserResponseDTO, error: any}>(this.getActionUrl(""));
