@@ -4,7 +4,7 @@
   }
   <div class="flex flex-row h-full">
     <app-calendar [events]="events | async" class="basis-[70%] h-[90vh]" [(selectedCardId)]="selectedCardId"
-      ></app-calendar>
+      [(activityAreas)]="activityAreas"></app-calendar>
     <app-publications class="basis-[30%] h-screen" [events]="(events | async)" [(selectedCardId)]="selectedCardId"></app-publications>
   </div>
 </app-dashboard>

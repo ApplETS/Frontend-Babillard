@@ -3,6 +3,7 @@ import { EventsService } from '@services/dashboard.service/events.service';
 import { vi } from 'vitest';
 
 import { DashboardNews } from './dashboard-news';
+import { ActivityAreaService } from '@services/activityAreaService/activity-area.service';
 
 describe('DashboardNews', () => {
   let component: DashboardNews;
@@ -18,6 +19,10 @@ describe('DashboardNews', () => {
     }),
   };
 
+  const activityAreaServiceMock = {
+    getActivityAreas: vi.fn().mockResolvedValue([]),
+  };
+
   beforeEach(async () => {
     TestBed.overrideComponent(DashboardNews, {
       set: {
@@ -27,7 +32,10 @@ describe('DashboardNews', () => {
 
     await TestBed.configureTestingModule({
       imports: [DashboardNews],
-      providers: [{ provide: EventsService, useValue: eventsServiceMock }],
+      providers: [
+        { provide: EventsService, useValue: eventsServiceMock },
+        { provide: ActivityAreaService, useValue: activityAreaServiceMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardNews);
