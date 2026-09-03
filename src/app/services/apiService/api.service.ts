@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { UserResponseDTO } from '@models/userResponseDTO.interface';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable({
