@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild, effect, Input, model } from '@angular/core';
+import { Component, signal, ViewChild, effect, Input, model, computed } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput, EventSourceInput } from '@fullcalendar/core/index.js';
@@ -24,7 +24,10 @@ export class Calendar {
   private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
 	readonly colors = ['#E7A455', '#EA7CB7', '#06B6D4', '#64C788', '#EA7CB7', '#848BDB'];
 
-  activityAreas = model.required<ActivityAreaDisplay[]>();
+  activityAreas = model<ActivityAreaDisplay[] | null>(null);
+
+  availableAreas = computed(() => this.activityAreas() ?? []);
+
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
 
   view = signal(TimeGridType.month);
@@ -128,7 +131,7 @@ export class Calendar {
           extendedProps: {
             eventId: event.id,
           },
-          color: this.colors[this.activityAreas().findIndex((activityArea) => activityArea.id == event.organizer?.activityArea?.id)]
+          color: this.colors[this.availableAreas()?.findIndex((activityArea) => activityArea.id == event.organizer?.activityArea?.id)]
         });
 
         currentDay.add(1, 'day');

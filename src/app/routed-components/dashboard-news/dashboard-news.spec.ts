@@ -10,13 +10,7 @@ describe('DashboardNews', () => {
   let fixture: ComponentFixture<DashboardNews>;
 
   const eventsServiceMock = {
-    getEvents: vi.fn().mockResolvedValue({
-      data: [],
-      pageSize: 0,
-      totalRecords: 0,
-      totalPages: 0,
-      error: null,
-    }),
+    getEvents: vi.fn(),
   };
 
   const activityAreaServiceMock = {
@@ -47,4 +41,6 @@ describe('DashboardNews', () => {
     expect(component).toBeTruthy();
     expect(component.selectedCardId()).toBeNull();
   });
+
+  it('should call getActivityAreas on ngOnInit', async () => {});
 });

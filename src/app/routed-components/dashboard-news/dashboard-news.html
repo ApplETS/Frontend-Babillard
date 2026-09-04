@@ -1,10 +1,11 @@
 <app-dashboard>
-  @if ((events | async) === null) {
+  @if (loading()) {
     <app-loading-spinner class="z-1000"/>
+  } @else {
+    <div class="flex flex-row h-full">
+      <app-calendar [events]="events()" class="basis-[70%] h-[90vh]" [(selectedCardId)]="selectedCardId"
+        [(activityAreas)]="activityAreas!"></app-calendar>
+      <app-publications class="basis-[30%] h-screen" [events]="events()" [(selectedCardId)]="selectedCardId"></app-publications>
+    </div>
   }
-  <div class="flex flex-row h-full">
-    <app-calendar [events]="events | async" class="basis-[70%] h-[90vh]" [(selectedCardId)]="selectedCardId"
-      [(activityAreas)]="activityAreas"></app-calendar>
-    <app-publications class="basis-[30%] h-screen" [events]="(events | async)" [(selectedCardId)]="selectedCardId"></app-publications>
-  </div>
 </app-dashboard>
