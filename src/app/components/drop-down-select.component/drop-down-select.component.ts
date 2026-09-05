@@ -1,7 +1,9 @@
 import { CommonModule, KeyValue } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, model, Output } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp, faFilter } from '@fortawesome/free-solid-svg-icons';
+
+type Option = { id: string, name: string, selected: boolean };
 
 @Component({
   selector: 'app-drop-down-select',
@@ -14,16 +16,21 @@ export class DropDownSelectComponent {
   readonly filter = faFilter;
 
   isDropdownOpen = false;
-  @Input({required: true}) options: KeyValue<string, boolean>[] = [];
+  options = model.required<Option[]>();
   @Input({required: true}) title = "";
-  @Output() selectedOptions = new EventEmitter<KeyValue<string, boolean>[]>();
+  // @Output() selectedOptions = new EventEmitter<KeyValue<string, boolean>[]>();
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  toggleOption(option: KeyValue<string, boolean>): void {
-    option.value = !option.value;
-    this.selectedOptions.emit(this.options.filter(o => o.value));
+  toggleOption(id: string): void {
+    this.options.update((options) => {
+      if (!options) return [];
+      const option = options.find(o => o.id === id);
+      if (!option) return options;
+      option.selected = !option.selected;
+      return [...options];
+    });
   }
 }

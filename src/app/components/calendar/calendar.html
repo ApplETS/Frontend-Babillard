@@ -1,6 +1,6 @@
 <div class="flex flex-col flex-grow h-full">
 	<app-calendar-header [viewType]="view" [currentDate]="selectedCalendarDate"
-		(calendarChanged)="calendarChange($event)"></app-calendar-header>
+		(calendarChanged)="calendarChange($event)" [(activityAreas)]="activityAreas"></app-calendar-header>
 	<full-calendar [options]="options()" [events]="shownEvents()">
 		<ng-template #eventContent let-arg>
 			<app-event-container [isMonthView]="view() === TimeGridType.month" [event]="arg.event._def"

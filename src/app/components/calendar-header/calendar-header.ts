@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, Input, model, Output, WritableSignal } from '@angular/core';
 import { TimeGridType, CalendarAction } from '@components/calendar/calendar';
 import { DropDownSelectComponent } from '@components/drop-down-select.component/drop-down-select.component';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faChevronLeft, faChevronRight, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
+import { ActivityAreaDisplay } from '@services/activityAreaService/activity-area.service';
 
 @Component({
   selector: 'app-calendar-header',
@@ -19,6 +20,7 @@ export class CalendarHeader {
 
   @Input({required: true}) viewType!: WritableSignal<TimeGridType>;
   @Input({required: true}) currentDate!: moment.Moment;
+  activityAreas = model<ActivityAreaDisplay[] | null>(null);
   @Output() calendarChanged = new EventEmitter<CalendarAction>();
 
   handleDateChange(action: CalendarAction): void {
