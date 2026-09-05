@@ -1,5 +1,5 @@
 import { CommonModule, KeyValue } from '@angular/common';
-import { Component, EventEmitter, Input, model, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, input, Input, model, Output, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp, faFilter } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,13 +15,13 @@ export class DropDownSelectComponent {
   readonly chevronUp = faChevronUp;
   readonly filter = faFilter;
 
-  isDropdownOpen = false;
+  private eRef = inject(ElementRef);
+  isDropdownOpen = signal(false);
   options = model.required<Option[]>();
   @Input({required: true}) title = "";
-  // @Output() selectedOptions = new EventEmitter<KeyValue<string, boolean>[]>();
 
   toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
+    this.isDropdownOpen.update((value) => !value);
   }
 
   toggleOption(id: string): void {
@@ -32,5 +32,16 @@ export class DropDownSelectComponent {
       option.selected = !option.selected;
       return [...options];
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickListener(event: MouseEvent): void {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.closeDropdown();
+    }
+  }
+
+  closeDropdown(): void {
+    this.isDropdownOpen.set(false);
   }
 }
