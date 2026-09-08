@@ -3,6 +3,7 @@ import { environment } from '@environments/environment.development';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { KeyValue } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -38,26 +39,6 @@ export abstract class ApiService {
     }
 
     return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters, headers: headers }));
-  }
-
-  /**
-   * Fetches a paginated response from the API via the GET method.
-   * @template T Type of the data in the paginated response
-   * @param action Action to access
-   * @param pageNumber Page number to paginated list
-   * @param pageSize Page size of paginated list
-   * @param routeParameters Parameters to append to the path
-   * @returns A PaginatedResponse of type T
-   * @see get<T>
-   * @see PaginatedResponse<T>
-   */
-  protected async getPaginated<T>(action: string, pageNumber: number, pageSize: number, ...routeParameters: unknown[]) {
-    return await this.get<PaginatedResponse<T>>(action, routeParameters, new HttpParams({
-      fromObject: {
-        page: pageNumber,
-        pageSize: pageSize,
-      }
-    }));
   }
 }
 
