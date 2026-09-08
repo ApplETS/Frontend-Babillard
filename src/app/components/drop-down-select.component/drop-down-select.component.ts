@@ -17,7 +17,7 @@ export class DropDownSelectComponent {
 
   private eRef = inject(ElementRef);
   isDropdownOpen = signal(false);
-  options = model.required<Option[]>();
+  options = model.required<Option[] | null>();
   @Input({required: true}) title = "";
 
   toggleDropdown(): void {

@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, model, OnInit, signal, WritableSignal } from '@angular/core';
 import { Calendar } from "@components/calendar/calendar";
 import { Publications } from "@components/publications/publications";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
@@ -25,11 +25,23 @@ export class DashboardNews implements OnInit {
   selectedAreas = computed(() => this.activityAreas()?.filter(area => area.selected).map(a => a.id) ?? []);
 
   constructor() {
-
+    effect(async () => {
+      if (this.selectedAreas().length > 0) {
+        this.events.set(await this.eventService.getEvents(this.selectedAreas()));
+      } else {
+        this.events.set({
+          data: [],
+          error: null,
+          pageSize: 0,
+          totalRecords: 0,
+          totalPages: 0
+        });
+      }
+    })
   }
 
   async ngOnInit(): Promise<void> {
     this.activityAreas.set(await this.activityAreaService.getActivityAreas());
-    this.events.set(await this.eventService.getEvents(this.selectedAreas()));
+    // this.events.set(await this.eventService.getEvents(this.selectedAreas()));
   }
 }
