@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild, effect, Input, model, computed } from '@angular/core';
+import { Component, signal, ViewChild, effect, Input, model, computed, viewChild } from '@angular/core';
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput, EventSourceInput } from '@fullcalendar/core/index.js';
@@ -28,7 +28,7 @@ export class Calendar {
 
   availableAreas = computed(() => this.activityAreas() ?? []);
 
-  @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
+  calendarComponent = viewChild.required(FullCalendarComponent);
 
   view = signal(TimeGridType.month);
   readonly TimeGridType = TimeGridType;
@@ -71,7 +71,7 @@ export class Calendar {
     effect(() => {
       const currentView = this.view();
       if (this.calendarComponent) {
-        const calendarApi = this.calendarComponent.getApi();
+        const calendarApi = this.calendarComponent().getApi();
         calendarApi.changeView(currentView);
       }
 
@@ -80,7 +80,7 @@ export class Calendar {
   }
 
   calendarChange(action: CalendarAction): void {
-    const calendarApi = this.calendarComponent.getApi();
+    const calendarApi = this.calendarComponent().getApi();
     switch (action){
       case CalendarAction.previous:
         calendarApi.prev();
