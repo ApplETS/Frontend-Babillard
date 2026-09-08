@@ -11,7 +11,7 @@
           <li class="flex">
             <a class="flex items-center justify-start space-x-2" (click)="toggleOption(item.id)">
               <input type="checkbox" class="checkbox w-5 h-5" [checked]="item.selected" />
-              <span>{{item.name}}</span>
+              <span>{{item.name()}}</span>
             </a>
           </li>				
         }
