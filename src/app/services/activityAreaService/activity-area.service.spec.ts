@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ActivityAreaService } from './activity-area.service';
+import { ActivityAreaDisplay, ActivityAreaService } from './activity-area.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { of } from 'rxjs';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { TranslocoService } from '@jsverse/transloco';
+import { computed } from '@angular/core';
 
 describe('ActivityAreaService', () => {
   let service: ActivityAreaService;
@@ -117,9 +118,14 @@ describe('ActivityAreaService', () => {
     request.flush(mockResponse);
 
     const result = await response;
-    expect(result).toEqual([
-      { id: '1', name: 'Nom FR', selected: true }
-    ]);
+    const expectedResult = new ActivityAreaDisplay({ id: '1', nameFr: 'Nom FR', nameEn: 'Name EN' }, translocoSpy);
+    
+    expect(result.length).toEqual(1);
+    expect(result[0].id).toEqual(expectedResult.id);
+    expect(result[0].selected).toEqual(expectedResult.selected);
+    expect(result[0].nameFr).toEqual(expectedResult.nameFr);
+    expect(result[0].nameEn).toEqual(expectedResult.nameEn);
+    expect(result[0].name()).toEqual(expectedResult.nameFr);
   });
 
   it('should return data with correct language when language is en', async () => {
@@ -141,9 +147,14 @@ describe('ActivityAreaService', () => {
     request.flush(mockResponse);
 
     const result = await response;
-    expect(result).toEqual([
-      { id: '1', name: 'Name EN', selected: true }
-    ]);
+    const expectedResult = new ActivityAreaDisplay({ id: '1', nameFr: 'Nom FR', nameEn: 'Name EN' }, translocoSpy);
+
+    expect(result.length).toEqual(1);
+    expect(result[0].id).toEqual(expectedResult.id);
+    expect(result[0].selected).toEqual(expectedResult.selected);
+    expect(result[0].nameFr).toEqual(expectedResult.nameFr);
+    expect(result[0].nameEn).toEqual(expectedResult.nameEn);
+    expect(result[0].name()).toEqual(expectedResult.nameEn);
   });
   
   it('should return data with english name when language is not available', async () => {
@@ -165,9 +176,14 @@ describe('ActivityAreaService', () => {
     request.flush(mockResponse);
     
     const result = await response;
-    expect(result).toEqual([
-      { id: '1', name: 'Name EN', selected: true }
-    ]);
+    
+    const expectedResult = new ActivityAreaDisplay({ id: '1', nameFr: 'Nom FR', nameEn: 'Name EN' }, translocoSpy);
+    expect(result.length).toEqual(1);
+    expect(result[0].id).toEqual(expectedResult.id);
+    expect(result[0].selected).toEqual(expectedResult.selected);
+    expect(result[0].nameFr).toEqual(expectedResult.nameFr);
+    expect(result[0].nameEn).toEqual(expectedResult.nameEn);
+    expect(result[0].name()).toEqual(expectedResult.nameEn);
   });
 
   afterEach(() => {

@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
+import { ActivityAreaResponseDTO } from '@models/activityAreaResponseDTO.interface';
 import { ActivityAreaResponseDTOResponse } from '@models/activityAreaResponseDTOResponse.interface';
 import { ApiService } from '@services/apiService/api.service';
 
@@ -29,17 +30,25 @@ export class ActivityAreaService extends ApiService {
     }
 
     const data = result.data!;
-    const language = this.translationService.getActiveLang();
-    return data.map((d) => ({
-      id: d.id!,
-      name: language === 'fr' ? d.nameFr! : d.nameEn!,
-      selected: true
-    }));
+    return data.map((d) => new ActivityAreaDisplay(d, this.translationService));
   }
 }
 
-export interface ActivityAreaDisplay {
+export class ActivityAreaDisplay {
   id: string;
-  name: string;
   selected: boolean;
+  nameFr: string;
+  nameEn: string
+
+  constructor(acitivityAreaResponseDTO: ActivityAreaResponseDTO, private translationService: TranslocoService) {
+    this.id = acitivityAreaResponseDTO.id!;
+    this.selected = true;
+    this.nameFr = acitivityAreaResponseDTO.nameFr!;
+    this.nameEn = acitivityAreaResponseDTO.nameEn!;
+  }
+
+  name = computed(() => {
+    const language = this.translationService.getActiveLang();
+    return language === 'fr' ? this.nameFr : this.nameEn;
+  })
 }

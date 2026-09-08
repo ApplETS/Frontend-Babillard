@@ -22,13 +22,14 @@ export class DashboardNews implements OnInit {
   selectedCardId = signal<string | null>(null);
   
   loading = computed(() => this.activityAreas() === null || this.events() === null);
-  ngOnInit(): void {
-    this.activityAreaService.getActivityAreas().then((areas) => {
-      this.activityAreas.set(areas);
-    });
-    this.eventService.getEvents().then((events) => {
-      this.events.set(events);
-    });
+  selectedAreas = computed(() => this.activityAreas()?.filter(area => area.selected).map(a => a.id) ?? []);
+
+  constructor() {
+
   }
 
+  async ngOnInit(): Promise<void> {
+    this.activityAreas.set(await this.activityAreaService.getActivityAreas());
+    this.events.set(await this.eventService.getEvents(this.selectedAreas()));
+  }
 }
