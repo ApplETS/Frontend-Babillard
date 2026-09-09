@@ -20,12 +20,14 @@ export class DashboardNews implements OnInit {
   events = signal<PaginatedResponse<Event> | null>(null);
   activityAreas = signal<ActivityAreaDisplay[] | null>(null);
   selectedCardId = signal<string | null>(null);
+  reloading = signal(false);
   
-  loading = computed(() => this.activityAreas() === null || this.events() === null);
+  loading = computed(() => this.reloading() || this.activityAreas() === null || this.events() === null);
   selectedAreas = computed(() => this.activityAreas()?.filter(area => area.selected).map(a => a.id) ?? []);
 
   constructor() {
     effect(async () => {
+      this.reloading.set(true);
       if (this.selectedAreas().length > 0) {
         this.events.set(await this.eventService.getEvents(this.selectedAreas()));
       } else {
@@ -37,7 +39,9 @@ export class DashboardNews implements OnInit {
           totalPages: 0
         });
       }
-    })
+      
+      this.reloading.set(false);
+    });
   }
 
   async ngOnInit(): Promise<void> {

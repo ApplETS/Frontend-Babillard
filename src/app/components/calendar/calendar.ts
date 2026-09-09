@@ -28,7 +28,7 @@ export class Calendar {
 
   availableAreas = computed(() => this.activityAreas() ?? []);
 
-  calendarComponent = viewChild.required(FullCalendarComponent);
+  calendarComponent = viewChild(FullCalendarComponent);
 
   view = signal(TimeGridType.month);
   readonly TimeGridType = TimeGridType;
@@ -70,9 +70,9 @@ export class Calendar {
   constructor() {
     effect(() => {
       const currentView = this.view();
-      if (this.calendarComponent) {
-        const calendarApi = this.calendarComponent().getApi();
-        calendarApi.changeView(currentView);
+      if (this.calendarComponent()) {
+        const calendarApi = this.calendarComponent()?.getApi();
+        calendarApi?.changeView(currentView);
       }
 
       this.updateShownEvents();
@@ -80,7 +80,11 @@ export class Calendar {
   }
 
   calendarChange(action: CalendarAction): void {
-    const calendarApi = this.calendarComponent().getApi();
+    const calendarApi = this.calendarComponent()?.getApi();
+    if (!calendarApi) {
+      return;
+    }
+
     switch (action){
       case CalendarAction.previous:
         calendarApi.prev();
