@@ -1,6 +1,6 @@
 <app-dashboard>
   @if (loading()) {
-  <app-loading-spinner class="z-1000" />
+    <app-loading-spinner class="z-1000" />
   }
   <div class="flex flex-row h-full">
     <app-calendar [events]="events()" class="basis-[70%] h-[90vh]" [(selectedCardId)]="selectedCardId"
