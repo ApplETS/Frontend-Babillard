@@ -3,30 +3,30 @@
     @switch (eventDateStatus) {
     @case (EventDateStatus.onlyStartDate) {
     <p>
-      {{ startDate.toLocaleDateString(locale, formatStartDate)}}
+      {{ startDate | translocoDate: { dateStyle: "long", timeStyle: "short" } }}
     </p>
     }
     @case (EventDateStatus.withBothAndSameDay) {
     <div class="mb-1">
       <span>
-        {{ startDate.toLocaleDateString(locale,formatStartDate) }}
-        {{'profile.from' | transloco}}
-        {{ getHourMinute(startDate) }}
-        {{ 'profile.to' | transloco }}
-        {{ getHourMinute(endDate!) }}
+        {{ startDate | translocoDate: { dateStyle: "long" } }}
+        {{"profile.from" | transloco}}
+        {{ startDate | translocoDate: { timeStyle: "short" } }}
+        {{ "profile.to" | transloco }}
+        {{ endDate! | translocoDate: { timeStyle: "short" } }}
       </span>
     </div>
     }
     @case (EventDateStatus.withBothAndSameMonth) {
     <div class="mb-1">
       <span>
-        {{ startDate.toLocaleDateString(locale, formatStartDate) }}
+        {{ startDate | translocoDate: { month: "long", day: "numeric" } }}
         -
-        {{ endDate?.toLocaleDateString(locale, formatEndDate) }}
+        {{ endDate! | translocoDate: { dateStyle: "long" } }}
         {{ 'profile.from' | transloco }}
-        {{ getHourMinute(startDate) }}
+        {{ startDate | translocoDate: { timeStyle: "short" } }}
         {{ 'profile.to' | transloco }}
-        {{ getHourMinute(endDate!) }}
+        {{ endDate! | translocoDate: { timeStyle: "short" } }}
       </span>
     </div>
 
@@ -34,13 +34,13 @@
     @case (EventDateStatus.withBothAndDifferentMonth) {
     <div class="mb-1">
       <span>
-        {{ startDate.toLocaleDateString(locale, formatStartDate) }}
+        {{ startDate | translocoDate: { dateStyle: "long" } }}
         {{ 'profile.to' | transloco }}
-        {{ getHourMinute(startDate) }}
+        {{ startDate | translocoDate: { timeStyle: "short" } }}
         {{ 'profile.until' | transloco}}
-        {{ endDate?.toLocaleDateString(locale, formatEndDate) }}
+        {{ endDate! | translocoDate: { dateStyle: "long" } }}
         {{ 'profile.to' | transloco}}
-        {{ getHourMinute(endDate!) }}
+        {{ endDate! | translocoDate: { timeStyle: "short" } }}
       </span>
     </div>
     }

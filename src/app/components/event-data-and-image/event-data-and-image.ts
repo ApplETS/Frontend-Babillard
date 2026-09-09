@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { Component, inject, Input } from '@angular/core';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDatePipe } from '@jsverse/transloco-locale';
 
 @Component({
   selector: 'app-event-data-and-image',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, TranslocoDatePipe],
   templateUrl: './event-data-and-image.html',
 })
 export class EventDataAndImage {
@@ -12,7 +13,8 @@ export class EventDataAndImage {
   @Input({ required: true }) imageUrl: string | null = null;
   @Input({ required: true }) imageAlt: string | null = null;
   protected readonly EventDateStatus = EventDateStatus;
-  readonly locale = "fr-CA";
+  translocoService = inject(TranslocoService);
+
   get startDate(): Date {
     return new Date(this.eventStartDate);
   }
@@ -33,55 +35,6 @@ export class EventDataAndImage {
     } else {
       return EventDateStatus.withBothAndSameMonth;
     }
-  }
-
-  get formatStartDate(): Intl.DateTimeFormatOptions {
-    switch (this.eventDateStatus) {
-      case EventDateStatus.onlyStartDate:
-        return {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-        };
-      case EventDateStatus.withBothAndSameDay:
-      case EventDateStatus.withBothAndDifferentMonth:
-        return {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        };
-      case EventDateStatus.withBothAndSameMonth:
-        return {
-          day: 'numeric',
-        };
-    }
-  }
-
-  get formatEndDate(): Intl.DateTimeFormatOptions {
-    switch (this.eventDateStatus) {
-      case EventDateStatus.withBothAndSameDay:
-        return {
-          hour: 'numeric',
-        }
-      case EventDateStatus.withBothAndSameMonth:
-      case EventDateStatus.withBothAndDifferentMonth:
-        return {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        };
-      case EventDateStatus.onlyStartDate:
-        return {};
-    }
-  }
-
-  getHourMinute(date: Date): string {
-    return date.toLocaleTimeString(this.locale, {
-      hour: 'numeric',
-      minute: 'numeric',
-    });
   }
 }
 
