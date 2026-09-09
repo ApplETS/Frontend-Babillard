@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, model, Output, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, model, Output, WritableSignal } from '@angular/core';
 import { TimeGridType, CalendarAction } from '@components/calendar/calendar';
 import { DropDownSelectComponent } from '@components/drop-down-select.component/drop-down-select.component';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faChevronLeft, faChevronRight, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoDatePipe } from '@jsverse/transloco-locale';
 import { ActivityAreaDisplay } from '@services/activityAreaService/activity-area.service';
 
 @Component({
   selector: 'app-calendar-header',
-  imports: [FaIconComponent, DropDownSelectComponent, CommonModule],
+  imports: [FaIconComponent, DropDownSelectComponent, CommonModule, TranslocoPipe],
   templateUrl: './calendar-header.html',
 })
 export class CalendarHeader {
@@ -22,6 +24,7 @@ export class CalendarHeader {
   @Input({required: true}) currentDate!: moment.Moment;
   activityAreas = model<ActivityAreaDisplay[] | null>(null);
   @Output() calendarChanged = new EventEmitter<CalendarAction>();
+  translationService = inject(TranslocoDatePipe);
 
   handleDateChange(action: CalendarAction): void {
     this.calendarChanged.emit(action);
@@ -36,6 +39,7 @@ export class CalendarHeader {
     switch (this.viewType()) {
       case TimeGridType.month:
         return this.currentDate.format("MMMM YYYY");
+        
       case TimeGridType.week:
         const startOfWeek = this.currentDate.clone().startOf('week').format("D MMM");
         const endOfWeek = this.currentDate.clone().endOf('week').format("D MMM YYYY");

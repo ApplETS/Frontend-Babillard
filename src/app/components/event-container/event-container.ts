@@ -19,5 +19,4 @@ export class EventContainer {
   protected readonly xmarkIcon = faXmark;
 
   expandViewExtra = signal(false);
-
 }
