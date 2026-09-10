@@ -1,0 +1,52 @@
+<div class="mx-4 my-2">
+  <div class="text-sm font-normal">
+    @switch (eventDateStatus) {
+    @case (EventDateStatus.onlyStartDate) {
+    <p>
+      {{ startDate | translocoDate: { dateStyle: "long", timeStyle: "short" } }}
+    </p>
+    }
+    @case (EventDateStatus.withBothAndSameDay) {
+    <div class="mb-1">
+      <span>
+        {{ startDate | translocoDate: { dateStyle: "long" } }}
+        {{"profile.from" | transloco}}
+        {{ startDate | translocoDate: { timeStyle: "short" } }}
+        {{ "profile.to" | transloco }}
+        {{ endDate! | translocoDate: { timeStyle: "short" } }}
+      </span>
+    </div>
+    }
+    @case (EventDateStatus.withBothAndSameMonth) {
+    <div class="mb-1">
+      <span>
+        {{ startDate | translocoDate: { month: "long", day: "numeric" } }}
+        -
+        {{ endDate! | translocoDate: { dateStyle: "long" } }}
+        {{ 'profile.from' | transloco }}
+        {{ startDate | translocoDate: { timeStyle: "short" } }}
+        {{ 'profile.to' | transloco }}
+        {{ endDate! | translocoDate: { timeStyle: "short" } }}
+      </span>
+    </div>
+
+    }
+    @case (EventDateStatus.withBothAndDifferentMonth) {
+    <div class="mb-1">
+      <span>
+        {{ startDate | translocoDate: { dateStyle: "long" } }}
+        {{ 'profile.to' | transloco }}
+        {{ startDate | translocoDate: { timeStyle: "short" } }}
+        {{ 'profile.until' | transloco}}
+        {{ endDate! | translocoDate: { dateStyle: "long" } }}
+        {{ 'profile.to' | transloco}}
+        {{ endDate! | translocoDate: { timeStyle: "short" } }}
+      </span>
+    </div>
+    }
+    }
+  </div>
+</div>
+<div class="w-full aspect-[2/1] bg-base-300">
+  <img [src]="imageUrl" [alt]="imageAlt ?? ''" class="w-full h-full object-cover" />
+</div>

@@ -15,6 +15,7 @@ import {
   DefaultLocalStorageService,
   provideAuth
 } from 'angular-auth-oidc-client';
+import { provideMarkdown } from 'ngx-markdown';
 
 
 export const appConfig: ApplicationConfig = {
@@ -36,15 +37,14 @@ export const appConfig: ApplicationConfig = {
         useValue: localStorage,
       },
     }),
-
     provideTranslocoPersistTranslations({
       loader: TranslocoHttpLoader, // Auto-generated via ng add
       storage: { useValue: localStorage },
     }),
     provideTranslocoLocale(),
-
     provideRouter(routes),
     provideAuth(authConfig),
     { provide: AbstractSecurityStorage, useClass: DefaultLocalStorageService },
+    provideMarkdown()
   ],
 };

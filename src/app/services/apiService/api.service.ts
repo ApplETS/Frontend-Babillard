@@ -1,29 +1,56 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '@environments/environment.development';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { UserResponseDTO } from '../../../models/userResponseDTO.interface';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { KeyValue } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Api {
-  private apiUrl = environment.API_URL;
-  private httpCLient = inject(HttpClient);
+export abstract class ApiService {
+  protected abstract apiController: string;
+  private readonly httpService = inject(HttpClient);
+  protected readonly oidcSecurityService = inject(OidcSecurityService);
 
-  public async getUserInfo(accessToken: string | undefined) {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
-    });
-    try {
-      const res = await lastValueFrom(
-        this.httpCLient.get<{data: UserResponseDTO, error: any}>(`${this.apiUrl}/me`, { headers }),
-      );
-      console.log('Profil récupéré du backend:', res.data);
-      return res.data;
-    } catch (error) {
-      console.error('API.TS: Erreur lors de la récupération du profil:', error);
-      throw error;
-    }
+  protected getActionUrl(action: string): string {
+    return `${environment.API_URL}/api/${this.apiController}/${action}`;
   }
+
+  /**
+   * Fetches data from the API via the GET method and adds the access token to the request headers if the user is authenticated.
+   * @template T Type of the data to be returned
+   * @param action The endpoint's action to call
+   * @param routeParameters Parameters to add to the endpoint path
+   * @param queryParameters Parameters to add to the endpoint as query parameters
+   * @returns T type result from the API
+   */
+  protected async get<T>(action: string, routeParameters: unknown[] = [], queryParameters: HttpParams = new HttpParams()): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+    }
+
+    action += routeParameters.join("/");
+    const headers = new HttpHeaders({});
+
+    if (this.oidcSecurityService.authenticated().isAuthenticated) {
+      const accessToken = this.oidcSecurityService.getAccessToken();
+      headers.set('Authorization', `Bearer ${accessToken}`);
+    }
+
+    return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters, headers: headers }));
+  }
+}
+
+/**
+ * Represents a paginated response from the API.
+ * @template T Type of the data in the paginated response
+ * @property {T[]} data The data returned from the API
+ */
+export interface PaginatedResponse<T> {
+  data: T[];
+  pageSize: number;
+  totalRecords: number;
+  totalPages: number;
+  error: string | null;
 }

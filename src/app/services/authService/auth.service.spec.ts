@@ -1,26 +1,27 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Api } from '../apiService/api.service';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { environment } from '@environments/environment';
 
 describe('AuthService', () => {
   let service: AuthService;
   let oidcSpy: any;
-  let apiSpy: any;
   let routerSpy: any;
+  let mockHttp: HttpTestingController;
 
   beforeEach(() => {
     oidcSpy = {
       checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
+      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
+      getAccessToken: vi.fn().mockReturnValue('mock-token'),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
       userData$: of({ name: 'Test User' })
-    };
-    apiSpy = {
-      getUserInfo: vi.fn().mockResolvedValue({})
     };
     routerSpy = {};
 
@@ -28,24 +29,70 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         { provide: OidcSecurityService, useValue: oidcSpy },
-        { provide: Api, useValue: apiSpy },
-        { provide: Router, useValue: routerSpy }
+        { provide: Router, useValue: routerSpy },
+        provideHttpClient(),
+        provideHttpClientTesting()
       ],
     });
     service = TestBed.inject(AuthService);
+    mockHttp = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    mockHttp.verify();
   });
 
   it('should initialize authentification', () => {
+    const getUserInfoSpy = vi.spyOn(service, 'getUserInfo').mockResolvedValue(undefined as any);
+
     service.initAuth();
 
     expect(oidcSpy.checkAuth).toHaveBeenCalled();
     expect(service.isAuthenticated()).toBe(true);
     expect(service.accessToken()).toBe('mock-token');
-    expect(apiSpy.getUserInfo).toHaveBeenCalledWith('mock-token');
+    expect(getUserInfoSpy).toHaveBeenCalled();
   });
 
   it('should handle login', () => {
     service.login();
     expect(oidcSpy.authorize).toHaveBeenCalled();
   });
+
+    it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+  describe('getUserInfo', () => {
+
+    it('should return data on success', async () => {
+      const mockResponse = {
+        data: { id: 1, name: 'John Doe' },
+        error: null
+      };
+
+      // Trigger the service method
+      const promise = service.getUserInfo();
+
+      // Expect a GET request to the specific URL
+      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
+      expect(req.request.method).toBe('GET');
+
+      // Provide the mock response
+      req.flush(mockResponse);
+
+      const result = await promise;
+      expect(result).toEqual(mockResponse.data);
+    });
+
+    it('should throw error on failure', async () => {
+      const promise = service.getUserInfo();
+
+      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
+
+      // Simulate a 404 error
+      req.error(new ProgressEvent('Error'), { status: 404, statusText: 'Not Found' });
+
+      await expect(promise).rejects.toThrow();
+    });
+  })
+
 });
