@@ -15,6 +15,6 @@ import { ActivityAreaResponseDTO } from './activityAreaResponseDTO.interface';
  * A common data response to return to the front end. Data or Error should be set but not  at the same time.
  */
 export interface ActivityAreaResponseDTOResponse {
-    data?: ActivityAreaResponseDTO;
+    data?: ActivityAreaResponseDTO[];
     error?: ActivityAreaResponseDTO;
 }

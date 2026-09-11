@@ -13,7 +13,14 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "@services/*": ["./src/app/services/*"],
+      "@environments/*": ["./src/environments/*"],
+      "@models/*": ["./src/models/*"],
+      "@components/*": ["./src/app/components/*"],
+      "@routed-components/*": ["./src/app/routed-components/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -29,5 +36,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ]
+  ],
 }
