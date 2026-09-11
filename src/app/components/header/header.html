@@ -1,5 +1,9 @@
 <div class="navbar w-full bg-base-300">
-  <div class="flex-1 ml-5 gap-3"></div>
+  <div class="flex-1 ml-5 gap-3">
+    @for (route of routes(); track $index) {
+
+    }
+  </div>
   <div class="flex-none gap-2 inline-flex items-center">
     <app-lang-switcher />
     <app-theme-switcher />
@@ -8,7 +12,7 @@
       <button type="button" class="btn btn-ghost">
         <div class="text-base mr-1">{{'dashboard.login' | transloco }}</div>
         <div class="avatar rounded-full bg-base-100">
-          <fa-icon [icon]="signIn" size="xl"></fa-icon>
+          <fa-icon [icon]="signIn" size="xl" />
         </div>
       </button>
     </div>
