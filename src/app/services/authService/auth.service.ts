@@ -16,6 +16,7 @@ export class AuthService extends ApiService {
   public isAuthenticated = signal<boolean>(false);
   public accessToken = signal<string | undefined>(undefined);
   public userData$ = this.oidcSecurityService.userData$;
+  public userInfo = signal<UserResponseDTO | undefined>(undefined);
 
   public initAuth() {
     this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
@@ -26,7 +27,7 @@ export class AuthService extends ApiService {
       this.accessToken.set(accessToken);
 
       if (isAuthenticated && accessToken) {
-        this.getUserInfo().then();
+        this.getUserInfo();
       }
     });
   }
@@ -47,6 +48,7 @@ export class AuthService extends ApiService {
       const res = await 
         this.get<{data: UserResponseDTO, error: any}>(this.getActionUrl(""));
       console.log('Profil récupéré du backend:', res.data);
+      this.userInfo.set(res.data);
       return res.data;
     } catch (error) {
       console.error('auth.service.ts: Erreur lors de la récupération du profil:', error);

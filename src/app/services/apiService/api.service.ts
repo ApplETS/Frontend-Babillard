@@ -31,11 +31,11 @@ export abstract class ApiService {
     }
 
     action += routeParameters.join("/");
-    const headers = new HttpHeaders({});
+    let headers = new HttpHeaders({});
 
     if (this.oidcSecurityService.authenticated().isAuthenticated) {
-      const accessToken = this.oidcSecurityService.getAccessToken();
-      headers.set('Authorization', `Bearer ${accessToken}`);
+      const accessToken = await lastValueFrom(this.oidcSecurityService.getAccessToken());
+      headers = headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
     return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters, headers: headers }));
