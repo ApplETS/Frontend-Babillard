@@ -1,5 +1,5 @@
 <nav class="navbar w-full bg-base-300">
-  <div class="flex-1 ml-5 gap-3">
+  <div class="flex flex-1 ml-5 gap-3">
     @for (route of routes(); track $index) {
     <a [routerLink]="route.route" class="btn" [class.btn-ghost]="!route.activeRoute()"
       [class.btn-primary]="route.activeRoute()">
@@ -26,7 +26,7 @@
         @if (authService.userInfo(); as user) {
         <div class="avatar">
           <div class="w-24 rounded-full">
-            <img [src]="profilePicture()" alt="Profile picture" fill />
+            <img [src]="profilePicture()" alt="Profile picture" />
           </div>
         </div>
         }

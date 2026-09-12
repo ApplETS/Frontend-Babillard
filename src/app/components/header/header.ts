@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit {
       ];
     } else {
       const routesPart = [
-        { route: "/", label: "dashboard.news", activeRoute: isActive("/login", this.router) },
+        { route: "/", label: "dashboard.news", activeRoute: isActive("/dashboard/news", this.router) },
         { route: "/posts", label: "navbar.publication", activeRoute: isActive("/posts", this.router) },
       ];
 
