@@ -8,6 +8,7 @@ import { ActivatedRoute, isActive, Router, RouterLink } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { AuthService } from '@services/authService/auth.service';
 import { UserType } from '@models/user-types';
+import { ImgWithPlaceholder } from '@components/img-with-placeholder/img-with-placeholder';
 
 type RouteInfo = {
   route: string;
@@ -17,7 +18,7 @@ type RouteInfo = {
 
 @Component({
   selector: 'app-header',
-  imports: [ThemeSwitcher, FaIconComponent, LangSwitcher, TranslocoPipe, RouterLink],
+  imports: [ThemeSwitcher, FaIconComponent, LangSwitcher, TranslocoPipe, RouterLink, ImgWithPlaceholder],
   templateUrl: './header.html',
 })
 export class HeaderComponent implements OnInit {

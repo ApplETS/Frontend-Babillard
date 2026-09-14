@@ -26,7 +26,7 @@
         @if (authService.userInfo(); as user) {
         <div class="avatar">
           <div class="w-24 rounded-full">
-            <img [src]="profilePicture()" alt="Profile picture" />
+            <app-img-with-placeholder [src]="profilePicture()" alt="Profile picture" placeholder="/assets/profile_placeholder.png" />
           </div>
         </div>
         }
