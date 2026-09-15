@@ -30,7 +30,12 @@ export abstract class ApiService {
       action += "/";
     }
 
-    action += routeParameters.join("/");
+    console.log("Route parameters:", routeParameters.join("/"));
+    
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+    console.log(action);
     let headers = new HttpHeaders({});
 
     if (this.oidcSecurityService.authenticated().isAuthenticated) {
