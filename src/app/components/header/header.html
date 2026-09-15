@@ -21,7 +21,42 @@
       </button>
     </div>
     } @else {
-    <details>
+      <div class="dropdown dropdown-end mr-5">
+					<button tabindex="0" role="button" class="btn btn-ghost">
+							<div class="text-base mr-1">{{organization()}}</div>
+              <app-avatar [user]="authService.userInfo()!" />
+					</button>
+          <ul tabindex="-1" class="dropdown-content dropdown-z menu p-2 shadow bg-base-300 rounded-box w-max">
+            <li class="pointer-events-none">
+              <div class="flex flex-row pl-2">
+                <app-avatar [user]="authService.userInfo()!" />
+                <div class="flex flex-col gap-1">
+                  <p class="text-base font-bold ml-0">{{ organization() }}</p>
+                  <p class="text-xs ml-0 text-secondary">
+                    {{ area() }}                    
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="flex flex-row gap-2">
+                <a [routerLink]="['/', 'fr', 'dashboard', 'settings', 'profile']" >
+                  <fa-icon [icon]="gear" class="pr-2" />
+                  {{ "navbar.settings" | transloco }}
+                </a>
+              </div>
+            </li>
+            <div class="divider my-0"></div>
+            <li>
+                <button type="button" class="flex flex-row gap-2" (click)="authService.logout()">
+                  <fa-icon [icon]="signOut" class="pt-1" />
+                  {{ "navbar.logout" | transloco }}
+                </button>
+            </li>
+          </ul>
+  			</div>
+
+    <!-- <details>
       <summary>
         @if (authService.userInfo(); as user) {
         <div class="avatar">
@@ -35,7 +70,7 @@
         <li><a>{{'navbar.profile' | transloco}}</a></li>
         <li><button (click)="authService.logout()">{{'navbar.logout' | transloco}}</button></li>
       </ul>
-    </details>
+    </details> -->
     }
   </div>
 </nav>
