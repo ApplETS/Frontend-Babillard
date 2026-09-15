@@ -102,6 +102,20 @@ describe('Header', () => {
     expect(routes.some(route => route.route === "/approval")).toBe(true);
   });
 
+  it('show show Moderator routes, User with multiple roles', () => {
+    authService.isAuthenticated.set(true);
+    authService.userInfo.set({ type: [UserType.MODERATOR, UserType.ORGANIZER].join(',') });
+    console.log(authService.userInfo());
+
+    fixture.detectChanges();
+
+    const routes = component.routes();
+    console.log(routes);
+
+    expect(routes.length).toBe(3);
+    expect(routes.some(route => route.route === "/approval")).toBe(true);
+  })
+
   afterEach(() => {
     authService.isAuthenticated.set(false);
     authService.userInfo.set(undefined);

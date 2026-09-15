@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit {
         { route: "/posts", label: "navbar.publication", activeRoute: isActive("/posts", this.router) },
       ];
 
-      if (this.authService.userInfo()?.type === UserType.MODERATOR) {
+      if (this.authService.userInfo()?.type?.match(UserType.MODERATOR)) {
         routesPart.push({ route: "/approval", label: "navbar.approval", activeRoute: isActive("/approval", this.router) })
       }
       return routesPart;
