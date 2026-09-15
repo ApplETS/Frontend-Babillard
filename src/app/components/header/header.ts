@@ -20,7 +20,7 @@ type RouteInfo = {
 
 @Component({
   selector: 'app-header',
-  imports: [ThemeSwitcher, FaIconComponent, LangSwitcher, TranslocoPipe, RouterLink, ImgWithPlaceholder, Avatar],
+  imports: [ThemeSwitcher, FaIconComponent, LangSwitcher, TranslocoPipe, RouterLink, Avatar],
   templateUrl: './header.html',
 })
 export class HeaderComponent implements OnInit {

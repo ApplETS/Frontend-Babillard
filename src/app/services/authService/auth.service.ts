@@ -1,9 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { ApiService } from '@services/apiService/api.service';
-import { Router } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
 import { UserResponseDTO } from '@models/userResponseDTO.interface';
 
 @Injectable({
@@ -11,11 +7,9 @@ import { UserResponseDTO } from '@models/userResponseDTO.interface';
 })
 export class AuthService extends ApiService {
   protected override apiController: string = "me";
-  private router = inject(Router);
 
   public isAuthenticated = signal<boolean>(false);
   public accessToken = signal<string | undefined>(undefined);
-  public userData$ = this.oidcSecurityService.userData$;
   public userInfo = signal<UserResponseDTO | undefined>(undefined);
 
   public initAuth() {
