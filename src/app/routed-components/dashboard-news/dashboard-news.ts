@@ -7,6 +7,8 @@ import { EventsService } from '@services/dashboard.service/events.service';
 import { ActivityAreaDisplay, ActivityAreaService } from '@services/activityAreaService/activity-area.service';
 import { PaginatedResponse } from '@services/apiService/api.service';
 import { Event } from '@models/event';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { skip } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-news',
@@ -26,7 +28,7 @@ export class DashboardNews implements OnInit {
   selectedAreas = computed(() => this.activityAreas()?.filter(area => area.selected).map(a => a.id) ?? []);
 
   constructor() {
-    effect(async () => {
+    toObservable(this.selectedAreas).pipe(skip(1)).subscribe(async (selectedAreas) => {
       this.reloading.set(true);
       if (this.selectedAreas().length > 0) {
         this.events.set(await this.eventService.getEvents(this.selectedAreas()));
