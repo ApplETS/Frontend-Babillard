@@ -18,7 +18,7 @@ describe('EventService', () => {
     oidcSpy = {
       checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
       authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue('mock-token'),
+      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
       userData$: of({ name: 'Test User' })
@@ -44,6 +44,7 @@ describe('EventService', () => {
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000`;
    
     const response = service.getEvents([]);
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 
@@ -68,6 +69,7 @@ describe('EventService', () => {
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000&activityAreas=tag1`;
 
     const response = service.getEvents(activityAreas);
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 
@@ -92,6 +94,7 @@ describe('EventService', () => {
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000&activityAreas=tag1&activityAreas=tag2`;
 
     const response = service.getEvents(activityAreas);
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 

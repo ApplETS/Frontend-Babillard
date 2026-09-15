@@ -33,7 +33,7 @@ describe('ApiService', () => {
     oidcSpy = {
       checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
       authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue('mock-token'),
+      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
       userData$: of({ name: 'Test User' })
@@ -73,6 +73,9 @@ describe('ApiService', () => {
     const queryParameters = new HttpParams().set('key', 'value');
     const expectedUrl = `${environment.API_URL}/api/test/${action}/${routeParameters.join("/")}`;
     const responsePromise = service.get<string>(service.getActionUrl(action), routeParameters, queryParameters);
+
+    // get() is async (it awaits the access token before firing the HTTP call), so let pending microtasks resolve first.
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     const req = httpServiceSpy.expectOne((request) => {
       return request.method === 'GET' && request.url === expectedUrl && request.params.get('key') === 'value';

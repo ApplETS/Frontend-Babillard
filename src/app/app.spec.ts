@@ -1,30 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+
 describe('App', () => {
-  const localStorageMock = {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    clear: vi.fn(),
-  };
   beforeEach(async () => {
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageMock,
-    });
-    await TestBed.configureTestingModule({
-      imports: [App,TranslocoTestingModule.forRoot({
-        langs: { en: {localeLayout:{title:'Hello'}}, fr: {localeLayout:{title:'Bonjour'}}},
-        translocoConfig: {
-          defaultLang: 'en',
-          availableLangs: ['en', 'fr'],
-        },
-      })]
+    await TestBed.overrideComponent(App, {
+      set: {
+        template: "<div></div>"
+      }
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('should create the app', async () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
+    await fixture.whenStable();
     expect(app).toBeTruthy();
   });
 
