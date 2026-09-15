@@ -28,7 +28,7 @@ export class DashboardNews implements OnInit {
   selectedAreas = computed(() => this.activityAreas()?.filter(area => area.selected).map(a => a.id) ?? []);
 
   constructor() {
-    toObservable(this.selectedAreas).pipe(skip(1)).subscribe(async (selectedAreas) => {
+    toObservable(this.selectedAreas).subscribe(async (selectedAreas) => {
       this.reloading.set(true);
       if (this.selectedAreas().length > 0) {
         this.events.set(await this.eventService.getEvents(this.selectedAreas()));
