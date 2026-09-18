@@ -20,7 +20,7 @@ export interface UserResponseDTO {
     type?: string;
     organization?: string;
     activityArea?: ActivityAreaResponseDTO;
-    fieldsOfInterests?: Array<FieldOfInterestTagResponseDTO>;
+    fieldsOfInterests?: FieldOfInterestTagResponseDTO[];
     isActive?: boolean;
     hasLoggedIn?: boolean;
     profileDescription?: string;

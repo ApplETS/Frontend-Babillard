@@ -7,7 +7,6 @@ import { environment } from '@environments/environment';
 import { of } from 'rxjs';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { TranslocoService } from '@jsverse/transloco';
-import { computed } from '@angular/core';
 
 describe('ActivityAreaService', () => {
   let service: ActivityAreaService;
@@ -19,7 +18,7 @@ describe('ActivityAreaService', () => {
     oidcSpy = {
       checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
       authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue('mock-token'),
+      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
       userData$: of({ name: 'Test User' })
@@ -49,6 +48,7 @@ describe('ActivityAreaService', () => {
     const expectedPath = `${environment.API_URL}/api/activity-areas/`;
 
     const response = service.getActivityAreas();
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 
@@ -66,6 +66,7 @@ describe('ActivityAreaService', () => {
     const expectedPath = `${environment.API_URL}/api/activity-areas/`;
 
     const response = service.getActivityAreas();
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 
@@ -84,6 +85,7 @@ describe('ActivityAreaService', () => {
     const expectedPath = `${environment.API_URL}/api/activity-areas/?search=term`;
 
     const response = service.getActivityAreas("term");
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne({
       url: expectedPath,
       method: 'GET'
@@ -105,6 +107,7 @@ describe('ActivityAreaService', () => {
     translocoSpy.getActiveLang.mockReturnValue('fr');
 
     const response = service.getActivityAreas();
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 
@@ -134,6 +137,7 @@ describe('ActivityAreaService', () => {
     translocoSpy.getActiveLang.mockReturnValue('en');
 
     const response = service.getActivityAreas();
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 
@@ -163,6 +167,7 @@ describe('ActivityAreaService', () => {
     translocoSpy.getActiveLang.mockReturnValue('es'); // Spanish, which is not available
     
     const response = service.getActivityAreas();
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
     expect(request.request.method).toBe('GET');
 

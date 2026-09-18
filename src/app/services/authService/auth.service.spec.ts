@@ -18,7 +18,7 @@ describe('AuthService', () => {
     oidcSpy = {
       checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
       authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue('mock-token'),
+      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
       userData$: of({ name: 'Test User' })
@@ -71,6 +71,7 @@ describe('AuthService', () => {
 
       // Trigger the service method
       const promise = service.getUserInfo();
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       // Expect a GET request to the specific URL
       const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
@@ -85,6 +86,7 @@ describe('AuthService', () => {
 
     it('should throw error on failure', async () => {
       const promise = service.getUserInfo();
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
 

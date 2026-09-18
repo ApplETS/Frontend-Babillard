@@ -30,12 +30,17 @@ export abstract class ApiService {
       action += "/";
     }
 
-    action += routeParameters.join("/");
-    const headers = new HttpHeaders({});
+    console.log("Route parameters:", routeParameters.join("/"));
+    
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+    console.log(action);
+    let headers = new HttpHeaders({});
 
     if (this.oidcSecurityService.authenticated().isAuthenticated) {
-      const accessToken = this.oidcSecurityService.getAccessToken();
-      headers.set('Authorization', `Bearer ${accessToken}`);
+      const accessToken = await lastValueFrom(this.oidcSecurityService.getAccessToken());
+      headers = headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
     return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters, headers: headers }));

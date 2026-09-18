@@ -1,6 +1,8 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { User } from '@models/user';
 import { UserType } from '@models/user-types';
+import { UserResponseDTO } from '@models/userResponseDTO.interface';
+import { ThemeService } from '@services/themeService/theme.service';
 
 @Component({
   selector: 'app-avatar',
@@ -11,9 +13,10 @@ export class Avatar {
   @Input() size: string = "w-10 h-10";
   @Input() textSize: string = "text-lg";
   @Input() color: string = "bg-base-100";
-  @Input() user: User | null = null;
+  @Input() user: User | UserResponseDTO | null = null;
 
-  isLightTheme = true;
+  themeService = inject(ThemeService);
+
   loading = signal(true);
   usePlaceholder = signal(false);
   readonly now = new Date();
