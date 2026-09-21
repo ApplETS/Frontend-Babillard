@@ -42,8 +42,13 @@ export class HeaderComponent implements OnInit {
     } else {
       const routesPart = [
         { route: "/", label: "dashboard.news", activeRoute: isActive("/dashboard/news", this.router) },
-        { route: "/posts", label: "navbar.publication", activeRoute: isActive("/posts", this.router) },
       ];
+
+      if (this.authService.userInfo()?.type?.match(UserType.ORGANIZER)) {
+        routesPart.push(
+          { route: "/posts", label: "navbar.publication", activeRoute: isActive("/posts", this.router) },
+        )
+      }
 
       if (this.authService.userInfo()?.type?.match(UserType.MODERATOR)) {
         routesPart.push({ route: "/approval", label: "navbar.approval", activeRoute: isActive("/approval", this.router) })

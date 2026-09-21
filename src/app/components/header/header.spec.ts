@@ -83,11 +83,9 @@ describe('Header', () => {
     fixture.detectChanges();
 
     const routes = component.routes();
-    console.log(routes);
 
-    expect(routes.length).toBe(2);
+    expect(routes.length).toBe(1);
     expect(routes[0].route).toBe("/");
-    expect(routes[1].route).toBe("/posts");
   });
 
   it('should show Moderator routes', () => {
@@ -96,16 +94,14 @@ describe('Header', () => {
     fixture.detectChanges();
 
     const routes = component.routes();
-    console.log(routes);
 
-    expect(routes.length).toBe(3);
+    expect(routes.length).toBe(2);
     expect(routes.some(route => route.route === "/approval")).toBe(true);
   });
 
-  it('show show Moderator routes, User with multiple roles', () => {
+  it('should show Moderator routes, User with multiple roles', () => {
     authService.isAuthenticated.set(true);
     authService.userInfo.set({ type: [UserType.MODERATOR, UserType.ORGANIZER].join(',') });
-    console.log(authService.userInfo());
 
     fixture.detectChanges();
 
@@ -114,7 +110,18 @@ describe('Header', () => {
 
     expect(routes.length).toBe(3);
     expect(routes.some(route => route.route === "/approval")).toBe(true);
-  })
+  });
+
+  it('should show Organizer routes', () => {
+    authService.isAuthenticated.set(true);
+    authService.userInfo.set({ type: UserType.ORGANIZER });
+    fixture.detectChanges();
+
+    const routes = component.routes();
+
+    expect(routes.length).toBe(2);
+    expect(routes.some(route => route.route === "/posts")).toBe(true);
+  }); 
 
   afterEach(() => {
     authService.isAuthenticated.set(false);
