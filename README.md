@@ -7,10 +7,20 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 To start a local development server, run:
 
 ```bash
-ng serve
+ng s --port 8080 --ssl
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Once the server is running, open your browser and navigate to `https://localhost:8080/`. The application will automatically reload whenever you modify any of the source files.
+
+## Production server
+
+To start a local production server, run:
+
+```bash
+docker compose --env-file ./.env up
+```
+
+The production server will be available at `http://localhost:8080`. More details will follow later about production environment.
 
 ## Code scaffolding
 
