@@ -4,20 +4,223 @@
 @plugin 'daisyui' {
   themes: light --default, dark ;
 }
-
-@theme light {
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-blue: #06b6d4;
+  --color-lightblue: #87cefa;
+  --color-purple: #ab7cdb;
+  --color-lilac: #b794f4;
+  --color-green: #64c788;
+  --color-pink: #ea7cb7;
+  --color-orange: #e7a455;
+  --color-yellow: #ecc94b;
+  --color-teal: #38b2ac;
+  --color-red: #ff1f3c;
   --color-gray-700: #424242;
   --color-gray-900: #303030;
+  --color-btn-background: hsl(var(--btn-background));
+  --color-btn-background-hover: hsl(var(--btn-background-hover));
+}
+:root,[data-theme="light"] {
+  --background: 200 20% 98%;
+  --btn-background: 200 10% 91%;
+  --btn-background-hover: 200 10% 89%;
+  --foreground: 200 50% 3%;
   --color-base-content: #181A2A;
+  --color-secondary-content: #BABABA;
+  --color-base-100: #FFFFFF;
+  --color-base-200: #EEEEEE;
+  --color-base-300: #D1D1D1;
+  --color-base-400: #BABABA;
+  --color-primary: #4D6EFF;
+  --color-accent: #08A493;
+  --color-success: #00AA6E;
+  --color-error: #FF5861;
+  --color-warning: #EAB308;
+  --color-info: #00AAFF;
+  --color-secondary: #646464;
+  --fc-today-bg-color: #9A9EA2;
+  --fc-border-color: #D1D1D1;
+  .btn-ghost {
+    color: #181A2A;
+  }
+  .btn-primary {
+    color: #FFFFFF;
+  }
+  .input-bordered {
+    border-color: #181A2A;
+  }
 }
-
-@theme dark {
+[data-theme="dark"] {
+  --background: 200 50% 3%;
+  --btn-background: 200 10% 9%;
+  --btn-background-hover: 200 10% 12%;
+  --foreground: 200 20% 96%;
   --color-base-content: #DCDCDC;
+  --color-secondary-content: #BABABA;
+  --color-base-100: #1D232A;
+  --color-base-200: #252c35;
+  --color-base-300: #15191E;
+  --color-base-400: #0E1014;
+  --color-primary: #747FFF;
+  --color-accent: #00CDB7;
+  --color-success: #62EFBD;
+  --color-error: #FF5861;
+  --color-warning: #EAB308;
+  --color-info: #00AAFF;
+  --color-secondary: #9CA3AF;
+  --fc-today-bg-color: #15191E;
+  --fc-border-color: #252C35;
+  .btn-ghost {
+    color:#DCDCDC;
+  }
+  .btn-primary {
+    color:#15191E;
+  }
+}
+/*Les classes qui étaient originalement dans global.css*/
+/*Orignalement markdown-style.module.css */
+markdown a {
+  color: #0070f3;
+  text-decoration: none;
+  border-bottom: 1px solid #0070f3;
+  transition: border-bottom 0.1s ease;
+}
+/* FullCalendar */
+.fc-day {
+  height: 15%;
+  overflow-y: auto;
 }
 
-markdown a {
-    color: #0070f3;
-    text-decoration: none;
-    border-bottom: 1px solid #0070f3;
-    transition: border-bottom 0.1s ease;
+.fc-daygrid-day-events {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.fc-daygrid-event-harness {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.fc-h-event .fc-event-main-frame {
+  display: block;
+}
+
+.fc .fc-scrollgrid {
+  border: transparent !important;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: none;
+}
+
+.fc-theme-standard td[role='gridcell'],
+.fc-theme-standard th[role='columnheader'] {
+  border: 1px solid var(--fc-border-color);
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: var(--fc-today-bg-color);
+}
+
+.fc-daygrid-day-number {
+  color: var(--color-base-content);
+}
+
+.fc .fc-daygrid-day {
+  overflow: visible;
+}
+
+.fc-event .fc-event-main,
+.fc .fc-daygrid-event {
+  z-index: unset;
+}
+
+.fc-event-main {
+  overflow: hidden;
+  cursor: pointer;
+}
+/* Webkit & utilities */
+/* Default Border Color Utility */
+* {
+  border-color: hsl(var(--foreground) / 0.2);
+}
+/* Webkit */
+::-webkit-scrollbar {
+  width: 6px;
+}
+/* Styles for the horizontal scrollbar track */
+::-webkit-scrollbar {
+  height: 5px;
+}
+
+/* Styles for the horizontal scrollbar thumb (handle) */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Styles for the horizontal scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+::-webkit-scrollbar-corner {
+  display: none;
+}
+@utility no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+/* Animation */
+@keyframes animateIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes animateOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.animate-in {
+  animation: animateIn 0.3s ease 0.15s both;
+}
+
+.animate-out {
+  animation: animateOut 0.3s ease 0.15s both;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-500px);
+  }
+}
+
+.marquee {
+  display: inline-block;
+  transition: transform 10s linear;
+}
+
+.marquee:hover {
+  animation: marquee 10s linear infinite;
 }
