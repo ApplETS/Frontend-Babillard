@@ -5,7 +5,7 @@
 	},
 	"dashboard": {
 		"news": "Annonces",
-		"publications": "Publications",
+		"posts": "Publications",
 		"approbations": "Approbations",
 		"login": "Se connecter",
 		"accounts": "Comptes"
@@ -91,12 +91,12 @@
 		"view-profile": "Voir le profil",
 		"no-events-message": "Aucune publication trouvée"
 	},
-	"publications": {
+	"post": {
 		"title": "Publications",
 		"search": "Rechercher",
 		"create-new-post": "Créer une publication",
-		"no-publications": "Aucune publication",
-		"no-posts": "Aucune publication trouvée",
+		"no-post": "Aucune publication",
+		"no-post-found": "Aucune publication trouvée",
 		"required-fields": "Champs requis",
 		"table": {
 			"title": "Titre",
@@ -183,7 +183,7 @@
 	"approbations": {
 		"title": "Approbations",
 		"search": "Rechercher",
-		"no-publications": "Aucune publication",
+		"no-post": "Aucune publication",
 		"activity-area-filters": "Secteur d'activité",
 		"table": {
 			"author": "Auteur",

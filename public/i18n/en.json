@@ -5,7 +5,7 @@
   },
   "dashboard": {
     "news": "News",
-    "publications": "Publications",
+    "posts": "Posts",
     "approbations": "Approbations",
     "login": "Login",
     "accounts": "Accounts"
@@ -15,7 +15,7 @@
     "logout": "Sign out",
     "moderator": "Moderator",
     "news": "News",
-    "publication": "Publication",
+    "post": "Posts",
     "approval": "Approval",
     "profile": "Profile"
   },
@@ -91,12 +91,12 @@
     "view-profile": "View profile",
     "no-events-message": "No events found"
   },
-  "publications": {
-    "title": "Publications",
+  "post": {
+    "title": "Posts",
     "search": "Search",
     "create-new-post": "Create a post",
-    "no-posts": "No posts",
-    "no-publications": "No publications found",
+    "no-post": "No post",
+    "no-post-found": "No post found",
     "required-fields": "Required fields",
     "table": {
       "title": "Title",
@@ -177,14 +177,14 @@
         "zoom-hint": "Use ⌘ + scroll (or ctrl + scroll) to zoom the image"
       }
     },
-    "error-fetching-events": "An error occured while loading the publications",
+    "error-fetching-events": "An error occured while loading the posts",
     "none": "None"
   },
   "approbations": {
     "title": "Approbations",
     "none": "None",
     "search": "Search",
-    "no-publications": "No publications found",
+    "no-post": "No post found",
     "activity-area-filters": "Activity area",
     "table": {
       "author": "Author",
@@ -216,7 +216,7 @@
     "deactivate-question": "Why do you want to deactivate this news?",
     "deactivate": "Deactivate the news",
     "give-reason": "Please give a reason for this action",
-    "error-fetching-events": "An error occured while loading the publications"
+    "error-fetching-events": "An error occured while loading the posts"
   },
   "profile": {
     "notify-me": "Notify me",
