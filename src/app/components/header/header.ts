@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit {
 
       if (this.authService.userInfo()?.type?.match(UserType.ORGANIZER)) {
         routesPart.push(
-          { route: "/posts", label: "navbar.publication", activeRoute: isActive("/posts", this.router) },
+          { route: "/posts", label: "navbar.post", activeRoute: isActive("/posts", this.router) },
         )
       }
 
