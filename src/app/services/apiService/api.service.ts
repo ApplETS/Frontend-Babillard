@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment.development';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { KeyValue } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +9,6 @@ import { KeyValue } from '@angular/common';
 export abstract class ApiService {
   protected abstract apiController: string;
   private readonly httpService = inject(HttpClient);
-  protected readonly oidcSecurityService = inject(OidcSecurityService);
 
   protected getActionUrl(action: string): string {
     return `${environment.API_URL}/api/${this.apiController}/${action}`;
@@ -36,14 +33,8 @@ export abstract class ApiService {
       action += routeParameters.join("/");
     }
     console.log(action);
-    let headers = new HttpHeaders({});
 
-    if (this.oidcSecurityService.authenticated().isAuthenticated) {
-      const accessToken = await lastValueFrom(this.oidcSecurityService.getAccessToken());
-      headers = headers.set('Authorization', `Bearer ${accessToken}`);
-    }
-
-    return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters, headers: headers }));
+    return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters }));
   }
 }
 

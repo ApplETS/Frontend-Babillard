@@ -25,24 +25,13 @@ export class TestApiService extends ApiService{
 }
 
 describe('ApiService', () => {
-  let oidcSpy: any;
   let service: TestApiService;
   let httpServiceSpy: HttpTestingController;
 
   beforeEach(() => {
-    oidcSpy = {
-      checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
-      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
-      authorize: vi.fn(),
-      logoff: vi.fn().mockReturnValue(of({})),
-      userData$: of({ name: 'Test User' })
-    };
-
     TestBed.configureTestingModule({
       providers: [
         TestApiService,
-        { provide: OidcSecurityService, useValue: oidcSpy },
         provideHttpClient(),
         provideHttpClientTesting()
       ],

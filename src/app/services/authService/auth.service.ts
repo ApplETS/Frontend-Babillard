@@ -1,12 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ApiService } from '@services/apiService/api.service';
 import { UserResponseDTO } from '@models/userResponseDTO.interface';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends ApiService {
   protected override apiController: string = "me";
+  oidcSecurityService = inject(OidcSecurityService);
 
   public isAuthenticated = signal<boolean>(false);
   public accessToken = signal<string | undefined>(undefined);
