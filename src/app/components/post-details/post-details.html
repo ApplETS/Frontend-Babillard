@@ -23,16 +23,17 @@
 			<div class="flex mb-3 w-full">
 				<div class="grid grid-cols-3 gap-4 w-full">
 					<div class="col-span-2 mt-4">
-						<div>
-							<label for="title" class="block mb-3" transloco="modal.title">
-								@if (modalMode() !== ModalMode.moderator) {
+						
+							<label for="title" class="block mb-3">
+								<span transloco="modal.title"></span>
+								<!-- @if (modalMode() !== ModalMode.moderator) {
 								<span class="text-red">*</span>
-								}
+								} -->
 								<div [class.border.border-base-content.rounded-lg]="isDisabled()">
-									<input id="title" [formField]="postForm.title" type="text" class="input input-ghost w-full" />
+									<input id="title" [formField]="postForm.title" type="text" class="input input-ghost w-full bg-white cursor-pointer" />
 								</div>
 							</label>
-						</div>
+						
 						<!-- <div class="grid grid-cols-2 gap-4">
 							<div>
 								<div class="mt-3">

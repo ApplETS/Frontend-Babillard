@@ -6,7 +6,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ModalMode } from '@models/modal-mode';
 
 @Component({
-	selector: 'app-preview-details',
+	selector: 'app-post-details',
 	imports: [TranslocoDirective, FaIconComponent, FormField],
 	templateUrl: './post-details.html',
 })
