@@ -4,6 +4,8 @@
 @plugin 'daisyui' {
   themes: light --default, dark ;
 }
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
