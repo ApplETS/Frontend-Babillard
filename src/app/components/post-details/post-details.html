@@ -1,0 +1,275 @@
+<div id="publication_modal" class="overflow-y-auto p-4 w-[80rem] h-[50rem]">
+	<form class="overflow-y-auto max-h-full w-full">
+		<div class="p-5 bg-base-200 max-h-full w-full rounded-2xl overflow-y-auto">
+			<div class="grid grid-cols-2 gap-2"></div>
+			<div class="flex items-center gap-2">
+				<h1 class="text-2xl block" [transloco]="modalTitle()"></h1>
+				@if (modalMode() === ModalMode.modify) {
+				<div class="tooltip tooltip-bottom ml-2" data-tip="t('modal.tool-tip-text')">
+					<button type="button"
+						class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
+						!
+					</button>
+				</div>
+				}
+				@if (!isDisabled()) {
+				<div class="ml-auto">
+					<button type="button" class="btn btn-primary" transloco="modal.preview" (click)="showPreview.set(true)">
+						<fa-icon [icon]="mobileScreenIcon" class="ml-1" />
+					</button>
+				</div>
+				}
+			</div>
+			<div class="flex mb-3 w-full">
+				<div class="grid grid-cols-3 gap-4 w-full">
+					<div class="col-span-2 mt-4">
+						<div>
+							<label for="title" class="block mb-3" transloco="modal.title">
+								@if (modalMode() !== ModalMode.moderator) {
+								<span class="text-red">*</span>
+								}
+								<div [class.border.border-base-content.rounded-lg]="isDisabled()">
+									<input id="title" [formField]="postForm.title" type="text" class="input input-ghost w-full" />
+								</div>
+							</label>
+						</div>
+						<!-- <div class="grid grid-cols-2 gap-4">
+							<div>
+								<div class="mt-3">
+									<label class="block" transloco="modal.published-date">
+										{modalMode !== Constants.publicationModalStatus.moderator &&
+										missingFields.includes(t('modal.published-date')) && (
+										<span style={{ color: 'red' }}>*</span>
+										)}
+									</label>
+									<div class={`${isDisabled ? 'border border-base-content rounded-lg' : '' }`}>
+										<input type="date" value={publishedDate} class="input input-ghost w-full" onChange={(e)=>
+										setPublishedDate(e.target.value)}
+										disabled={isDisabled}
+										min={dayjs().format('YYYY-MM-DD')}
+										/>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div class="z-30">
+									<label class="block mt-3">{t('modal.activity-area')}</label>
+									<div style={{ pointerEvents: 'none' , opacity: 0.5 }}>
+										<ActivityAreaDropdown items={items} inputName="activity" onItemChange={()=> {}}
+											customStyle="w-full"
+											defaultItem={{
+											title: user?.activityArea ? getActivityAreaName(user?.activityArea, locale) : '',
+											value: user?.activityArea?.id,
+											}}
+											/>
+									</div>
+								</div>
+							</div>
+
+							<div class="mb-3">
+								<label class="block">
+									{t('modal.event-start-date')}{' '}
+									{modalMode !== Constants.publicationModalStatus.moderator &&
+									missingFields.includes(t('modal.event-start-date')) && (
+									<span style={{ color: 'red' }}>*</span>
+									)}
+								</label>
+								<div class={`${isDisabled ? 'border border-base-content rounded-lg' : '' }`}>
+									<input type="datetime-local" value={eventStartDate} class="input input-ghost w-full" onChange={(e)=>
+									setEventStartDate(e.target.value)}
+									disabled={isDisabled}
+									max={eventEndDate}
+									/>
+								</div>
+							</div>
+							<div class="mb-3">
+								<label class="block">
+									{t('modal.event-end-date')}{' '}
+									{modalMode !== Constants.publicationModalStatus.moderator &&
+									missingFields.includes(t('modal.event-end-date')) && <span style={{ color: 'red' }}>*</span>}
+								</label>
+								<div class={`${isDisabled || !eventStartDate ? 'border border-base-content rounded-lg' : '' }`}>
+									<input type="datetime-local" value={eventEndDate} class="input input-ghost w-full" onChange={(e)=>
+									setEventEndDate(e.target.value)}
+									disabled={isDisabled || !eventStartDate}
+									min={eventStartDate}
+									/>
+								</div>
+							</div>
+						</div> -->
+						<!-- <div class="mb-3">
+							<label class="block">{t('modal.tags-title')}</label>
+							<div class={`flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg`}>
+								{selectedTags.map((tag, index) => (
+								<div key={tag.id} class={`badge ${Constants.colors[index]} text-black py-4 px-3 flex items-center
+									whitespace-nowrap overflow-hidden`} style={{ maxWidth: 'calc(100% - 30px)' }}>
+									<span class="truncate">{tag.name}</span>
+									{!isDisabled && (
+									<FontAwesomeIcon icon={faXmark} class="ml-2 cursor-pointer" onClick={()=>
+										setSelectedTags((prevTags) => prevTags.filter((currentTag) => currentTag !== tag))
+										}
+										/>
+										)}
+								</div>
+								))}
+								{!isDisabled &&
+								!addTagButtonIsDisabled &&
+								modalMode !== Constants.publicationModalStatus.moderator && (
+								<AddTag searchText={t('search')} items={availableTags} onTagSelected={handleTagSelect} />
+								)}
+							</div>
+						</div> -->
+					</div>
+
+					<!-- <div class="ml-4 flex flex-col gap-3">
+						<div>
+							<div class="flex items-center mt-1">
+								<label class="block">
+									{t('modal.alt-text')}
+									{modalMode !== Constants.publicationModalStatus.moderator &&
+									missingFields.includes(t('modal.alt-text')) && <span style={{ color: 'red' }}>*</span>}
+								</label>
+								<div class="tooltip tooltip-bottom ml-2" data-tip={t('modal.alt-text-tooltip')}>
+									<button type="button"
+										class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
+										?
+									</button>
+								</div>
+							</div>
+							<div class={`${isDisabled ? 'border border-base-content rounded-lg' : '' }`}>
+								<input type="text" value={imageAltText} class="input input-ghost w-full" onChange={(e)=>
+								setImageAltText(e.target.value)}
+								disabled={isDisabled}
+								/>
+							</div>
+						</div>
+						<div class="flex-1 h-64 overflow-clip rounded-lg">
+							<input type="file" class="file-input file-input-bordered file-input-accent w-full" disabled={isDisabled}
+								accept="image/*" onChange={(e)=> {
+							if (e.target.files && e.target.files.length > 0) {
+							handleFileDrop(e.target.files[0]);
+							}
+							}}
+							/>
+							{imageSrc ? (
+							<img src={imageSrc} alt={imageAltText} class="w-full aspect-[2/1] rounded-lg mt-5" />
+							) : (
+							<div class={`w-full h-full rounded-lg mt-2 ${isLight ? 'bg-base-300 ' : 'bg-base-100' }`}></div>
+							)}
+							{imageModalOpen && (
+							<Modal>
+								<div class={`bg-base-200 overflow-y-auto p-5 w-[50rem] rounded-2xl h-[26rem]`}>
+									<ImageCropper imageSrc={imageSrc} handleImageModalClose={handleImageModalClose}
+										handleImageModalConfirm={handleImageModalConfirm} />
+								</div>
+							</Modal>
+							)}
+						</div>
+					</div> -->
+				</div>
+			</div>
+
+			<!-- <div class="w-full z-40">
+				<label class="block">
+					{t('modal.content')}
+					{modalMode !== Constants.publicationModalStatus.moderator &&
+					missingFields.includes(t('modal.content')) && <span style={{ color: 'red' }}>*</span>}
+				</label>
+				{!isDisabled ? (
+				<EditorComp markdown={content.replace(/\[/g, '\\[' ).replace(/\(/g, '\\(' )}
+					onContentChange={handleContentChange} editorRef={editorRef} />
+				) : (
+				<div style={{ position: 'relative' }}>
+					<div class={`${isDisabled ? 'border border-base-content rounded-lg markdown-custom-styling' : '' }`}>
+						<Markdown rehypePlugins={[rehypeRaw]} class={`${style.reactMarkDown} p-2`}>
+							{content}
+						</Markdown>
+					</div>
+				</div>
+				)}
+			</div>
+
+			<div class="divider my-1"></div>
+			{modalMode !== Constants.publicationModalStatus.moderator && missingFields.length > 0 && (
+			<span class="mr-2" style={{ color: 'red' }}>
+				* {t('required-fields')}
+			</span>
+			)}
+			<div class={`mt-2 ${ modalMode===Constants.publicationModalStatus.moderator ? 'flex justify-between'
+				: 'flex justify-start' }`}>
+				{(modalMode !== Constants.publicationModalStatus.modify || publication?.state === NewsStates.DRAFT) &&
+				modalMode !== Constants.publicationModalStatus.moderator && (
+				<button class="btn btn-info px-8 font-normal" disabled={publication?.state===NewsStates.APPROVED ?? false}
+					onClick={handleDraft} type="button">
+					{ta('modal.draft')}
+				</button>
+				)}
+
+				{modalMode === Constants.publicationModalStatus.moderator && (
+				<>
+					{publication?.state !== NewsStates.PUBLISHED ? (
+					<div class="grid grid-cols-2 gap-6">
+						<button class="font-normal btn btn-success px-8" disabled={publication?.state===NewsStates.APPROVED ??
+							false} onClick={handleApprove} type="button">
+							{ta('modal.approve-button')}
+						</button>
+						<button class="font-normal btn btn-error" onClick={()=> setRejectModalOpen(true)}
+							type="button"
+							>
+							{ta('modal.reject-button')}
+						</button>
+					</div>
+					) : (
+					<button class="font-normal btn btn-error px-8" onClick={()=> setDeleteModalOpen(true)}
+						type="button"
+						>
+						{ta('modal.deactivate-button')}
+					</button>
+					)}
+				</>
+				)}
+				{rejectModalOpen && (
+				<Confirmation title={ta('refuse-question')} firstButtonTitle={ta('cancel')} secondButtonTitle={ta('reject')}
+					secondButtonColor={'btn-error'} inputTitle={ta('reason')} inputValue={rejectReason}
+					setInputValue={setRejectReason} onClose={()=> setRejectModalOpen(false)}
+					secondButtonHoverColor={''}
+					confirmationAction={handleReject}
+					verify={verifyReason}
+					/>
+					)}
+					{deleteModalOpen && (
+					<Confirmation title={ta('deactivate-question')} firstButtonTitle={ta('cancel')}
+						secondButtonTitle={ta('deactivate')} secondButtonColor={'btn-error'} inputTitle={ta('reason')}
+						inputValue={deactivateReason} setInputValue={setDeactivateReason} onClose={()=> setDeleteModalOpen(false)}
+						secondButtonHoverColor={''}
+						confirmationAction={handleDeactivation}
+						verify={verifyReasonDeactivate}
+						/>
+						)}
+
+						<div class="ml-auto">
+							<button class={`btn font-normal text-black px-11 ${ isLight ? 'bg-base-300 hover:bg-secondary'
+								: 'btn-secondary' }`} onClick={()=> onClose()}
+								type="button"
+								>
+								{t('modal.cancel-button')}
+							</button>
+							{modalMode !== Constants.publicationModalStatus.moderator && (
+							<button class="btn font-normal btn-success text-black ml-3" type="submit">
+								{modalMode === Constants.publicationModalStatus.modify
+								? t('modal.resubmit-button')
+								: t('modal.submit-button')}
+							</button>
+							)}
+						</div>
+			</div>
+		</div> -->
+	
+</div>
+</form>
+</div>
+<!-- {showPreview && (
+<div class="inset-0">
+	<Preview locale={locale} infos={PublicationInfosForPreview} onClosePreview={()=> setShowPreview(false)} />
+</div>
+)} -->
