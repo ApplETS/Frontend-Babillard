@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Posts } from './posts';
 import { TranslocoTestingModule } from '@jsverse/transloco';
+import { Modal } from '@components/modal/modal';
 
 describe('Posts', () => {
   let component: Posts;
@@ -18,7 +19,8 @@ describe('Posts', () => {
           preloadLangs: true,
           translocoConfig: {
           }
-        })
+        }),
+        Modal
       ],
     }).compileComponents();
 
