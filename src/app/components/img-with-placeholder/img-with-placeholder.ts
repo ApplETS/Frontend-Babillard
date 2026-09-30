@@ -8,9 +8,9 @@ import { Component, computed, Input, signal } from '@angular/core';
 export class ImgWithPlaceholder {
   @Input({ required: true }) src!: string;
   @Input({ required: true }) alt!: string;
-  @Input() placeholder: string = "/assets/placeholder.png";
+  @Input() placeholder: string = '/assets/placeholder.png';
 
   errorLoading = signal(false);
 
-  source = computed(() => this.errorLoading() ? this.placeholder : this.src);
+  source = computed(() => (this.errorLoading() ? this.placeholder : this.src));
 }

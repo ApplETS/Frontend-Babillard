@@ -1,5 +1,5 @@
 import { Component, Input, model, signal } from '@angular/core';
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-event-container',
@@ -13,7 +13,7 @@ export class EventContainer {
     title: string;
     extendedProps: {
       eventId: string;
-    }
+    };
   };
   selectedCardId = model.required<string | null>();
   protected readonly xmarkIcon = faXmark;

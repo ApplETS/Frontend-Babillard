@@ -5,8 +5,8 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.overrideComponent(App, {
       set: {
-        template: "<div></div>"
-      }
+        template: '<div></div>',
+      },
     }).compileComponents();
   });
 
@@ -16,5 +16,4 @@ describe('App', () => {
     await fixture.whenStable();
     expect(app).toBeTruthy();
   });
-
 });

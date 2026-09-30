@@ -13,34 +13,35 @@ import { TagResponseDTO } from './tagResponseDTO.interface';
 import { UserResponseDTO } from './userResponseDTO.interface';
 
 export interface EventResponseDTO {
-    id?: string;
-    title?: string;
-    content?: string;
-    imageUrl?: string;
-    imageAltText?: string;
-    /**
-     * A flag enum to define state and intermediary state for filtering purpose.    Example of use:  filter only OnHold and Approved state      001001 -> 9  so you can pass 9 to the filter to get only OnHold and Approved
-     */
-    state?: EventResponseDTO.StateEnum;
-    reason?: string;
-    publicationDate?: Date;
-    eventStartDate?: Date;
-    eventEndDate?: Date;
-    createdAt?: Date;
-    updatedAt?: Date;
-    moderator?: UserResponseDTO;
-    organizer?: UserResponseDTO;
-    tags?: Array<TagResponseDTO>;
+  id?: string;
+  title?: string;
+  content?: string;
+  imageUrl?: string;
+  imageAltText?: string;
+  /**
+   * A flag enum to define state and intermediary state for filtering purpose.    Example of use:  filter only OnHold and Approved state      001001 -> 9  so you can pass 9 to the filter to get only OnHold and Approved
+   */
+  state?: EventResponseDTO.StateEnum;
+  reason?: string;
+  publicationDate?: Date;
+  eventStartDate?: Date;
+  eventEndDate?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  moderator?: UserResponseDTO;
+  organizer?: UserResponseDTO;
+  tags?: Array<TagResponseDTO>;
 }
 export namespace EventResponseDTO {
-    export type StateEnum = 'OnHold' | 'Deleted' | 'Denied' | 'Approved' | 'Published' | 'Draft' | 'All';
-    export const StateEnum = {
-        OnHold: 'OnHold' as StateEnum,
-        Deleted: 'Deleted' as StateEnum,
-        Denied: 'Denied' as StateEnum,
-        Approved: 'Approved' as StateEnum,
-        Published: 'Published' as StateEnum,
-        Draft: 'Draft' as StateEnum,
-        All: 'All' as StateEnum
-    };
+  export type StateEnum =
+    'OnHold' | 'Deleted' | 'Denied' | 'Approved' | 'Published' | 'Draft' | 'All';
+  export const StateEnum = {
+    OnHold: 'OnHold' as StateEnum,
+    Deleted: 'Deleted' as StateEnum,
+    Denied: 'Denied' as StateEnum,
+    Approved: 'Approved' as StateEnum,
+    Published: 'Published' as StateEnum,
+    Draft: 'Draft' as StateEnum,
+    All: 'All' as StateEnum,
+  };
 }
