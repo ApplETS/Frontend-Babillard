@@ -3,7 +3,10 @@ import { EventsService } from '@services/dashboard.service/events.service';
 import { vi } from 'vitest';
 
 import { DashboardNews } from './dashboard-news';
-import { ActivityAreaDisplay, ActivityAreaService } from '@services/activityAreaService/activity-area.service';
+import {
+  ActivityAreaDisplay,
+  ActivityAreaService,
+} from '@services/activityAreaService/activity-area.service';
 import { computed } from '@angular/core';
 
 describe('DashboardNews', () => {
@@ -50,11 +53,14 @@ describe('DashboardNews', () => {
   });
 
   it('should call getEvents when changes detected and activity areas are not empty', async () => {
-    const area = new ActivityAreaDisplay({
-      id: '1',
-      nameEn: 'Area 1',
-      nameFr: 'Zone 1',
-    }, {} as any);
+    const area = new ActivityAreaDisplay(
+      {
+        id: '1',
+        nameEn: 'Area 1',
+        nameFr: 'Zone 1',
+      },
+      {} as any,
+    );
     area.name = computed(() => 'Area 1');
 
     activityAreaServiceMock.getActivityAreas.mockResolvedValue([area]);
@@ -63,7 +69,9 @@ describe('DashboardNews', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(eventsServiceMock.getEvents).toHaveBeenCalled();
-    expect(eventsServiceMock.getEvents).toHaveBeenCalledAfter(activityAreaServiceMock.getActivityAreas);
+    expect(eventsServiceMock.getEvents).toHaveBeenCalledAfter(
+      activityAreaServiceMock.getActivityAreas,
+    );
 
     expect(component.loading()).toBe(false);
   });
@@ -81,5 +89,5 @@ describe('DashboardNews', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-  })
+  });
 });

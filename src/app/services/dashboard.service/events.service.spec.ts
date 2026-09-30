@@ -21,7 +21,7 @@ describe('EventService', () => {
       getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
-      userData$: of({ name: 'Test User' })
+      userData$: of({ name: 'Test User' }),
     };
 
     TestBed.configureTestingModule({
@@ -29,8 +29,8 @@ describe('EventService', () => {
         { provide: OidcSecurityService, useValue: oidcSpy },
         provideHttpClient(),
         provideHttpClientTesting(),
-        EventsService
-      ]
+        EventsService,
+      ],
     });
     service = TestBed.inject(EventsService);
     httpClientSpy = TestBed.inject(HttpTestingController);
@@ -42,7 +42,7 @@ describe('EventService', () => {
 
   it('should return events and call without activityArea', async () => {
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000`;
-   
+
     const response = service.getEvents([]);
     await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
@@ -50,16 +50,26 @@ describe('EventService', () => {
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
-        { id: '1', title: 'Event 1', content: 'Content 1', imageUrl: 'url1', imageAltText: 'alt1', eventStartDate: '2024-01-01', eventEndDate: '2024-01-02', organizer: null, tags: [{id: "tag1", name: "tag", createdAt: "", updatedAt: ""}] }
+        {
+          id: '1',
+          title: 'Event 1',
+          content: 'Content 1',
+          imageUrl: 'url1',
+          imageAltText: 'alt1',
+          eventStartDate: '2024-01-01',
+          eventEndDate: '2024-01-02',
+          organizer: null,
+          tags: [{ id: 'tag1', name: 'tag', createdAt: '', updatedAt: '' }],
+        },
       ],
       pageSize: 1000,
       totalRecords: 1,
       totalPages: 1,
-      error: null
+      error: null,
     };
 
     request.flush(mockResponse);
-    
+
     const result = await response;
     expect(result).toEqual(mockResponse);
   });
@@ -75,12 +85,22 @@ describe('EventService', () => {
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
-        { id: '1', title: 'Event 1', content: 'Content 1', imageUrl: 'url1', imageAltText: 'alt1', eventStartDate: '2024-01-01', eventEndDate: '2024-01-02', organizer: null, tags: [{id: "tag1", name: "tag", createdAt: "", updatedAt: ""}] }
+        {
+          id: '1',
+          title: 'Event 1',
+          content: 'Content 1',
+          imageUrl: 'url1',
+          imageAltText: 'alt1',
+          eventStartDate: '2024-01-01',
+          eventEndDate: '2024-01-02',
+          organizer: null,
+          tags: [{ id: 'tag1', name: 'tag', createdAt: '', updatedAt: '' }],
+        },
       ],
       error: null,
       pageSize: 1000,
       totalRecords: 1,
-      totalPages: 1
+      totalPages: 1,
     };
 
     request.flush(mockResponse);
@@ -89,7 +109,7 @@ describe('EventService', () => {
     expect(result).toEqual(mockResponse);
   });
 
-    it('should return events and call with multiple activityAreas', async () => {
+  it('should return events and call with multiple activityAreas', async () => {
     const activityAreas = ['tag1', 'tag2'];
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000&activityAreas=tag1&activityAreas=tag2`;
 
@@ -100,12 +120,22 @@ describe('EventService', () => {
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
-        { id: '1', title: 'Event 1', content: 'Content 1', imageUrl: 'url1', imageAltText: 'alt1', eventStartDate: '2024-01-01', eventEndDate: '2024-01-02', organizer: null, tags: [{id: "tag1", name: "tag", createdAt: "", updatedAt: ""}] }
+        {
+          id: '1',
+          title: 'Event 1',
+          content: 'Content 1',
+          imageUrl: 'url1',
+          imageAltText: 'alt1',
+          eventStartDate: '2024-01-01',
+          eventEndDate: '2024-01-02',
+          organizer: null,
+          tags: [{ id: 'tag1', name: 'tag', createdAt: '', updatedAt: '' }],
+        },
       ],
       error: null,
       pageSize: 1000,
       totalRecords: 1,
-      totalPages: 1
+      totalPages: 1,
     };
 
     request.flush(mockResponse);

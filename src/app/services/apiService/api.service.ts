@@ -3,7 +3,6 @@ import { environment } from '@environments/environment.development';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { KeyValue } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -25,15 +24,19 @@ export abstract class ApiService {
    * @param queryParameters Parameters to add to the endpoint as query parameters
    * @returns T type result from the API
    */
-  protected async get<T>(action: string, routeParameters: unknown[] = [], queryParameters: HttpParams = new HttpParams()): Promise<T> {
-    if (!action.endsWith("/") && routeParameters.length > 0) {
-      action += "/";
+  protected async get<T>(
+    action: string,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
+    if (!action.endsWith('/') && routeParameters.length > 0) {
+      action += '/';
     }
 
-    console.log("Route parameters:", routeParameters.join("/"));
-    
+    console.log('Route parameters:', routeParameters.join('/'));
+
     if (routeParameters.length > 0) {
-      action += routeParameters.join("/");
+      action += routeParameters.join('/');
     }
     console.log(action);
     let headers = new HttpHeaders({});
@@ -43,7 +46,9 @@ export abstract class ApiService {
       headers = headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
-    return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters, headers: headers }));
+    return await lastValueFrom(
+      this.httpService.get<T>(action, { params: queryParameters, headers: headers }),
+    );
   }
 }
 

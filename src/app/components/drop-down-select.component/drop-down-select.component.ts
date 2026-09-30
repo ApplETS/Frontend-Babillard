@@ -1,9 +1,22 @@
-import { CommonModule, KeyValue } from '@angular/common';
-import { Component, ElementRef, EventEmitter, HostListener, inject, input, Input, model, Output, Signal, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  Input,
+  model,
+  Signal,
+  signal,
+} from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp, faFilter } from '@fortawesome/free-solid-svg-icons';
 
-type Option = { id: string, name: Signal<string>, selected: boolean };
+interface Option {
+  id: string;
+  name: Signal<string>;
+  selected: boolean;
+}
 
 @Component({
   selector: 'app-drop-down-select',
@@ -18,7 +31,7 @@ export class DropDownSelectComponent {
   private eRef = inject(ElementRef);
   isDropdownOpen = signal(false);
   options = model.required<Option[] | null>();
-  @Input({required: true}) title = "";
+  @Input({ required: true }) title = '';
 
   toggleDropdown(): void {
     this.isDropdownOpen.update((value) => !value);
@@ -27,7 +40,7 @@ export class DropDownSelectComponent {
   toggleOption(id: string): void {
     this.options.update((options) => {
       if (!options) return [];
-      const option = options.find(o => o.id === id);
+      const option = options.find((o) => o.id === id);
       if (!option) return options;
       option.selected = !option.selected;
       return [...options];

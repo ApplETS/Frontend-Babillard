@@ -50,15 +50,13 @@ describe('Header', () => {
         provideHttpClientTesting(),
       ],
     })
-    .overrideComponent(HeaderComponent, {
-      set: {
-        template: "<div></div>",
-        imports: [
-          FaIconComponent
-        ]
-      }
-    })
-    .compileComponents();
+      .overrideComponent(HeaderComponent, {
+        set: {
+          template: '<div></div>',
+          imports: [FaIconComponent],
+        },
+      })
+      .compileComponents();
 
     authService = TestBed.inject(AuthService);
     fixture = TestBed.createComponent(HeaderComponent);
@@ -75,7 +73,7 @@ describe('Header', () => {
     const routes = component.routes();
 
     expect(routes.length).toBe(1);
-    expect(routes[0].route).toBe("/");
+    expect(routes[0].route).toBe('/');
   });
 
   it('should show Authenticated routes', () => {
@@ -86,8 +84,8 @@ describe('Header', () => {
     console.log(routes);
 
     expect(routes.length).toBe(2);
-    expect(routes[0].route).toBe("/");
-    expect(routes[1].route).toBe("/posts");
+    expect(routes[0].route).toBe('/');
+    expect(routes[1].route).toBe('/posts');
   });
 
   it('should show Moderator routes', () => {
@@ -99,7 +97,7 @@ describe('Header', () => {
     console.log(routes);
 
     expect(routes.length).toBe(3);
-    expect(routes.some(route => route.route === "/approval")).toBe(true);
+    expect(routes.some((route) => route.route === '/approval')).toBe(true);
   });
 
   it('show show Moderator routes, User with multiple roles', () => {
@@ -113,11 +111,11 @@ describe('Header', () => {
     console.log(routes);
 
     expect(routes.length).toBe(3);
-    expect(routes.some(route => route.route === "/approval")).toBe(true);
-  })
+    expect(routes.some((route) => route.route === '/approval')).toBe(true);
+  });
 
   afterEach(() => {
     authService.isAuthenticated.set(false);
     authService.userInfo.set(undefined);
-  })
+  });
 });

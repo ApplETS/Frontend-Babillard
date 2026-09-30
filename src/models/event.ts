@@ -1,5 +1,5 @@
-import { Tag } from "./tag";
-import { User } from "./user";
+import { Tag } from './tag';
+import { User } from './user';
 
 export interface Event {
   id: string;
@@ -8,7 +8,7 @@ export interface Event {
   imageUrl: string;
   imageAltText: string;
   eventStartDate: string;
- 	eventEndDate: string;
+  eventEndDate: string;
   organizer: User | null;
   tags: Tag[];
 }

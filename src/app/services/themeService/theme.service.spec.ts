@@ -4,7 +4,7 @@ import { RendererFactory2 } from '@angular/core';
 
 describe('ThemeService', () => {
   let service: ThemeService;
-  const rendererMock= {
+  const rendererMock = {
     setAttribute: vi.fn(),
     addClass: vi.fn(),
     removeClass: vi.fn(),
@@ -18,14 +18,11 @@ describe('ThemeService', () => {
     createRenderer: vi.fn().mockReturnValue(rendererMock),
   };
   beforeEach(() => {
-
     vi.stubGlobal('localStorage', localStorageMock);
 
     TestBed.configureTestingModule({
-      providers: [
-        ThemeService,
-        { provide: RendererFactory2, useValue: rendererFactoryMock },
-      ],});
+      providers: [ThemeService, { provide: RendererFactory2, useValue: rendererFactoryMock }],
+    });
     service = TestBed.inject(ThemeService);
   });
 
@@ -35,7 +32,11 @@ describe('ThemeService', () => {
     service.onToogleDarkMode();
     TestBed.tick();
 
-    expect(rendererMock.setAttribute).toHaveBeenCalledWith(expect.any(HTMLElement), 'data-theme', 'dark');
+    expect(rendererMock.setAttribute).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      'data-theme',
+      'dark',
+    );
     expect(rendererMock.addClass).toHaveBeenCalledWith(expect.any(HTMLElement), 'dark');
     expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'dark');
   });
@@ -46,7 +47,11 @@ describe('ThemeService', () => {
     service.onToogleDarkMode();
     TestBed.tick();
 
-    expect(rendererMock.setAttribute).toHaveBeenCalledWith(expect.any(HTMLElement), 'data-theme', 'light');
+    expect(rendererMock.setAttribute).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      'data-theme',
+      'light',
+    );
     expect(rendererMock.removeClass).toHaveBeenCalledWith(expect.any(HTMLElement), 'dark');
     expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'light');
   });

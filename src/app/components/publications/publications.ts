@@ -1,9 +1,21 @@
-import { Component, effect, ElementRef, inject, Input, model, signal, viewChild, ViewChild, viewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  model,
+  signal,
+  viewChild,
+  viewChildren,
+} from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faDownLeftAndUpRightToCenter, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
+import {
+  faDownLeftAndUpRightToCenter,
+  faUpRightAndDownLeftFromCenter,
+} from '@fortawesome/free-solid-svg-icons';
 import { Event } from '@models/event';
-import { EventDataAndImage } from "@components/event-data-and-image/event-data-and-image";
-import { Avatar } from "@components/avatar/avatar";
+import { EventDataAndImage } from '@components/event-data-and-image/event-data-and-image';
+import { Avatar } from '@components/avatar/avatar';
 import { MarkdownComponent } from 'ngx-markdown';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { PaginatedResponse } from '@services/apiService/api.service';
@@ -30,8 +42,8 @@ export class Publications {
   translocoService = inject(TranslocoService);
   selectedCardId = model<string | null>(null);
 
-  containerRef = viewChild.required<ElementRef<HTMLDivElement>>("cardContainer");
-  cardRefs = viewChildren<ElementRef<HTMLDivElement>>("card");
+  containerRef = viewChild.required<ElementRef<HTMLDivElement>>('cardContainer');
+  cardRefs = viewChildren<ElementRef<HTMLDivElement>>('card');
   readonly faDownLeftAndUpRightToCenter = faDownLeftAndUpRightToCenter;
   readonly faUpRightAndDownLeftFromCenter = faUpRightAndDownLeftFromCenter;
 
@@ -45,81 +57,83 @@ export class Publications {
     isDragging: false,
   });
 
-	constructor() {
-		toObservable(this.selectedCardId).pipe(skip(1)).subscribe((cardId) => {
-			this.selectCard(cardId, true);
-		});
-	}
+  constructor() {
+    toObservable(this.selectedCardId)
+      .pipe(skip(1))
+      .subscribe((cardId) => {
+        this.selectCard(cardId, true);
+      });
+  }
 
-	selectCard(cardId: string | null, fromCalendar: boolean = false) {
-		this.selectedCardId.update((value) => cardId === value && !fromCalendar ? null : cardId);
+  selectCard(cardId: string | null, fromCalendar = false) {
+    this.selectedCardId.update((value) => (cardId === value && !fromCalendar ? null : cardId));
 
-		if (fromCalendar) {
-			this.scrollToCard(this.events?.data?.findIndex((e) => e.id === cardId) ?? 0);
-		}
-	};
+    if (fromCalendar) {
+      this.scrollToCard(this.events?.data?.findIndex((e) => e.id === cardId) ?? 0);
+    }
+  }
 
   handleCardMouseUp(e: MouseEvent, cardId: string | null) {
-  	if ((e.target as HTMLElement).closest('a')) {
-			return;
-		}
-		if ((e.target as HTMLElement).closest('button')) {
-			return;
-		}
-		if (this.dragStart().isDragging) {
-			const y = e.pageY - this.containerRef().nativeElement.offsetTop;
-			const walk = y - this.dragStart().startY;
-			if (Math.abs(walk) < 5) this.selectCard(cardId);
-		} else {
+    if ((e.target as HTMLElement).closest('a')) {
+      return;
+    }
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    if (this.dragStart().isDragging) {
+      const y = e.pageY - this.containerRef().nativeElement.offsetTop;
+      const walk = y - this.dragStart().startY;
+      if (Math.abs(walk) < 5) this.selectCard(cardId);
+    } else {
       this.selectCard(cardId);
     }
   }
 
   handleMouseDown(e: MouseEvent) {
-		this.dragStart.set({
-			startY: e.pageY - this.containerRef().nativeElement.offsetTop,
-			startScrollTop: this.containerRef().nativeElement.scrollTop,
-			isDragging: true,
-		});
-	}
+    this.dragStart.set({
+      startY: e.pageY - this.containerRef().nativeElement.offsetTop,
+      startScrollTop: this.containerRef().nativeElement.scrollTop,
+      isDragging: true,
+    });
+  }
 
-	handleMouseMove(e: MouseEvent) {
-		if (!this.dragStart().isDragging || this.selectedCardId()) return;
-		const y = e.clientY - this.containerRef().nativeElement.offsetTop;
-		const walk = y - this.dragStart().startY;
-		this.containerRef().nativeElement.scrollTop = this.dragStart().startScrollTop - walk;
-	}
+  handleMouseMove(e: MouseEvent) {
+    if (!this.dragStart().isDragging || this.selectedCardId()) return;
+    const y = e.clientY - this.containerRef().nativeElement.offsetTop;
+    const walk = y - this.dragStart().startY;
+    this.containerRef().nativeElement.scrollTop = this.dragStart().startScrollTop - walk;
+  }
 
   scrollToCard(cardIndex: number) {
     const event = this.events?.data?.at(cardIndex);
-		const cardElement = this.cardRefs().at(cardIndex)?.nativeElement;
-		if (!cardElement) return;
+    const cardElement = this.cardRefs().at(cardIndex)?.nativeElement;
+    if (!cardElement) return;
 
-		const container = this.containerRef().nativeElement;
-		if (!container) return;
+    const container = this.containerRef().nativeElement;
+    if (!container) return;
 
-		if (cardIndex === 0) {
-			container.scrollTo({
-				top: 0,
-				behavior: 'smooth',
-			});
-			return;
-		}
-		const delay = 100;
-		setTimeout(() => {
-			const scale = this.selectedCardId() === event?.id ? 1.07 : 1;
-			const scaledCardHeight = cardElement.offsetHeight * scale;
-			const cardCenter = cardElement.offsetTop + scaledCardHeight / 2;
-			const scrollPosition = cardCenter - container.clientHeight / 2;
-			const maxScrollTop = container.scrollHeight - container.clientHeight;
-			const clampedScrollPosition = Math.max(0, Math.min(scrollPosition, maxScrollTop));
+    if (cardIndex === 0) {
+      container.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      return;
+    }
+    const delay = 100;
+    setTimeout(() => {
+      const scale = this.selectedCardId() === event?.id ? 1.07 : 1;
+      const scaledCardHeight = cardElement.offsetHeight * scale;
+      const cardCenter = cardElement.offsetTop + scaledCardHeight / 2;
+      const scrollPosition = cardCenter - container.clientHeight / 2;
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      const clampedScrollPosition = Math.max(0, Math.min(scrollPosition, maxScrollTop));
 
-			container.scrollTo({
-				top: clampedScrollPosition,
-				behavior: 'smooth',
-			});
-		}, delay);
-	}
+      container.scrollTo({
+        top: clampedScrollPosition,
+        behavior: 'smooth',
+      });
+    }, delay);
+  }
 
   getActivityAreaName = getActivityAreaName;
 }

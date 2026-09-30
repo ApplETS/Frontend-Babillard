@@ -9,20 +9,20 @@ describe('LangSwitcher', () => {
   let component: LangSwitcher;
   let fixture: ComponentFixture<LangSwitcher>;
   let mockTranslocoService: {
-    getActiveLang(): string,
-    setActiveLang(activeLang: string): void,
-    getAvailableLangs(): string[]
-  }
+    getActiveLang(): string;
+    setActiveLang(activeLang: string): void;
+    getAvailableLangs(): string[];
+  };
 
   beforeEach(async () => {
     mockTranslocoService = {
       getActiveLang: vi.fn().mockReturnValue('en'),
-      setActiveLang:vi.fn(),
+      setActiveLang: vi.fn(),
       getAvailableLangs: vi.fn().mockReturnValue(['en', 'fr']),
     };
     await TestBed.configureTestingModule({
       imports: [LangSwitcher],
-      providers: [{provide: TranslocoService, useValue: mockTranslocoService}]
+      providers: [{ provide: TranslocoService, useValue: mockTranslocoService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LangSwitcher);
@@ -32,7 +32,7 @@ describe('LangSwitcher', () => {
 
   it('should create the component with active language', () => {
     expect(component).toBeTruthy();
-    expect(component.selectedLang()).toBe('en')
+    expect(component.selectedLang()).toBe('en');
   });
 
   it('Should start the language switch logic when new value selected', async () => {
@@ -42,6 +42,6 @@ describe('LangSwitcher', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(component.selectedLang()).toBe('fr');
-    expect(mockTranslocoService.setActiveLang).toHaveBeenCalledWith('fr')
-  })
+    expect(mockTranslocoService.setActiveLang).toHaveBeenCalledWith('fr');
+  });
 });

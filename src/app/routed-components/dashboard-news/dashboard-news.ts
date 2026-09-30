@@ -1,14 +1,16 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { Calendar } from "@components/calendar/calendar";
-import { Publications } from "@components/publications/publications";
-import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
-import { Dashboard } from "@components/dashboard/dashboard";
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Calendar } from '@components/calendar/calendar';
+import { Publications } from '@components/publications/publications';
+import { LoadingSpinner } from '@components/loading-spinner/loading-spinner';
+import { Dashboard } from '@components/dashboard/dashboard';
 import { EventsService } from '@services/dashboard.service/events.service';
-import { ActivityAreaDisplay, ActivityAreaService } from '@services/activityAreaService/activity-area.service';
+import {
+  ActivityAreaDisplay,
+  ActivityAreaService,
+} from '@services/activityAreaService/activity-area.service';
 import { PaginatedResponse } from '@services/apiService/api.service';
 import { Event } from '@models/event';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { skip } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-news',
@@ -23,22 +25,29 @@ export class DashboardNews implements OnInit {
   activityAreas = signal<ActivityAreaDisplay[] | null>(null);
   selectedCardId = signal<string | null>(null);
   reloading = signal(false);
-  
-  loading = computed(() => this.reloading() || this.activityAreas() === null || this.events() === null);
-  selectedAreas = computed(() => this.activityAreas()?.filter(area => area.selected).map(a => a.id) ?? []);
+
+  loading = computed(
+    () => this.reloading() || this.activityAreas() === null || this.events() === null,
+  );
+  selectedAreas = computed(
+    () =>
+      this.activityAreas()
+        ?.filter((area) => area.selected)
+        .map((a) => a.id) ?? [],
+  );
 
   constructor() {
-    toObservable(this.selectedAreas).subscribe(async (selectedAreas) => {
+    toObservable(this.selectedAreas).subscribe(async (selectedAreas: string[]) => {
       this.reloading.set(true);
-      if (this.selectedAreas().length > 0) {
-        this.events.set(await this.eventService.getEvents(this.selectedAreas()));
+      if (selectedAreas.length > 0) {
+        this.events.set(await this.eventService.getEvents(selectedAreas));
       } else {
         this.events.set({
           data: [],
           error: null,
           pageSize: 0,
           totalRecords: 0,
-          totalPages: 0
+          totalPages: 0,
         });
       }
 

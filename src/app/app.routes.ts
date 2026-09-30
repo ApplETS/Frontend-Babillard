@@ -1,6 +1,10 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: "dashboard/news", loadComponent: () => import('@routed-components/dashboard-news/dashboard-news').then(m => m.DashboardNews) },
-  { path: '**', redirectTo: '/dashboard/news' }
+  {
+    path: 'dashboard/news',
+    loadComponent: () =>
+      import('@routed-components/dashboard-news/dashboard-news').then((m) => m.DashboardNews),
+  },
+  { path: '**', redirectTo: '/dashboard/news' },
 ];

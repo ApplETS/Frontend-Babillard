@@ -13,10 +13,9 @@ import {
   AbstractSecurityStorage,
   authInterceptor,
   DefaultLocalStorageService,
-  provideAuth
+  provideAuth,
 } from 'angular-auth-oidc-client';
 import { provideMarkdown } from 'ngx-markdown';
-
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,6 +44,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAuth(authConfig),
     { provide: AbstractSecurityStorage, useClass: DefaultLocalStorageService },
-    provideMarkdown()
+    provideMarkdown(),
   ],
 };

@@ -19,7 +19,7 @@ export class ThemeService {
     effect(() => {
       const currentTheme = this.isDark() ? 'dark' : 'light';
       if (currentTheme) this.renderer.setAttribute(this.root, 'data-theme', currentTheme);
-      if (currentTheme === "dark") {
+      if (currentTheme === 'dark') {
         this.renderer.addClass(this.root, 'dark');
       } else {
         this.renderer.removeClass(this.root, 'dark');
@@ -28,6 +28,6 @@ export class ThemeService {
     });
   }
   onToogleDarkMode = () => {
-    this.isDark.update(value => !value);
-  }
+    this.isDark.update((value) => !value);
+  };
 }

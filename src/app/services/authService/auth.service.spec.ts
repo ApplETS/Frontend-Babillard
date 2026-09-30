@@ -21,7 +21,7 @@ describe('AuthService', () => {
       getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
-      userData$: of({ name: 'Test User' })
+      userData$: of({ name: 'Test User' }),
     };
     routerSpy = {};
 
@@ -31,7 +31,7 @@ describe('AuthService', () => {
         { provide: OidcSecurityService, useValue: oidcSpy },
         { provide: Router, useValue: routerSpy },
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
       ],
     });
     service = TestBed.inject(AuthService);
@@ -58,15 +58,14 @@ describe('AuthService', () => {
     expect(oidcSpy.authorize).toHaveBeenCalled();
   });
 
-    it('should be created', () => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
   describe('getUserInfo', () => {
-
     it('should return data on success', async () => {
       const mockResponse = {
         data: { id: 1, name: 'John Doe' },
-        error: null
+        error: null,
       };
 
       // Trigger the service method
@@ -74,7 +73,10 @@ describe('AuthService', () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       // Expect a GET request to the specific URL
-      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
+      const req = mockHttp.expectOne(
+        `${environment.API_URL}/api/me/`,
+        'Calling getUserInfo endpoint',
+      );
       expect(req.request.method).toBe('GET');
 
       // Provide the mock response
@@ -88,13 +90,15 @@ describe('AuthService', () => {
       const promise = service.getUserInfo();
       await new Promise((resolve) => setTimeout(resolve, 0));
 
-      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
+      const req = mockHttp.expectOne(
+        `${environment.API_URL}/api/me/`,
+        'Calling getUserInfo endpoint',
+      );
 
       // Simulate a 404 error
       req.error(new ProgressEvent('Error'), { status: 404, statusText: 'Not Found' });
 
       await expect(promise).rejects.toThrow();
     });
-  })
-
+  });
 });

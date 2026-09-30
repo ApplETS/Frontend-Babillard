@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ApiService } from '@services/apiService/api.service';
 import { UserResponseDTO } from '@models/userResponseDTO.interface';
 
@@ -6,7 +6,7 @@ import { UserResponseDTO } from '@models/userResponseDTO.interface';
   providedIn: 'root',
 })
 export class AuthService extends ApiService {
-  protected override apiController: string = "me";
+  protected override apiController = 'me';
 
   public isAuthenticated = signal<boolean>(false);
   public accessToken = signal<string | undefined>(undefined);
@@ -39,8 +39,7 @@ export class AuthService extends ApiService {
 
   public async getUserInfo() {
     try {
-      const res = await 
-        this.get<{data: UserResponseDTO, error: any}>(this.getActionUrl(""));
+      const res = await this.get<{ data: UserResponseDTO; error: string }>(this.getActionUrl(''));
       console.log('Profil récupéré du backend:', res.data);
       this.userInfo.set(res.data);
       return res.data;
@@ -49,5 +48,4 @@ export class AuthService extends ApiService {
       throw error;
     }
   }
-
 }
