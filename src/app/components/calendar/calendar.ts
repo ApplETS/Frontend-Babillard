@@ -1,12 +1,4 @@
-import {
-  Component,
-  signal,
-  effect,
-  Input,
-  model,
-  computed,
-  viewChild,
-} from '@angular/core';
+import { Component, signal, effect, Input, model, computed, viewChild } from '@angular/core';
 import { CalendarHeader } from '@components/calendar-header/calendar-header';
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput, EventSourceInput } from '@fullcalendar/core/index.js';

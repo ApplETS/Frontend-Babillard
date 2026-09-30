@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit,signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Calendar } from '@components/calendar/calendar';
 import { Publications } from '@components/publications/publications';
 import { LoadingSpinner } from '@components/loading-spinner/loading-spinner';
@@ -37,7 +37,7 @@ export class DashboardNews implements OnInit {
   );
 
   constructor() {
-    toObservable(this.selectedAreas).subscribe(async (selectedAreas :string[])=> {
+    toObservable(this.selectedAreas).subscribe(async (selectedAreas: string[]) => {
       this.reloading.set(true);
       if (selectedAreas.length > 0) {
         this.events.set(await this.eventService.getEvents(selectedAreas));
