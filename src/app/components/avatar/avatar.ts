@@ -10,9 +10,9 @@ import { ThemeService } from '@services/themeService/theme.service';
   templateUrl: './avatar.html',
 })
 export class Avatar {
-  @Input() size: string = 'w-10 h-10';
-  @Input() textSize: string = 'text-lg';
-  @Input() color: string = 'bg-base-100';
+  @Input() size = 'w-10 h-10';
+  @Input() textSize = 'text-lg';
+  @Input() color = 'bg-base-100';
   @Input() user: User | UserResponseDTO | null = null;
 
   themeService = inject(ThemeService);

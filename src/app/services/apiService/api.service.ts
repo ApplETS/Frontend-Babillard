@@ -3,7 +3,6 @@ import { environment } from '@environments/environment.development';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { KeyValue } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',

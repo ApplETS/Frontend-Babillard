@@ -13,7 +13,7 @@ import { of } from 'rxjs';
   providedIn: 'root',
 })
 export class TestApiService extends ApiService {
-  protected override apiController: string = 'test';
+  protected override apiController = 'test';
 
   public override getActionUrl(action: string): string {
     return super.getActionUrl(action);

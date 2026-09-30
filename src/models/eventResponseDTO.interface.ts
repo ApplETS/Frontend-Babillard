@@ -30,7 +30,7 @@ export interface EventResponseDTO {
   updatedAt?: Date;
   moderator?: UserResponseDTO;
   organizer?: UserResponseDTO;
-  tags?: Array<TagResponseDTO>;
+  tags?: TagResponseDTO[];
 }
 export namespace EventResponseDTO {
   export type StateEnum =

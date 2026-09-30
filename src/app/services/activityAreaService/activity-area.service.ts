@@ -9,7 +9,7 @@ import { ApiService } from '@services/apiService/api.service';
   providedIn: 'root',
 })
 export class ActivityAreaService extends ApiService {
-  override apiController: string = 'activity-areas';
+  override apiController = 'activity-areas';
   private translationService = inject(TranslocoService);
 
   public async getActivityAreas(search?: string): Promise<ActivityAreaDisplay[]> {

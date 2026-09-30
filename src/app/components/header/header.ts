@@ -4,19 +4,17 @@ import { faSignIn, faGear, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { LangSwitcher } from '@components/lang-switcher/lang-switcher';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { ActivatedRoute, isActive, Router, RouterLink } from '@angular/router';
+import { isActive, Router, RouterLink } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { AuthService } from '@services/authService/auth.service';
 import { UserType } from '@models/user-types';
-import { ImgWithPlaceholder } from '@components/img-with-placeholder/img-with-placeholder';
 import { Avatar } from '@components/avatar/avatar';
-import { User } from '@models/user';
 
-type RouteInfo = {
+interface RouteInfo {
   route: string;
   label: string;
   activeRoute: Signal<boolean>;
-};
+}
 
 @Component({
   selector: 'app-header',

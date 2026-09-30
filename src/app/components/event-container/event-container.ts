@@ -7,7 +7,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './event-container.html',
 })
 export class EventContainer {
-  @Input({ required: true }) isMonthView: boolean = false;
+  @Input({ required: true }) isMonthView = false;
   @Input({ required: true }) event!: {
     publicId: string;
     title: string;

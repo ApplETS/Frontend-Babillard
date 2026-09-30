@@ -1,5 +1,5 @@
 <div class="rounded-full mask mask-circle" [class]="size">
-  @if (user?.avatarUrl != null && !usePlaceholder()) {
+  @if (user?.avatarUrl !== null && !usePlaceholder()) {
     <div
       [class.hidden]="!loading()"
       [class.block]="loading()"

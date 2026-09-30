@@ -30,7 +30,7 @@ export interface EventModeratorResponseDTO {
   updatedAt?: Date;
   moderator?: UserResponseDTO;
   organizer?: UserResponseDTO;
-  tags?: Array<TagResponseDTO>;
+  tags?: TagResponseDTO[];
   reportCount?: number;
 }
 export namespace EventModeratorResponseDTO {

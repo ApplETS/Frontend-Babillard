@@ -1,21 +1,18 @@
-import { CommonModule, KeyValue } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import {
   Component,
   ElementRef,
-  EventEmitter,
   HostListener,
   inject,
-  input,
   Input,
   model,
-  Output,
   Signal,
   signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp, faFilter } from '@fortawesome/free-solid-svg-icons';
 
-type Option = { id: string; name: Signal<string>; selected: boolean };
+interface Option { id: string; name: Signal<string>; selected: boolean }
 
 @Component({
   selector: 'app-drop-down-select',

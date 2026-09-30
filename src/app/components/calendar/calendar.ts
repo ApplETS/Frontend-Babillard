@@ -1,7 +1,6 @@
 import {
   Component,
   signal,
-  ViewChild,
   effect,
   Input,
   model,
@@ -167,8 +166,8 @@ export class Calendar {
     this.shownEvents.set(this.calendarEvents);
   }
 
-  selectEvent(arg: any): void {
-    this.selectedCardId.set(arg.extendedProps.eventId);
+  selectEvent(arg: EventContainer): void {
+    this.selectedCardId.set(arg.event.extendedProps.eventId);
   }
 }
 

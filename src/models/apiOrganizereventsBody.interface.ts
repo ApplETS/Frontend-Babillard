@@ -24,6 +24,6 @@ export interface ApiOrganizereventsBody {
   publicationDate?: Date;
   eventStartDate?: Date;
   eventEndDate?: Date;
-  tags?: Array<string>;
+  tags?: string[];
   imageAltText?: string;
 }

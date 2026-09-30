@@ -1,6 +1,6 @@
 import { ActivityArea } from './activity-area';
 
-export type User = {
+export interface User {
   id: string;
   name: string | null;
   email: string | null;
@@ -22,4 +22,4 @@ export type User = {
   webSiteLink: string | null;
   createdAt: string;
   updatedAt: string;
-};
+}

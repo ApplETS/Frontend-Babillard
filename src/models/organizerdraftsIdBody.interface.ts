@@ -25,5 +25,5 @@ export interface OrganizerdraftsIdBody {
    * Either this field should be set (not null) or the Image FormFile field should be set  If none of them are set, the creation will fail
    */
   imageUrl?: string;
-  tags?: Array<string>;
+  tags?: string[];
 }

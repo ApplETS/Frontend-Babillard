@@ -1,13 +1,11 @@
 import {
   Component,
-  effect,
   ElementRef,
   inject,
   Input,
   model,
   signal,
   viewChild,
-  ViewChild,
   viewChildren,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -67,7 +65,7 @@ export class Publications {
       });
   }
 
-  selectCard(cardId: string | null, fromCalendar: boolean = false) {
+  selectCard(cardId: string | null, fromCalendar = false) {
     this.selectedCardId.update((value) => (cardId === value && !fromCalendar ? null : cardId));
 
     if (fromCalendar) {
