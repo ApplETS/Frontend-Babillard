@@ -5,7 +5,7 @@
 			<div class="flex items-center gap-2">
 				<h1 class="text-2xl block" [transloco]="modalTitle()"></h1>
 				@if (modalMode() === ModalMode.modify) {
-				<div class="tooltip tooltip-bottom ml-2" data-tip="t('modal.tool-tip-text')">
+				<div class="tooltip tooltip-bottom ml-2" data-tip="'post.modal.tool-tip-text'">
 					<button type="button"
 						class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
 						!
@@ -24,80 +24,55 @@
 				<div class="grid grid-cols-3 gap-4 w-full">
 					<div class="col-span-2 mt-4">
 						
-							<label for="title" class="block mb-3">
-								<span transloco="modal.title"></span>
-								<!-- @if (modalMode() !== ModalMode.moderator) {
+							<label class="block mb-3">
+								<span transloco="post.modal.title"></span>
+								@if (modalMode() !== ModalMode.moderator) {
 								<span class="text-red">*</span>
-								} -->
-								<div [class.border.border-base-content.rounded-lg]="isDisabled()">
-									<input id="title" [formField]="postForm.title" type="text" class="input input-ghost w-full bg-white cursor-pointer" />
+								}
+								<div [class.disabled]="postForm.title().disabled()">
+									<input [formField]="postForm.title" type="text" class="input input-ghost w-full cursor-pointer" />
 								</div>
 							</label>
 						
-						<!-- <div class="grid grid-cols-2 gap-4">
+						<div class="grid grid-cols-2 gap-4">
 							<div>
 								<div class="mt-3">
-									<label class="block" transloco="modal.published-date">
-										{modalMode !== Constants.publicationModalStatus.moderator &&
-										missingFields.includes(t('modal.published-date')) && (
-										<span style={{ color: 'red' }}>*</span>
-										)}
+									<label class="block">
+										<span transloco="post.modal.published-date"></span>
+										@if (modalMode() !== ModalMode.moderator) {
+											<span class="text-red">*</span>
+										}
+										<div [class.disabled]="postForm.publicationDate().disabled()">
+											<input type="datetime-local" [formField]="postForm.publicationDate" class="input input-ghost w-full" />
+										</div>
 									</label>
-									<div class={`${isDisabled ? 'border border-base-content rounded-lg' : '' }`}>
-										<input type="date" value={publishedDate} class="input input-ghost w-full" onChange={(e)=>
-										setPublishedDate(e.target.value)}
-										disabled={isDisabled}
-										min={dayjs().format('YYYY-MM-DD')}
-										/>
-									</div>
-								</div>
-							</div>
-							<div>
-								<div class="z-30">
-									<label class="block mt-3">{t('modal.activity-area')}</label>
-									<div style={{ pointerEvents: 'none' , opacity: 0.5 }}>
-										<ActivityAreaDropdown items={items} inputName="activity" onItemChange={()=> {}}
-											customStyle="w-full"
-											defaultItem={{
-											title: user?.activityArea ? getActivityAreaName(user?.activityArea, locale) : '',
-											value: user?.activityArea?.id,
-											}}
-											/>
-									</div>
 								</div>
 							</div>
 
-							<div class="mb-3">
+							<div class="mt-3">
 								<label class="block">
-									{t('modal.event-start-date')}{' '}
-									{modalMode !== Constants.publicationModalStatus.moderator &&
-									missingFields.includes(t('modal.event-start-date')) && (
-									<span style={{ color: 'red' }}>*</span>
-									)}
+									<span transloco="post.modal.event-start-date"></span>
+									@if (modalMode() !== ModalMode.moderator) {
+										
+										<span class="text-red">*</span>
+									}
+									<div [class.disabled]="postForm.eventStartDate().disabled()">
+										<input type="datetime-local" [formField]="postForm.eventEndDate" class="input input-ghost w-full" />
+									</div>
 								</label>
-								<div class={`${isDisabled ? 'border border-base-content rounded-lg' : '' }`}>
-									<input type="datetime-local" value={eventStartDate} class="input input-ghost w-full" onChange={(e)=>
-									setEventStartDate(e.target.value)}
-									disabled={isDisabled}
-									max={eventEndDate}
-									/>
-								</div>
 							</div>
 							<div class="mb-3">
 								<label class="block">
-									{t('modal.event-end-date')}{' '}
-									{modalMode !== Constants.publicationModalStatus.moderator &&
-									missingFields.includes(t('modal.event-end-date')) && <span style={{ color: 'red' }}>*</span>}
+									<span transloco="post.modal.event-end-date"></span>
+									@if (modalMode() !== ModalMode.moderator) {
+										<span class="text-red">*</span>
+									}
+									<div [class.disabled]="postForm.eventStartDate().invalid() || postForm.eventEndDate().disabled()">
+										<input type="datetime-local" [formField]="postForm.eventEndDate" class="input input-ghost w-full">
+									</div>
 								</label>
-								<div class={`${isDisabled || !eventStartDate ? 'border border-base-content rounded-lg' : '' }`}>
-									<input type="datetime-local" value={eventEndDate} class="input input-ghost w-full" onChange={(e)=>
-									setEventEndDate(e.target.value)}
-									disabled={isDisabled || !eventStartDate}
-									min={eventStartDate}
-									/>
-								</div>
 							</div>
-						</div> -->
+						</div>
 						<!-- <div class="mb-3">
 							<label class="block">{t('modal.tags-title')}</label>
 							<div class={`flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg`}>
