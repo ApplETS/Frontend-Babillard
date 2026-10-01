@@ -1,5 +1,8 @@
-<div class="fixed inset-0 z-30 flex justify-center items-center">
-  <div class="modal bg-black/30 visible">
+<dialog class="modal" #modal>
+	<div class="modal-box flex justify-center items-center">
 			<ng-content />
 	</div>
-</div>
+	<form method="dialog" class="modal-backdrop">
+		<button class="pointer-unset">Close</button>
+	</form>
+</dialog>
