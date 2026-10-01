@@ -1,4 +1,4 @@
-import { Component, ElementRef, model, viewChild } from '@angular/core';
+import { Component, ElementRef, output, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -7,6 +7,7 @@ import { Component, ElementRef, model, viewChild } from '@angular/core';
 })
 export class Modal {
   modal = viewChild.required<ElementRef<HTMLDialogElement>>("modal");
+  closed = output();
 
   showModal() {
     this.modal().nativeElement.showModal();

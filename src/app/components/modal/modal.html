@@ -1,8 +1,8 @@
-<dialog class="modal" #modal>
+<dialog class="modal" #modal (close)="closed.emit()" (cancel)="closed.emit()">
 	<div class="modal-box flex justify-center items-center">
-			<ng-content />
+		<ng-content />
 	</div>
 	<form method="dialog" class="modal-backdrop">
-		<button class="pointer-unset">Close</button>
+		<button class="cursor-default">Close</button>
 	</form>
 </dialog>
