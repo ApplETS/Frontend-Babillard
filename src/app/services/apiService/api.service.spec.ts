@@ -1,13 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApiService, PaginatedResponse } from "./api.service";
+import { ApiService } from "./api.service";
 import { HttpParams, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, vi } from 'vitest';
 import { environment } from '@environments/environment';
 import { Injectable } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

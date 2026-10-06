@@ -11,25 +11,15 @@ import { TranslocoService } from '@jsverse/transloco';
 describe('ActivityAreaService', () => {
   let service: ActivityAreaService;
   let httpClientSpy: HttpTestingController;
-  let oidcSpy: any;
   let translocoSpy: any;
 
   beforeEach(() => {
-    oidcSpy = {
-      checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
-      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
-      authorize: vi.fn(),
-      logoff: vi.fn().mockReturnValue(of({})),
-      userData$: of({ name: 'Test User' })
-    };
     translocoSpy = {
       getActiveLang: vi.fn()
     }
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: OidcSecurityService, useValue: oidcSpy },
         { provide: TranslocoService, useValue: translocoSpy },
         provideHttpClient(),
         provideHttpClientTesting(),

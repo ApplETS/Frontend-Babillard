@@ -3,8 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { of } from 'rxjs';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { EventsService } from './events.service';
 import { PaginatedResponse } from '@services/apiService/api.service';
 import { Event } from '@models/event';
@@ -12,21 +10,10 @@ import { Event } from '@models/event';
 describe('EventService', () => {
   let service: EventsService;
   let httpClientSpy: HttpTestingController;
-  let oidcSpy: any;
 
   beforeEach(() => {
-    oidcSpy = {
-      checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
-      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
-      authorize: vi.fn(),
-      logoff: vi.fn().mockReturnValue(of({})),
-      userData$: of({ name: 'Test User' })
-    };
-
     TestBed.configureTestingModule({
       providers: [
-        { provide: OidcSecurityService, useValue: oidcSpy },
         provideHttpClient(),
         provideHttpClientTesting(),
         EventsService

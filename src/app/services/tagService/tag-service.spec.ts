@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TagService } from './tag-service';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { environment } from '@environments/environment.development';
 

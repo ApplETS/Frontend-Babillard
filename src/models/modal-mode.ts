@@ -5,5 +5,4 @@ export enum ModalMode {
 		modify,
 		delete,
 		moderator,
-
 }
