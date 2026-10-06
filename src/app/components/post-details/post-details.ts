@@ -1,9 +1,11 @@
 import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
 import { debounce, form, FormField, required, validate } from '@angular/forms/signals';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faMobileScreen } from '@fortawesome/free-solid-svg-icons';
+import { faMobileScreen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
 import { ModalMode } from '@models/modal-mode';
+import { Tag } from '@models/tag';
+import { TagService } from '@services/tagService/tag-service';
 
 @Component({
 	selector: 'app-post-details',
@@ -17,10 +19,13 @@ import { ModalMode } from '@models/modal-mode';
 	`,
 	templateUrl: './post-details.html',
 })
-export class PostDetails {
+export class PostDetails implements OnInit {
 	modalMode = model.required<ModalMode>();
 
 	showPreview = signal(false);
+	tags = signal<Tag[]>([]);
+
+	tagService = inject(TagService);
 
 	postForm = form<PostDetailsForm>(
 		signal<PostDetailsForm>({
@@ -53,6 +58,7 @@ export class PostDetails {
 
 	protected readonly ModalMode = ModalMode;
 	protected readonly mobileScreenIcon = faMobileScreen;
+	protected readonly faXmark = faXmark;
 
 	modalTitle = computed(() => {
 		switch (this.modalMode()) {
@@ -79,6 +85,14 @@ export class PostDetails {
 				return false;
 		}
 	});
+
+	async ngOnInit(): Promise<void> {
+		this.tags.set(await this.tagService.getAllTags());
+	}
+
+	removeTag(tagId: string) {
+		this.postForm.labels().value.update((labels) => labels.filter(label => label !== tagId));
+	}
 }
 
 interface PostDetailsForm {
