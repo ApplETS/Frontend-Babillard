@@ -76,17 +76,17 @@
 						<div class="mb-3">
 							<label class="block" transloco="post.modal.tags-title"></label>
 							<div class="flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg">
-								@for (tag of tags(); track tag.id) {
+								@for (tag of postForm.labels().value(); track tag) {
 									<div key="tag.id" class="badge ${Constants.colors[index]} text-black py-4 px-3 flex items-center
 										whitespace-nowrap overflow-hidden" style="max-width: 'calc(100% - 30px)';">
-										<span class="truncate">{{ tag.name }}</span>
+										<span class="truncate">{{ tags().find(t => t.id === tag)?.name }}</span>
 										@if (postForm.labels().disabled()) {
-											<button (click)="removeTag(tag.id)"><fa-icon class="ml-2" [icon]="faXmark" /></button>
-											<!-- <FontAwesomeIcon icon={faXmark} class="ml-2 cursor-pointer" onClick={()=>
-												setSelectedTags((prevTags) => prevTags.filter((currentTag) => currentTag !== tag))
-												/> -->
+											<button (click)="removeTag(tag)"><fa-icon class="ml-2" [icon]="faXmark" /></button>
 										}
 									</div>
+								}
+								@if (canAddTag()) {
+									<app-combobox [values]="availableTags()" [searchText]="'post.search' | transloco" />
 								}
 								<!-- {!isDisabled &&
 								!addTagButtonIsDisabled &&

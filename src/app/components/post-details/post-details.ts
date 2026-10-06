@@ -1,5 +1,6 @@
 import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
 import { debounce, form, FormField, required, validate } from '@angular/forms/signals';
+import { Combobox } from '@components/combobox/combobox';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faMobileScreen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
@@ -9,7 +10,7 @@ import { TagService } from '@services/tagService/tag-service';
 
 @Component({
 	selector: 'app-post-details',
-	imports: [TranslocoDirective, FaIconComponent, FormField, TranslocoPipe],
+	imports: [TranslocoDirective, FaIconComponent, FormField, TranslocoPipe, Combobox],
 	styles: `
 	@reference "#styles.css";
 
@@ -86,6 +87,10 @@ export class PostDetails implements OnInit {
 		}
 	});
 
+	canAddTag = computed(() => !this.postForm.labels().disabled() && this.postForm.labels().value().length < 5 && this.modalMode() !== ModalMode.moderator);
+
+	availableTags = computed(() => this.tags().filter(tag => !this.postForm.labels().value().includes(tag.id)).map(tag => ({ id: tag.id, name: tag.name })));
+	
 	async ngOnInit(): Promise<void> {
 		this.tags.set(await this.tagService.getAllTags());
 	}
