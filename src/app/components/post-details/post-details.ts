@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, model, OnInit, signal, viewChild } from '@angular/core';
 import { debounce, form, FormField, required, validate } from '@angular/forms/signals';
 import { Combobox } from '@components/combobox/combobox';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -57,6 +57,8 @@ export class PostDetails implements OnInit {
 			})
 		});
 
+	combobox = viewChild.required(Combobox);
+
 	protected readonly ModalMode = ModalMode;
 	protected readonly mobileScreenIcon = faMobileScreen;
 	protected readonly faXmark = faXmark;
@@ -97,6 +99,11 @@ export class PostDetails implements OnInit {
 
 	removeTag(tagId: string) {
 		this.postForm.labels().value.update((labels) => labels.filter(label => label !== tagId));
+	}
+
+	addTag(tagId: string) {
+		this.postForm.labels().value.update((labels) => [...labels, tagId]);
+		this.combobox().resetInput();
 	}
 }
 

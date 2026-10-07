@@ -3,7 +3,7 @@
     <input type="text" 
     [placeholder]="placeholder()"
     class="input input-ghost w-full mb-2"
-    [formField]="searchTerm"
+    [(value)]="searchTerm"
     ngComboboxInput />
   </div>
   <ng-template ngComboboxPopupContainer>

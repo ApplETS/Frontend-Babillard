@@ -86,7 +86,8 @@
 									</div>
 								}
 								@if (canAddTag()) {
-									<app-combobox [values]="availableTags()" [placeholder]="'post.search' | transloco" />
+									<app-combobox [values]="availableTags()" [placeholder]="'post.search' | transloco"
+										(valueChanged)="addTag($event)" />
 								}
 								<!-- {!isDisabled &&
 								!addTagButtonIsDisabled &&
