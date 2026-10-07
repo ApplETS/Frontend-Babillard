@@ -10,6 +10,6 @@
 
 <app-modal (closed)="resetModal()">
     @if (createPost()) {
-      <app-post-details [(modalMode)]="modalMode" />
+      <app-post-details class="w-full" [(modalMode)]="modalMode" />
     }
 </app-modal>

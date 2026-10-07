@@ -1,5 +1,5 @@
 <dialog class="modal" #modal (close)="closed.emit()" (cancel)="closed.emit()">
-	<div class="modal-box w-[85rem] h-[50rem] flex justify-center items-center max-w-full">
+	<div class="modal-box flex justify-center items-center max-w-full">
 		<ng-content />
 	</div>
 	<form method="dialog" class="modal-backdrop">
