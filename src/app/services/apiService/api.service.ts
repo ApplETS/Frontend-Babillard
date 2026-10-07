@@ -1,11 +1,11 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '@environments/environment.development';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { inject, Injectable } from "@angular/core";
+import { environment } from "@environments/environment.development";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { lastValueFrom } from "rxjs";
+import { OidcSecurityService } from "angular-auth-oidc-client";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export abstract class ApiService {
   protected abstract apiController: string;
@@ -29,21 +29,21 @@ export abstract class ApiService {
     routeParameters: unknown[] = [],
     queryParameters: HttpParams = new HttpParams(),
   ): Promise<T> {
-    if (!action.endsWith('/') && routeParameters.length > 0) {
-      action += '/';
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
     }
 
-    console.log('Route parameters:', routeParameters.join('/'));
+    console.log("Route parameters:", routeParameters.join("/"));
 
     if (routeParameters.length > 0) {
-      action += routeParameters.join('/');
+      action += routeParameters.join("/");
     }
     console.log(action);
     let headers = new HttpHeaders({});
 
     if (this.oidcSecurityService.authenticated().isAuthenticated) {
       const accessToken = await lastValueFrom(this.oidcSecurityService.getAccessToken());
-      headers = headers.set('Authorization', `Bearer ${accessToken}`);
+      headers = headers.set("Authorization", `Bearer ${accessToken}`);
     }
 
     return await lastValueFrom(

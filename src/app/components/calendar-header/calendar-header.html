@@ -6,17 +6,17 @@
     <p class="text-lg">
       @switch (viewType()) {
         @case (TimeGridType.month) {
-          {{ currentDate.toDate() | translocoDate: { month: 'long', year: 'numeric' } }}
+          {{ currentDate.toDate() | translocoDate: { month: "long", year: "numeric" } }}
         }
         @case (TimeGridType.week) {
           @let startOfWeek =
-            currentDate.startOf('week').toDate() | translocoDate: { dateStyle: 'long' };
+            currentDate.startOf("week").toDate() | translocoDate: { dateStyle: "long" };
           @let endOfWeek =
-            currentDate.clone().endOf('week').toDate() | translocoDate: { dateStyle: 'long' };
+            currentDate.clone().endOf("week").toDate() | translocoDate: { dateStyle: "long" };
           {{ startOfWeek }} - {{ endOfWeek }}
         }
         @case (TimeGridType.day) {
-          {{ currentDate.toDate() | translocoDate: { dateStyle: 'long' } }}
+          {{ currentDate.toDate() | translocoDate: { dateStyle: "long" } }}
         }
       }
     </p>
@@ -35,7 +35,7 @@
         [class.tab-active]="viewType() === TimeGridType.month"
         (click)="handleViewChange(TimeGridType.month)"
       >
-        {{ 'calendar.month' | transloco }}
+        {{ "calendar.month" | transloco }}
       </button>
       <button
         role="tab"
@@ -43,7 +43,7 @@
         [class.tab-active]="viewType() === TimeGridType.week"
         (click)="handleViewChange(TimeGridType.week)"
       >
-        {{ 'calendar.week' | transloco }}
+        {{ "calendar.week" | transloco }}
       </button>
       <button
         role="tab"
@@ -51,7 +51,7 @@
         [class.tab-active]="viewType() === TimeGridType.day"
         (click)="handleViewChange(TimeGridType.day)"
       >
-        {{ 'calendar.day' | transloco }}
+        {{ "calendar.day" | transloco }}
       </button>
     </div>
   </div>

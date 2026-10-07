@@ -19,11 +19,11 @@ export interface CreateReportRequestDTO {
 }
 export namespace CreateReportRequestDTO {
   export type CategoryEnum =
-    'InappropriateContent' | 'FalseInformation' | 'AbusiveBehavior' | 'ObsoleteInformation';
+    "InappropriateContent" | "FalseInformation" | "AbusiveBehavior" | "ObsoleteInformation";
   export const CategoryEnum = {
-    InappropriateContent: 'InappropriateContent' as CategoryEnum,
-    FalseInformation: 'FalseInformation' as CategoryEnum,
-    AbusiveBehavior: 'AbusiveBehavior' as CategoryEnum,
-    ObsoleteInformation: 'ObsoleteInformation' as CategoryEnum,
+    InappropriateContent: "InappropriateContent" as CategoryEnum,
+    FalseInformation: "FalseInformation" as CategoryEnum,
+    AbusiveBehavior: "AbusiveBehavior" as CategoryEnum,
+    ObsoleteInformation: "ObsoleteInformation" as CategoryEnum,
   };
 }

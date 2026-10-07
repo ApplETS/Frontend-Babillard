@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
-import { App } from './app';
+import { TestBed } from "@angular/core/testing";
+import { App } from "./app";
 
-describe('App', () => {
+describe("App", () => {
   beforeEach(async () => {
     await TestBed.overrideComponent(App, {
       set: {
-        template: '<div></div>',
+        template: "<div></div>",
       },
     }).compileComponents();
   });
 
-  it('should create the app', async () => {
+  it("should create the app", async () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
     await fixture.whenStable();

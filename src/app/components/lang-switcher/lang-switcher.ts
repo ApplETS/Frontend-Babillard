@@ -1,11 +1,11 @@
-import { Component, effect, inject, model } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
-import { FormsModule } from '@angular/forms';
+import { Component, effect, inject, model } from "@angular/core";
+import { TranslocoService } from "@jsverse/transloco";
+import { FormsModule } from "@angular/forms";
 
 @Component({
-  selector: 'app-lang-switcher',
+  selector: "app-lang-switcher",
   imports: [FormsModule],
-  templateUrl: './lang-switcher.html',
+  templateUrl: "./lang-switcher.html",
 })
 export class LangSwitcher {
   private transloco = inject(TranslocoService);

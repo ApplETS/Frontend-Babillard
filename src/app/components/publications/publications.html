@@ -43,11 +43,11 @@
                 size="w-14 h-14"
                 textSize="text-2xl"
                 [user]="event.organizer"
-              ></app-avatar>
+              />
             </div>
             <div class="flex flex-col pt-2 pl-2">
               <p class="text-base font-bold">
-                {{ event.organizer?.organization ?? 'Organisateur' }}
+                {{ event.organizer?.organization ?? "Organisateur" }}
               </p>
               <p class="text-xs text-secondary">
                 {{
@@ -60,7 +60,7 @@
                 class="font-normal ml-auto btn btn-primary"
                 href="/fr/dashboard/profile/${event.organizer?.id}"
               >
-                {{ 'newsPage.view-profile' | transloco }}
+                {{ "newsPage.view-profile" | transloco }}
               </a>
             }
           </div>
@@ -86,7 +86,7 @@
       </div>
     } @empty {
       <div class="flex items-center justify-center h-full">
-        <div class="text-center">{{ 'newsPage.no-events-message' | transloco }}</div>
+        <div class="text-center">{{ "newsPage.no-events-message" | transloco }}</div>
       </div>
     }
   </div>

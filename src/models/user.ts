@@ -1,4 +1,4 @@
-import { ActivityArea } from './activity-area';
+import { ActivityArea } from "./activity-area";
 
 export interface User {
   id: string;

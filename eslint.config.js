@@ -6,7 +6,7 @@ const angular = require('angular-eslint');
 
 module.exports = defineConfig([
   {
-    files: ['**/*.ts'],
+    files: ["**/*.ts"],
     extends: [
       eslint.configs.recommended,
       tseslint.configs.recommended,
@@ -15,25 +15,25 @@ module.exports = defineConfig([
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      '@angular-eslint/directive-selector': [
-        'error',
+      "@angular-eslint/directive-selector": [
+        "error",
         {
-          type: 'attribute',
-          prefix: 'app',
-          style: 'camelCase',
+          type: "attribute",
+          prefix: "app",
+          style: "camelCase",
         },
       ],
-      '@angular-eslint/component-selector': [
-        'error',
+      "@angular-eslint/component-selector": [
+        "error",
         {
-          type: 'element',
-          prefix: 'app',
-          style: 'kebab-case',
+          type: "element",
+          prefix: "app",
+          style: "kebab-case",
         },
       ],
-      'quotes': [
-        'error',
-        'double',
+      quotes: [
+        "error",
+        "double",
         {
           avoidEscape: true,
         },
@@ -41,22 +41,20 @@ module.exports = defineConfig([
     },
   },
   {
-    files: ['**/*.html'],
+    files: ["**/*.html"],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
     rules: {
-      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      "@angular-eslint/template/prefer-self-closing-tags": "error",
     },
   },
   {
-    // Ignore les DTOs générés
-    ignores: ['projects/**/*', 'src/models/**/*'],
-  },
-  // Ignore l'utilisation de any et variable inutiliséesd dans les testes
-  {
-    files: ['**/*.spec.ts'],
+    files: ["**/*.spec.ts"],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
     },
+  },
+  {
+    ignores: [".angular/**/*", "dist/**/*", "projects/**/*", "src/models/**/*"],
   },
 ]);

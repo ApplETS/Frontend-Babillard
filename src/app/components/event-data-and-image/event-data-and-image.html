@@ -3,43 +3,43 @@
     @switch (eventDateStatus) {
       @case (EventDateStatus.onlyStartDate) {
         <p>
-          {{ startDate | translocoDate: { dateStyle: 'long', timeStyle: 'short' } }}
+          {{ startDate | translocoDate: { dateStyle: "long", timeStyle: "short" } }}
         </p>
       }
       @case (EventDateStatus.withBothAndSameDay) {
         <div class="mb-1">
           <span>
-            {{ startDate | translocoDate: { dateStyle: 'long' } }}
-            {{ 'profile.from' | transloco }}
-            {{ startDate | translocoDate: { timeStyle: 'short' } }}
-            {{ 'profile.to' | transloco }}
-            {{ endDate! | translocoDate: { timeStyle: 'short' } }}
+            {{ startDate | translocoDate: { dateStyle: "long" } }}
+            {{ "profile.from" | transloco }}
+            {{ startDate | translocoDate: { timeStyle: "short" } }}
+            {{ "profile.to" | transloco }}
+            {{ endDate! | translocoDate: { timeStyle: "short" } }}
           </span>
         </div>
       }
       @case (EventDateStatus.withBothAndSameMonth) {
         <div class="mb-1">
           <span>
-            {{ startDate | translocoDate: { month: 'long', day: 'numeric' } }}
+            {{ startDate | translocoDate: { month: "long", day: "numeric" } }}
             -
-            {{ endDate! | translocoDate: { dateStyle: 'long' } }}
-            {{ 'profile.from' | transloco }}
-            {{ startDate | translocoDate: { timeStyle: 'short' } }}
-            {{ 'profile.to' | transloco }}
-            {{ endDate! | translocoDate: { timeStyle: 'short' } }}
+            {{ endDate! | translocoDate: { dateStyle: "long" } }}
+            {{ "profile.from" | transloco }}
+            {{ startDate | translocoDate: { timeStyle: "short" } }}
+            {{ "profile.to" | transloco }}
+            {{ endDate! | translocoDate: { timeStyle: "short" } }}
           </span>
         </div>
       }
       @case (EventDateStatus.withBothAndDifferentMonth) {
         <div class="mb-1">
           <span>
-            {{ startDate | translocoDate: { dateStyle: 'long' } }}
-            {{ 'profile.to' | transloco }}
-            {{ startDate | translocoDate: { timeStyle: 'short' } }}
-            {{ 'profile.until' | transloco }}
-            {{ endDate! | translocoDate: { dateStyle: 'long' } }}
-            {{ 'profile.to' | transloco }}
-            {{ endDate! | translocoDate: { timeStyle: 'short' } }}
+            {{ startDate | translocoDate: { dateStyle: "long" } }}
+            {{ "profile.to" | transloco }}
+            {{ startDate | translocoDate: { timeStyle: "short" } }}
+            {{ "profile.until" | transloco }}
+            {{ endDate! | translocoDate: { dateStyle: "long" } }}
+            {{ "profile.to" | transloco }}
+            {{ endDate! | translocoDate: { timeStyle: "short" } }}
           </span>
         </div>
       }

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 import {
   Component,
   EventEmitter,
@@ -7,17 +7,17 @@ import {
   model,
   Output,
   WritableSignal,
-} from '@angular/core';
-import { TimeGridType, CalendarAction } from '@components/calendar/calendar';
-import { DropDownSelectComponent } from '@components/drop-down-select.component/drop-down-select.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faChevronRight, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { TranslocoDatePipe } from '@jsverse/transloco-locale';
-import { ActivityAreaDisplay } from '@services/activityAreaService/activity-area.service';
+} from "@angular/core";
+import { TimeGridType, CalendarAction } from "@components/calendar/calendar";
+import { DropDownSelectComponent } from "@components/drop-down-select.component/drop-down-select.component";
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faChevronLeft, faChevronRight, faCalendarDay } from "@fortawesome/free-solid-svg-icons";
+import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
+import { TranslocoDatePipe } from "@jsverse/transloco-locale";
+import { ActivityAreaDisplay } from "@services/activityAreaService/activity-area.service";
 
 @Component({
-  selector: 'app-calendar-header',
+  selector: "app-calendar-header",
   imports: [
     FaIconComponent,
     DropDownSelectComponent,
@@ -25,7 +25,7 @@ import { ActivityAreaDisplay } from '@services/activityAreaService/activity-area
     TranslocoPipe,
     TranslocoDatePipe,
   ],
-  templateUrl: './calendar-header.html',
+  templateUrl: "./calendar-header.html",
 })
 export class CalendarHeader {
   readonly faChevronLeft = faChevronLeft;

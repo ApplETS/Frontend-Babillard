@@ -9,8 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { TagResponseDTO } from './tagResponseDTO.interface';
-import { UserResponseDTO } from './userResponseDTO.interface';
+import { TagResponseDTO } from "./tagResponseDTO.interface";
+import { UserResponseDTO } from "./userResponseDTO.interface";
 
 export interface EventModeratorResponseDTO {
   id?: string;
@@ -35,14 +35,14 @@ export interface EventModeratorResponseDTO {
 }
 export namespace EventModeratorResponseDTO {
   export type StateEnum =
-    'OnHold' | 'Deleted' | 'Denied' | 'Approved' | 'Published' | 'Draft' | 'All';
+    "OnHold" | "Deleted" | "Denied" | "Approved" | "Published" | "Draft" | "All";
   export const StateEnum = {
-    OnHold: 'OnHold' as StateEnum,
-    Deleted: 'Deleted' as StateEnum,
-    Denied: 'Denied' as StateEnum,
-    Approved: 'Approved' as StateEnum,
-    Published: 'Published' as StateEnum,
-    Draft: 'Draft' as StateEnum,
-    All: 'All' as StateEnum,
+    OnHold: "OnHold" as StateEnum,
+    Deleted: "Deleted" as StateEnum,
+    Denied: "Denied" as StateEnum,
+    Approved: "Approved" as StateEnum,
+    Published: "Published" as StateEnum,
+    Draft: "Draft" as StateEnum,
+    All: "All" as StateEnum,
   };
 }

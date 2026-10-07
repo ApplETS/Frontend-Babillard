@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { ApiService, PaginatedResponse } from '@services/apiService/api.service';
-import { Event } from '@models/event';
-import { HttpParams } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { ApiService, PaginatedResponse } from "@services/apiService/api.service";
+import { Event } from "@models/event";
+import { HttpParams } from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class EventsService extends ApiService {
-  protected override apiController = 'events';
+  protected override apiController = "events";
 
   async getEvents(activityAreasId: string[]): Promise<PaginatedResponse<Event>> {
     return await this.get<PaginatedResponse<Event>>(
-      this.getActionUrl(''),
+      this.getActionUrl(""),
       [],
       new HttpParams({
         fromObject: {

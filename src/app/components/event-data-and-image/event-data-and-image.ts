@@ -1,11 +1,11 @@
-import { Component, inject, Input } from '@angular/core';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { TranslocoDatePipe } from '@jsverse/transloco-locale';
+import { Component, inject, Input } from "@angular/core";
+import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
+import { TranslocoDatePipe } from "@jsverse/transloco-locale";
 
 @Component({
-  selector: 'app-event-data-and-image',
+  selector: "app-event-data-and-image",
   imports: [TranslocoPipe, TranslocoDatePipe],
-  templateUrl: './event-data-and-image.html',
+  templateUrl: "./event-data-and-image.html",
 })
 export class EventDataAndImage {
   @Input({ required: true }) eventStartDate!: string;

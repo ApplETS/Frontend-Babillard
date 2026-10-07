@@ -9,8 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ActivityAreaResponseDTO } from './activityAreaResponseDTO.interface';
-import { FieldOfInterestTagResponseDTO } from './fieldOfInterestTagResponseDTO.interface';
+import { ActivityAreaResponseDTO } from "./activityAreaResponseDTO.interface";
+import { FieldOfInterestTagResponseDTO } from "./fieldOfInterestTagResponseDTO.interface";
 
 export interface UserResponseDTO {
   id?: string;

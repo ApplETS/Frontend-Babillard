@@ -1,5 +1,5 @@
-import { Tag } from './tag';
-import { User } from './user';
+import { Tag } from "./tag";
+import { User } from "./user";
 
 export interface Event {
   id: string;

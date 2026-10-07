@@ -1,21 +1,21 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { Calendar } from '@components/calendar/calendar';
-import { Publications } from '@components/publications/publications';
-import { LoadingSpinner } from '@components/loading-spinner/loading-spinner';
-import { Dashboard } from '@components/dashboard/dashboard';
-import { EventsService } from '@services/dashboard.service/events.service';
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import { Calendar } from "@components/calendar/calendar";
+import { Publications } from "@components/publications/publications";
+import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
+import { Dashboard } from "@components/dashboard/dashboard";
+import { EventsService } from "@services/dashboard.service/events.service";
 import {
   ActivityAreaDisplay,
   ActivityAreaService,
-} from '@services/activityAreaService/activity-area.service';
-import { PaginatedResponse } from '@services/apiService/api.service';
-import { Event } from '@models/event';
-import { toObservable } from '@angular/core/rxjs-interop';
+} from "@services/activityAreaService/activity-area.service";
+import { PaginatedResponse } from "@services/apiService/api.service";
+import { Event } from "@models/event";
+import { toObservable } from "@angular/core/rxjs-interop";
 
 @Component({
-  selector: 'app-dashboard-news',
+  selector: "app-dashboard-news",
   imports: [Calendar, Publications, LoadingSpinner, Dashboard],
-  templateUrl: './dashboard-news.html',
+  templateUrl: "./dashboard-news.html",
 })
 export class DashboardNews implements OnInit {
   eventService = inject(EventsService);

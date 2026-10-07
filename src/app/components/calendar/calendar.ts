@@ -1,28 +1,28 @@
-import { Component, signal, effect, Input, model, computed, viewChild } from '@angular/core';
-import { CalendarHeader } from '@components/calendar-header/calendar-header';
-import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
-import { CalendarOptions, EventInput, EventSourceInput } from '@fullcalendar/core/index.js';
-import frLocale from '@fullcalendar/core/locales/fr';
-import enLocale from '@fullcalendar/core/locales/en-gb';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import timeGridDay from '@fullcalendar/timegrid';
-import momentPlugin from '@fullcalendar/moment';
-import interactionPlugin from '@fullcalendar/interaction';
-import moment from 'moment';
-import { PaginatedResponse } from '@services/apiService/api.service';
-import { Event } from '@models/event';
-import { EventContainer } from '@components/event-container/event-container';
-import { ActivityAreaDisplay } from '@services/activityAreaService/activity-area.service';
+import { Component, signal, effect, Input, model, computed, viewChild } from "@angular/core";
+import { CalendarHeader } from "@components/calendar-header/calendar-header";
+import { FullCalendarModule, FullCalendarComponent } from "@fullcalendar/angular";
+import { CalendarOptions, EventInput, EventSourceInput } from "@fullcalendar/core/index.js";
+import frLocale from "@fullcalendar/core/locales/fr";
+import enLocale from "@fullcalendar/core/locales/en-gb";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import timeGridDay from "@fullcalendar/timegrid";
+import momentPlugin from "@fullcalendar/moment";
+import interactionPlugin from "@fullcalendar/interaction";
+import moment from "moment";
+import { PaginatedResponse } from "@services/apiService/api.service";
+import { Event } from "@models/event";
+import { EventContainer } from "@components/event-container/event-container";
+import { ActivityAreaDisplay } from "@services/activityAreaService/activity-area.service";
 
 @Component({
-  selector: 'app-calendar',
+  selector: "app-calendar",
   imports: [CalendarHeader, FullCalendarModule, EventContainer],
-  templateUrl: './calendar.html',
+  templateUrl: "./calendar.html",
 })
 export class Calendar {
   private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
-  readonly colors = ['#E7A455', '#EA7CB7', '#06B6D4', '#64C788', '#EA7CB7', '#848BDB'];
+  readonly colors = ["#E7A455", "#EA7CB7", "#06B6D4", "#64C788", "#EA7CB7", "#848BDB"];
 
   activityAreas = model<ActivityAreaDisplay[] | null>(null);
 
@@ -34,22 +34,22 @@ export class Calendar {
   readonly TimeGridType = TimeGridType;
   options = signal<CalendarOptions>({
     locales: [frLocale, enLocale],
-    locale: 'fr',
-    height: '100%',
+    locale: "fr",
+    height: "100%",
     headerToolbar: false,
     initialView: this.view(),
     viewClassNames: () => {
-      return ['rounded-lg', 'border', 'border-gray-300', 'overflow-hidden'];
+      return ["rounded-lg", "border", "border-gray-300", "overflow-hidden"];
     },
     plugins: [dayGridPlugin, interactionPlugin, momentPlugin, timeGridPlugin, timeGridDay],
     eventTimeFormat: {
       hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
+      hour: "2-digit",
+      minute: "2-digit",
     },
-    eventDisplay: 'block',
-    eventOrder: 'start',
-    eventClassNames: ['mb-3'],
+    eventDisplay: "block",
+    eventOrder: "start",
+    eventClassNames: ["mb-3"],
     dayMaxEvents: this.eventTreshold,
   });
   selectedCalendarDate = moment(Date.now());
@@ -121,17 +121,17 @@ export class Calendar {
         }
 
         const daySegments = [];
-        const currentDay = start.clone().startOf('day');
-        const lastDay = end.clone().startOf('day');
+        const currentDay = start.clone().startOf("day");
+        const lastDay = end.clone().startOf("day");
 
-        while (currentDay.isSameOrBefore(lastDay, 'day')) {
-          const isFirstDay = currentDay.isSame(start, 'day');
-          const isLastDay = currentDay.isSame(end, 'day');
+        while (currentDay.isSameOrBefore(lastDay, "day")) {
+          const isFirstDay = currentDay.isSame(start, "day");
+          const isLastDay = currentDay.isSame(end, "day");
           const segmentStart = isFirstDay ? start.clone() : currentDay.clone();
-          const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf('day');
+          const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf("day");
 
           daySegments.push({
-            id: `${currentDay.format('YYYY-MM-DD')}-${event.id}`,
+            id: `${currentDay.format("YYYY-MM-DD")}-${event.id}`,
             title: event.title,
             start: segmentStart.toISOString(),
             end: segmentEnd.toISOString(),
@@ -146,7 +146,7 @@ export class Calendar {
               ],
           });
 
-          currentDay.add(1, 'day');
+          currentDay.add(1, "day");
         }
 
         return daySegments;
@@ -164,13 +164,13 @@ export class Calendar {
 }
 
 export enum TimeGridType {
-  month = 'dayGridMonth',
-  week = 'timeGridWeek',
-  day = 'timeGridDay',
+  month = "dayGridMonth",
+  week = "timeGridWeek",
+  day = "timeGridDay",
 }
 
 export enum CalendarAction {
-  previous = 'prev',
-  next = 'next',
-  today = 'today',
+  previous = "prev",
+  next = "next",
+  today = "today",
 }

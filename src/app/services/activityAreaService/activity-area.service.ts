@@ -1,23 +1,23 @@
-import { HttpParams } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
-import { ActivityAreaResponseDTO } from '@models/activityAreaResponseDTO.interface';
-import { ActivityAreaResponseDTOResponse } from '@models/activityAreaResponseDTOResponse.interface';
-import { ApiService } from '@services/apiService/api.service';
+import { HttpParams } from "@angular/common/http";
+import { computed, inject, Injectable } from "@angular/core";
+import { TranslocoService } from "@jsverse/transloco";
+import { ActivityAreaResponseDTO } from "@models/activityAreaResponseDTO.interface";
+import { ActivityAreaResponseDTOResponse } from "@models/activityAreaResponseDTOResponse.interface";
+import { ApiService } from "@services/apiService/api.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ActivityAreaService extends ApiService {
-  override apiController = 'activity-areas';
+  override apiController = "activity-areas";
   private translationService = inject(TranslocoService);
 
   public async getActivityAreas(search?: string): Promise<ActivityAreaDisplay[]> {
     const result =
       search === undefined
-        ? await this.get<ActivityAreaResponseDTOResponse>(this.getActionUrl(''))
+        ? await this.get<ActivityAreaResponseDTOResponse>(this.getActionUrl(""))
         : await this.get<ActivityAreaResponseDTOResponse>(
-            this.getActionUrl(''),
+            this.getActionUrl(""),
             [],
             new HttpParams({
               fromObject: {
@@ -53,6 +53,6 @@ export class ActivityAreaDisplay {
 
   name = computed(() => {
     const language = this.translationService.getActiveLang();
-    return language === 'fr' ? this.nameFr : this.nameEn;
+    return language === "fr" ? this.nameFr : this.nameEn;
   });
 }

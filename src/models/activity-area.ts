@@ -7,5 +7,5 @@ export function getActivityAreaName(
   actvityArea: ActivityArea | null | undefined,
   locale: string,
 ): string {
-  return (locale === 'fr' ? actvityArea?.nameFr : actvityArea?.nameEn) ?? '';
+  return (locale === "fr" ? actvityArea?.nameFr : actvityArea?.nameEn) ?? "";
 }

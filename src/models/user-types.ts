@@ -1,4 +1,4 @@
 export enum UserType {
-  ORGANIZER = 'Organizer',
-  MODERATOR = 'Moderator',
+  ORGANIZER = "Organizer",
+  MODERATOR = "Moderator",
 }

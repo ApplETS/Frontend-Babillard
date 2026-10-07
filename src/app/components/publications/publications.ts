@@ -7,26 +7,26 @@ import {
   signal,
   viewChild,
   viewChildren,
-} from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+} from "@angular/core";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import {
   faDownLeftAndUpRightToCenter,
   faUpRightAndDownLeftFromCenter,
-} from '@fortawesome/free-solid-svg-icons';
-import { Event } from '@models/event';
-import { EventDataAndImage } from '@components/event-data-and-image/event-data-and-image';
-import { Avatar } from '@components/avatar/avatar';
-import { MarkdownComponent } from 'ngx-markdown';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { PaginatedResponse } from '@services/apiService/api.service';
-import { getActivityAreaName } from '@models/activity-area';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { skip } from 'rxjs';
+} from "@fortawesome/free-solid-svg-icons";
+import { Event } from "@models/event";
+import { EventDataAndImage } from "@components/event-data-and-image/event-data-and-image";
+import { Avatar } from "@components/avatar/avatar";
+import { MarkdownComponent } from "ngx-markdown";
+import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
+import { PaginatedResponse } from "@services/apiService/api.service";
+import { getActivityAreaName } from "@models/activity-area";
+import { toObservable } from "@angular/core/rxjs-interop";
+import { skip } from "rxjs";
 
 @Component({
-  selector: 'app-publications',
+  selector: "app-publications",
   imports: [FontAwesomeModule, EventDataAndImage, Avatar, MarkdownComponent, TranslocoPipe],
-  templateUrl: './publications.html',
+  templateUrl: "./publications.html",
   styles: `
     .selected {
       @apply scale-[1.07] transition-all z-10 duration-350;
@@ -42,8 +42,8 @@ export class Publications {
   translocoService = inject(TranslocoService);
   selectedCardId = model<string | null>(null);
 
-  containerRef = viewChild.required<ElementRef<HTMLDivElement>>('cardContainer');
-  cardRefs = viewChildren<ElementRef<HTMLDivElement>>('card');
+  containerRef = viewChild.required<ElementRef<HTMLDivElement>>("cardContainer");
+  cardRefs = viewChildren<ElementRef<HTMLDivElement>>("card");
   readonly faDownLeftAndUpRightToCenter = faDownLeftAndUpRightToCenter;
   readonly faUpRightAndDownLeftFromCenter = faUpRightAndDownLeftFromCenter;
 
@@ -74,10 +74,10 @@ export class Publications {
   }
 
   handleCardMouseUp(e: MouseEvent, cardId: string | null) {
-    if ((e.target as HTMLElement).closest('a')) {
+    if ((e.target as HTMLElement).closest("a")) {
       return;
     }
-    if ((e.target as HTMLElement).closest('button')) {
+    if ((e.target as HTMLElement).closest("button")) {
       return;
     }
     if (this.dragStart().isDragging) {
@@ -115,7 +115,7 @@ export class Publications {
     if (cardIndex === 0) {
       container.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
       return;
     }
@@ -130,7 +130,7 @@ export class Publications {
 
       container.scrollTo({
         top: clampedScrollPosition,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }, delay);
   }

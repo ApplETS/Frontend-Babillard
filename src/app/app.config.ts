@@ -1,21 +1,21 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideTransloco } from '@jsverse/transloco';
-import { provideTranslocoPersistTranslations } from '@jsverse/transloco-persist-translations';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from "@angular/core";
+import { provideRouter } from "@angular/router";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import { provideTransloco } from "@jsverse/transloco";
+import { provideTranslocoPersistTranslations } from "@jsverse/transloco-persist-translations";
 
-import { routes } from './app.routes';
-import { TranslocoHttpLoader } from './core/systems/i18n/transloco-loader';
-import { provideTranslocoLocale } from '@jsverse/transloco-locale';
-import { provideTranslocoPersistLang } from '@jsverse/transloco-persist-lang';
-import { authConfig } from './auth/auth.config';
+import { routes } from "./app.routes";
+import { TranslocoHttpLoader } from "./core/systems/i18n/transloco-loader";
+import { provideTranslocoLocale } from "@jsverse/transloco-locale";
+import { provideTranslocoPersistLang } from "@jsverse/transloco-persist-lang";
+import { authConfig } from "./auth/auth.config";
 import {
   AbstractSecurityStorage,
   authInterceptor,
   DefaultLocalStorageService,
   provideAuth,
-} from 'angular-auth-oidc-client';
-import { provideMarkdown } from 'ngx-markdown';
+} from "angular-auth-oidc-client";
+import { provideMarkdown } from "ngx-markdown";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,8 +24,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor()])),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'fr'],
-        defaultLang: 'en',
+        availableLangs: ["en", "fr"],
+        defaultLang: "en",
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },

@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal, WritableSignal } from '@angular/core';
-import { ThemeSwitcher } from './theme-switcher';
-import { ThemeService } from '../../services/themeService/theme.service';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { signal, WritableSignal } from "@angular/core";
+import { ThemeSwitcher } from "./theme-switcher";
+import { ThemeService } from "../../services/themeService/theme.service";
 
-describe('ThemeSwitcher', () => {
+describe("ThemeSwitcher", () => {
   let component: ThemeSwitcher;
   let fixture: ComponentFixture<ThemeSwitcher>;
   let mockThemeService: { isDark: WritableSignal<boolean>; onToogleDarkMode(): void };

@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslocoService } from '@jsverse/transloco';
-import { vi } from 'vitest';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { TranslocoService } from "@jsverse/transloco";
+import { vi } from "vitest";
 
-import { Publications } from './publications';
+import { Publications } from "./publications";
 
-describe('Publications', () => {
+describe("Publications", () => {
   let component: Publications;
   let fixture: ComponentFixture<Publications>;
 
@@ -15,7 +15,7 @@ describe('Publications', () => {
   beforeEach(async () => {
     TestBed.overrideComponent(Publications, {
       set: {
-        template: '<div #cardContainer></div>',
+        template: "<div #cardContainer></div>",
       },
     });
 
@@ -36,7 +36,7 @@ describe('Publications', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
