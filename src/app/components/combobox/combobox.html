@@ -1,29 +1,26 @@
-		<div class="dropdown w-fit z-40">
-			<button
-				type="button"
-				class="badge py-4 px-4 bg-base-300 rounded-full hover:bg-secondary text-black dark:hover:bg-base-100 dark:text-white"
-			>
-				+
-			</button>
-
-			<!-- {isDropdownOpen && ( -->
-				<div class="dropdown-content menu p-4 shadow bg-base-100 rounded-box w-60 mb-1">
-					<input
-						type="text"
-						[placeholder]="searchText()"
-						class="input input-ghost w-full mb-2"
-            [formField]="searchTerm"
-					/>
-					<ul className="max-h-40 overflow-y-auto">
-            @for (value of values(); track value.id) {
-
-              <li>
-                <button type="button" class="w-full text-left">
-                  {{value.name}}
-                </button>
-              </li>
-            }
-					</ul>
-				</div>
-			<!-- )} -->
-		</div>
+<div ngCombobox filterMode="highlight" >
+  <div #origin class="dropdown w-fit z-40">
+    <input type="text" 
+    [placeholder]="placeholder()"
+    class="input input-ghost w-full mb-2"
+    [formField]="searchTerm"
+    ngComboboxInput />
+  </div>
+  <ng-template ngComboboxPopupContainer>
+    <ng-template 
+      [cdkConnectedOverlay]="{origin, usePopover: 'inline', matchWidth: true}"
+      [cdkConnectedOverlayOpen]="true">
+      <div class="dropdown-content menu p-4 shadow bg-base-100 rounded-box w-60 mb-1">
+        <div ngListbox class="max-h-40 overflow-y-auto">
+          @for (value of showedValues(); track value.id) {
+          <div ngOption [value]="value.id" [label]="value.name" class="w-full text-left">
+            {{ value.name }}
+          </div>
+          } @empty {
+            <div class="w-full text-left" transloco="combobox.no-result"></div>
+          }
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

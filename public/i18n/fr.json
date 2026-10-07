@@ -390,5 +390,8 @@
 	"MDXEditor": {
 		"link-text": "Texte du lien",
 		"link-url": "Lien"
+	},
+	"combobox": {
+		"no-result": "Aucun résultat trouvé"
 	}
 }

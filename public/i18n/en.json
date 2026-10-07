@@ -390,5 +390,8 @@
   "mdxEditor": {
     "link-text": "Link text",
     "link-url": "Link"
+  },
+  "combobox": {
+    "no-result": "No result found"
   }
 }

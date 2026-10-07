@@ -86,7 +86,7 @@
 									</div>
 								}
 								@if (canAddTag()) {
-									<app-combobox [values]="availableTags()" [searchText]="'post.search' | transloco" />
+									<app-combobox [values]="availableTags()" [placeholder]="'post.search' | transloco" />
 								}
 								<!-- {!isDisabled &&
 								!addTagButtonIsDisabled &&
