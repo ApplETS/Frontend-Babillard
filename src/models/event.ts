@@ -8,7 +8,7 @@ export interface Event {
   imageUrl: string;
   imageAltText: string;
   eventStartDate: string;
- 	eventEndDate: string;
+  eventEndDate: string;
   organizer: User | null;
   tags: Tag[];
 }

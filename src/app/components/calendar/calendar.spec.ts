@@ -1,15 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { Calendar } from './calendar';
+import { Calendar } from "./calendar";
 
-describe('Calendar', () => {
+describe("Calendar", () => {
   let component: Calendar;
   let fixture: ComponentFixture<Calendar>;
 
   beforeEach(async () => {
     TestBed.overrideComponent(Calendar, {
       set: {
-        template: '<div></div>',
+        template: "<div></div>",
       },
     });
 
@@ -22,7 +22,7 @@ describe('Calendar', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

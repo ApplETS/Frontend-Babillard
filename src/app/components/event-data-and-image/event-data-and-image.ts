@@ -1,11 +1,11 @@
-import { Component, inject, Input } from '@angular/core';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { TranslocoDatePipe } from '@jsverse/transloco-locale';
+import { Component, inject, Input } from "@angular/core";
+import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
+import { TranslocoDatePipe } from "@jsverse/transloco-locale";
 
 @Component({
-  selector: 'app-event-data-and-image',
+  selector: "app-event-data-and-image",
   imports: [TranslocoPipe, TranslocoDatePipe],
-  templateUrl: './event-data-and-image.html',
+  templateUrl: "./event-data-and-image.html",
 })
 export class EventDataAndImage {
   @Input({ required: true }) eventStartDate!: string;
@@ -22,7 +22,7 @@ export class EventDataAndImage {
   get endDate(): Date | null {
     return this.eventEndDate ? new Date(this.eventEndDate) : null;
   }
-  
+
   get eventDateStatus(): EventDateStatus {
     if (!this.eventEndDate) {
       return EventDateStatus.onlyStartDate;
@@ -30,7 +30,10 @@ export class EventDataAndImage {
 
     if (this.startDate.getFullYear() !== this.endDate?.getFullYear()) {
       return EventDateStatus.withBothAndDifferentMonth;
-    } else if (this.startDate.getMonth() === this.endDate?.getMonth() && this.startDate.getDate() === this.endDate?.getDate()) {
+    } else if (
+      this.startDate.getMonth() === this.endDate?.getMonth() &&
+      this.startDate.getDate() === this.endDate?.getDate()
+    ) {
       return EventDateStatus.withBothAndSameDay;
     } else {
       return EventDateStatus.withBothAndSameMonth;
@@ -42,5 +45,5 @@ enum EventDateStatus {
   onlyStartDate,
   withBothAndSameDay,
   withBothAndSameMonth,
-  withBothAndDifferentMonth
+  withBothAndDifferentMonth,
 }

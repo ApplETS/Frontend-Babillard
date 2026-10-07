@@ -9,29 +9,29 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ActivityAreaResponseDTO } from './activityAreaResponseDTO.interface';
-import { FieldOfInterestTagResponseDTO } from './fieldOfInterestTagResponseDTO.interface';
+import { ActivityAreaResponseDTO } from "./activityAreaResponseDTO.interface";
+import { FieldOfInterestTagResponseDTO } from "./fieldOfInterestTagResponseDTO.interface";
 
 export interface UserResponseDTO {
-    id?: string;
-    name?: string;
-    email?: string;
-    avatarUrl?: string;
-    type?: string;
-    organization?: string;
-    activityArea?: ActivityAreaResponseDTO;
-    fieldsOfInterests?: FieldOfInterestTagResponseDTO[];
-    isActive?: boolean;
-    hasLoggedIn?: boolean;
-    profileDescription?: string;
-    facebookLink?: string;
-    instagramLink?: string;
-    tikTokLink?: string;
-    xLink?: string;
-    discordLink?: string;
-    linkedInLink?: string;
-    redditLink?: string;
-    webSiteLink?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+  id?: string;
+  name?: string;
+  email?: string;
+  avatarUrl?: string;
+  type?: string;
+  organization?: string;
+  activityArea?: ActivityAreaResponseDTO;
+  fieldsOfInterests?: FieldOfInterestTagResponseDTO[];
+  isActive?: boolean;
+  hasLoggedIn?: boolean;
+  profileDescription?: string;
+  facebookLink?: string;
+  instagramLink?: string;
+  tikTokLink?: string;
+  xLink?: string;
+  discordLink?: string;
+  linkedInLink?: string;
+  redditLink?: string;
+  webSiteLink?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

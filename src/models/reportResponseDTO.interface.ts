@@ -9,25 +9,26 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { EventResponseDTO } from './eventResponseDTO.interface';
+import { EventResponseDTO } from "./eventResponseDTO.interface";
 
 export interface ReportResponseDTO {
-    id?: string;
-    reason?: string;
-    /**
-     * 1 - InappropriateContent  2 - FalseInformation  3 - AbusiveBehavior  4 - ObsoleteInformation
-     */
-    category?: ReportResponseDTO.CategoryEnum;
-    publication?: EventResponseDTO;
-    createdAt?: Date;
-    updatedAt?: Date;
+  id?: string;
+  reason?: string;
+  /**
+   * 1 - InappropriateContent  2 - FalseInformation  3 - AbusiveBehavior  4 - ObsoleteInformation
+   */
+  category?: ReportResponseDTO.CategoryEnum;
+  publication?: EventResponseDTO;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 export namespace ReportResponseDTO {
-    export type CategoryEnum = 'InappropriateContent' | 'FalseInformation' | 'AbusiveBehavior' | 'ObsoleteInformation';
-    export const CategoryEnum = {
-        InappropriateContent: 'InappropriateContent' as CategoryEnum,
-        FalseInformation: 'FalseInformation' as CategoryEnum,
-        AbusiveBehavior: 'AbusiveBehavior' as CategoryEnum,
-        ObsoleteInformation: 'ObsoleteInformation' as CategoryEnum
-    };
+  export type CategoryEnum =
+    "InappropriateContent" | "FalseInformation" | "AbusiveBehavior" | "ObsoleteInformation";
+  export const CategoryEnum = {
+    InappropriateContent: "InappropriateContent" as CategoryEnum,
+    FalseInformation: "FalseInformation" as CategoryEnum,
+    AbusiveBehavior: "AbusiveBehavior" as CategoryEnum,
+    ObsoleteInformation: "ObsoleteInformation" as CategoryEnum,
+  };
 }

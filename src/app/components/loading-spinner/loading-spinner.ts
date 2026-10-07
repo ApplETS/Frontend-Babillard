@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-loading-spinner',
+  selector: "app-loading-spinner",
   imports: [],
-  templateUrl: './loading-spinner.html',
+  templateUrl: "./loading-spinner.html",
 })
 export class LoadingSpinner {}
