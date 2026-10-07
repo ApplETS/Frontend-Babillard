@@ -31,18 +31,27 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
+      'quotes': [
+        'error',
+        'double',
+        {
+          avoidEscape: true,
+        },
+      ],
     },
   },
   {
     files: ['**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
-    rules: {},
+    rules: {
+      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+    },
   },
   {
     // Ignore les DTOs générés
     ignores: ['projects/**/*', 'src/models/**/*'],
   },
-  // Ignore l'utilisation de any et variable inutilisées dans les testes
+  // Ignore l'utilisation de any et variable inutiliséesd dans les testes
   {
     files: ['**/*.spec.ts'],
     rules: {
