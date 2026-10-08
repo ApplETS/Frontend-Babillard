@@ -4,6 +4,7 @@ import { Combobox } from '@components/combobox/combobox';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faMobileScreen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { Constants } from '@models/constants';
 import { ModalMode } from '@models/modal-mode';
 import { Tag } from '@models/tag';
 import { TagService } from '@services/tagService/tag-service';
@@ -27,6 +28,7 @@ export class PostDetails implements OnInit {
 	tags = signal<Tag[]>([]);
 
 	tagService = inject(TagService);
+	protected readonly Constants = Constants;
 
 	postForm = form<PostDetailsForm>(
 		signal<PostDetailsForm>({
