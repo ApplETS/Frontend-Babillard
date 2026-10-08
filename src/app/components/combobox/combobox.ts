@@ -46,6 +46,10 @@ export class Combobox {
     afterRenderEffect(() => {
       if (!this.combobox()?.expanded()) {
         setTimeout(() => this.listbox()?.element.scrollTo(0, 0), 150);
+        const option = this.options().find((opt) => opt.active());
+        if (option !== undefined) {
+          this.valueChanged.emit(option.value());
+        }
       }
     });
   }
