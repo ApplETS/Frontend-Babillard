@@ -1,12 +1,12 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { ApiService } from '@services/apiService/api.service';
-import { UserResponseDTO } from '@models/userResponseDTO.interface';
+import { Injectable, signal } from "@angular/core";
+import { ApiService } from "@services/apiService/api.service";
+import { UserResponseDTO } from "@models/userResponseDTO.interface";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService extends ApiService {
-  protected override apiController: string = "me";
+  protected override apiController = "me";
 
   public isAuthenticated = signal<boolean>(false);
   public accessToken = signal<string | undefined>(undefined);
@@ -14,8 +14,8 @@ export class AuthService extends ApiService {
 
   public initAuth() {
     this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
-      console.log('--- [AuthService] checkAuth ---');
-      console.log('Est authentifié :', isAuthenticated);
+      console.log("--- [AuthService] checkAuth ---");
+      console.log("Est authentifié :", isAuthenticated);
 
       this.isAuthenticated.set(isAuthenticated);
       this.accessToken.set(accessToken);
@@ -39,15 +39,13 @@ export class AuthService extends ApiService {
 
   public async getUserInfo() {
     try {
-      const res = await 
-        this.get<{data: UserResponseDTO, error: any}>(this.getActionUrl(""));
-      console.log('Profil récupéré du backend:', res.data);
+      const res = await this.get<{ data: UserResponseDTO; error: string }>(this.getActionUrl(""));
+      console.log("Profil récupéré du backend:", res.data);
       this.userInfo.set(res.data);
       return res.data;
     } catch (error) {
-      console.error('auth.service.ts: Erreur lors de la récupération du profil:', error);
+      console.error("auth.service.ts: Erreur lors de la récupération du profil:", error);
       throw error;
     }
   }
-
 }

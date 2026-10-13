@@ -1,27 +1,25 @@
-import { Component, computed, inject, OnInit, signal, Signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, Signal } from "@angular/core";
 import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
-import { faSignIn, faGear, faSignOut } from "@fortawesome/free-solid-svg-icons"
+import { faSignIn, faGear, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { LangSwitcher } from "@components/lang-switcher/lang-switcher";
 import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
-import { ActivatedRoute, isActive, Router, RouterLink } from '@angular/router';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { AuthService } from '@services/authService/auth.service';
-import { UserType } from '@models/user-types';
-import { ImgWithPlaceholder } from '@components/img-with-placeholder/img-with-placeholder';
-import { Avatar } from '@components/avatar/avatar';
-import { User } from '@models/user';
+import { isActive, Router, RouterLink } from "@angular/router";
+import { OidcSecurityService } from "angular-auth-oidc-client";
+import { AuthService } from "@services/authService/auth.service";
+import { UserType } from "@models/user-types";
+import { Avatar } from "@components/avatar/avatar";
 
-type RouteInfo = {
+interface RouteInfo {
   route: string;
   label: string;
   activeRoute: Signal<boolean>;
 }
 
 @Component({
-  selector: 'app-header',
+  selector: "app-header",
   imports: [ThemeSwitcher, FaIconComponent, LangSwitcher, TranslocoPipe, RouterLink, Avatar],
-  templateUrl: './header.html',
+  templateUrl: "./header.html",
 })
 export class HeaderComponent implements OnInit {
   signIn = faSignIn;
@@ -36,17 +34,27 @@ export class HeaderComponent implements OnInit {
 
   routes = computed<RouteInfo[]>(() => {
     if (!this.authService.isAuthenticated()) {
-      return [
-        { route: "/", label: "Babillard", activeRoute: computed(() => false) }
-      ];
+      return [{ route: "/", label: "Babillard", activeRoute: computed(() => false) }];
     } else {
       const routesPart = [
-        { route: "/", label: "dashboard.news", activeRoute: isActive("/dashboard/news", this.router) },
-        { route: "/posts", label: "navbar.publication", activeRoute: isActive("/posts", this.router) },
+        {
+          route: "/",
+          label: "dashboard.news",
+          activeRoute: isActive("/dashboard/news", this.router),
+        },
+        {
+          route: "/posts",
+          label: "navbar.publication",
+          activeRoute: isActive("/posts", this.router),
+        },
       ];
 
       if (this.authService.userInfo()?.type?.match(UserType.MODERATOR)) {
-        routesPart.push({ route: "/approval", label: "navbar.approval", activeRoute: isActive("/approval", this.router) })
+        routesPart.push({
+          route: "/approval",
+          label: "navbar.approval",
+          activeRoute: isActive("/approval", this.router),
+        });
       }
       return routesPart;
     }
@@ -67,7 +75,9 @@ export class HeaderComponent implements OnInit {
       return "";
     }
 
-    return user.type?.match(UserType.MODERATOR) ? this.translocoService.translate("moderator") : user.organization;
+    return user.type?.match(UserType.MODERATOR)
+      ? this.translocoService.translate("moderator")
+      : user.organization;
   });
 
   area = computed(() => {

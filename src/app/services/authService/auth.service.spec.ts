@@ -1,14 +1,14 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthService } from './auth.service';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Router } from '@angular/router';
-import { of } from 'rxjs';
-import { vi } from 'vitest';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { environment } from '@environments/environment';
+import { TestBed } from "@angular/core/testing";
+import { AuthService } from "./auth.service";
+import { OidcSecurityService } from "angular-auth-oidc-client";
+import { Router } from "@angular/router";
+import { of } from "rxjs";
+import { vi } from "vitest";
+import { provideHttpClient } from "@angular/common/http";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { environment } from "@environments/environment";
 
-describe('AuthService', () => {
+describe("AuthService", () => {
   let service: AuthService;
   let oidcSpy: any;
   let routerSpy: any;
@@ -16,12 +16,12 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     oidcSpy = {
-      checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: 'mock-token' })),
-      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: 'mock-token' }),
-      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
+      checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: "mock-token" })),
+      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: "mock-token" }),
+      getAccessToken: vi.fn().mockReturnValue(of("mock-token")),
       authorize: vi.fn(),
       logoff: vi.fn().mockReturnValue(of({})),
-      userData$: of({ name: 'Test User' })
+      userData$: of({ name: "Test User" }),
     };
     routerSpy = {};
 
@@ -31,7 +31,7 @@ describe('AuthService', () => {
         { provide: OidcSecurityService, useValue: oidcSpy },
         { provide: Router, useValue: routerSpy },
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
       ],
     });
     service = TestBed.inject(AuthService);
@@ -42,31 +42,30 @@ describe('AuthService', () => {
     mockHttp.verify();
   });
 
-  it('should initialize authentification', () => {
-    const getUserInfoSpy = vi.spyOn(service, 'getUserInfo').mockResolvedValue(undefined as any);
+  it("should initialize authentification", () => {
+    const getUserInfoSpy = vi.spyOn(service, "getUserInfo").mockResolvedValue(undefined as any);
 
     service.initAuth();
 
     expect(oidcSpy.checkAuth).toHaveBeenCalled();
     expect(service.isAuthenticated()).toBe(true);
-    expect(service.accessToken()).toBe('mock-token');
+    expect(service.accessToken()).toBe("mock-token");
     expect(getUserInfoSpy).toHaveBeenCalled();
   });
 
-  it('should handle login', () => {
+  it("should handle login", () => {
     service.login();
     expect(oidcSpy.authorize).toHaveBeenCalled();
   });
 
-    it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
-  describe('getUserInfo', () => {
-
-    it('should return data on success', async () => {
+  describe("getUserInfo", () => {
+    it("should return data on success", async () => {
       const mockResponse = {
-        data: { id: 1, name: 'John Doe' },
-        error: null
+        data: { id: 1, name: "John Doe" },
+        error: null,
       };
 
       // Trigger the service method
@@ -74,8 +73,11 @@ describe('AuthService', () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       // Expect a GET request to the specific URL
-      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
-      expect(req.request.method).toBe('GET');
+      const req = mockHttp.expectOne(
+        `${environment.API_URL}/api/me/`,
+        "Calling getUserInfo endpoint",
+      );
+      expect(req.request.method).toBe("GET");
 
       // Provide the mock response
       req.flush(mockResponse);
@@ -84,17 +86,19 @@ describe('AuthService', () => {
       expect(result).toEqual(mockResponse.data);
     });
 
-    it('should throw error on failure', async () => {
+    it("should throw error on failure", async () => {
       const promise = service.getUserInfo();
       await new Promise((resolve) => setTimeout(resolve, 0));
 
-      const req = mockHttp.expectOne(`${environment.API_URL}/api/me/`, "Calling getUserInfo endpoint");
+      const req = mockHttp.expectOne(
+        `${environment.API_URL}/api/me/`,
+        "Calling getUserInfo endpoint",
+      );
 
       // Simulate a 404 error
-      req.error(new ProgressEvent('Error'), { status: 404, statusText: 'Not Found' });
+      req.error(new ProgressEvent("Error"), { status: 404, statusText: "Not Found" });
 
       await expect(promise).rejects.toThrow();
     });
-  })
-
+  });
 });
