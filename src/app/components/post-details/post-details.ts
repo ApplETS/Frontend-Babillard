@@ -1,5 +1,5 @@
 import { Component, computed, inject, model, OnInit, signal, viewChild } from '@angular/core';
-import { debounce, form, FormField, required, validate } from '@angular/forms/signals';
+import { debounce, disabled, form, FormField, maxLength, required, validate } from '@angular/forms/signals';
 import { Combobox } from '@components/combobox/combobox';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faMobileScreen, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -36,17 +36,19 @@ export class PostDetails implements OnInit {
 			eventStartDate: null,
 			eventEndDate: null,
 			imageSrc: "",
+			imageAltText: "",
 			publicationDate: null,
 			labels: [],
 			title: ""
 		}), (schema) => {
 			debounce(schema, 300);
-			required(schema.title);
-			required(schema.content);
-			required(schema.imageSrc);
-			required(schema.eventStartDate);
-			required(schema.eventEndDate);
-			validate(schema.labels, (labels) => labels.value.length > 5 ? { kind: 'maxLength', message: 'Labels cannot exceed 5 items' } : null),
+			required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
+			required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
+			required(schema.imageSrc, { when: () => this.modalMode() !== ModalMode.moderator });
+			required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
+			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
+			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator }),
+			maxLength(schema.labels, 5, {message: "Labels cannot exceed 5 items"});
 			validate(schema.eventStartDate, ({ value, valueOf }) => {
 				const startDate = value();
 				const endDate = valueOf(schema.eventEndDate);
@@ -56,6 +58,16 @@ export class PostDetails implements OnInit {
 				}
 
 				return null;
+			});
+			disabled(schema, () => {
+				switch (this.modalMode()) {
+					case ModalMode.view:
+					case ModalMode.delete:
+					case ModalMode.moderator:
+						return true;
+					default:
+						return false;
+				}
 			})
 		});
 
@@ -80,18 +92,7 @@ export class PostDetails implements OnInit {
 		}
 	});
 
-	isDisabled = computed(() => {
-		switch (this.modalMode()) {
-			case ModalMode.view:
-			case ModalMode.delete:
-			case ModalMode.moderator:
-				return true;
-			default:
-				return false;
-		}
-	});
-
-	canAddTag = computed(() => !this.postForm.labels().disabled() && this.postForm.labels().value().length < 5 && this.modalMode() !== ModalMode.moderator);
+	canAddTag = computed(() => !this.postForm.labels().disabled() && this.postForm.labels().value().length < this.postForm.labels().maxLength!()! && this.modalMode() !== ModalMode.moderator);
 
 	availableTags = computed(() => this.tags().filter(tag => !this.postForm.labels().value().includes(tag.id)).map(tag => ({ id: tag.id, name: tag.name })));
 	
@@ -105,13 +106,14 @@ export class PostDetails implements OnInit {
 
 	addTag(tagId: string) {
 		this.postForm.labels().value.update((labels) => [...labels, tagId]);
-		this.combobox().resetInput();
+		this.combobox().reset();
 	}
 }
 
 interface PostDetailsForm {
 	title: string;
 	imageSrc: string;
+	imageAltText: string;
 	publicationDate: string | null;
 	eventStartDate: string | null;
 	eventEndDate: string | null;
