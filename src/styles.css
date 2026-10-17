@@ -5,6 +5,7 @@
   themes: light --default, dark ;
 }
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant active (&:where([data-active="true"], [data-active="true"] *));
 
 @theme {
   --color-background: hsl(var(--background));
@@ -24,6 +25,9 @@
   --color-btn-background: hsl(var(--btn-background));
   --color-btn-background-hover: hsl(var(--btn-background-hover));
   --color-base-content: var(--base-content);
+  --color-base-200: hsl(var(--base-200));
+  --color-base-300: hsl(var(--base-300));
+  --color-base-400: hsl(var(--base-400));
 }
 :root,[data-theme="light"] {
   --background: 200 20% 98%;
@@ -33,9 +37,9 @@
   --base-content: #181A2A;
   --color-secondary-content: #BABABA;
   --color-base-100: #FFFFFF;
-  --color-base-200: #EEEEEE;
-  --color-base-300: #D1D1D1;
-  --color-base-400: #BABABA;
+  --base-200: #EEEEEE;
+  --base-300: #D1D1D1;
+  --base-400: #BABABA;
   --color-primary: #4D6EFF;
   --color-accent: #08A493;
   --color-success: #00AA6E;
@@ -63,9 +67,9 @@
   --base-content: #DCDCDC;
   --color-secondary-content: #BABABA;
   --color-base-100: #1D232A;
-  --color-base-200: #252c35;
-  --color-base-300: #15191E;
-  --color-base-400: #0E1014;
+  --base-200: #252c35;
+  --base-300: #15191E;
+  --base-400: #0E1014;
   --color-primary: #747FFF;
   --color-accent: #00CDB7;
   --color-success: #62EFBD;

@@ -1,25 +1,23 @@
-import { afterNextRender, afterRenderEffect, Component, computed, input, output, signal, viewChild, viewChildren } from '@angular/core';
+import { afterNextRender, afterRenderEffect, Component, computed, input, model, output, signal, viewChild, viewChildren } from '@angular/core';
 import { Combobox as NgCombobox, ComboboxInput, ComboboxPopupContainer } from '@angular/aria/combobox';
-import { Listbox, Option } from '@angular/aria/listbox';
+import { Listbox, Option, ɵɵComboboxDialog } from '@angular/aria/listbox';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-combobox',
-  imports: [NgCombobox, Listbox, Option, ComboboxInput, ComboboxPopupContainer, OverlayModule, TranslocoDirective],
+  imports: [NgCombobox, Listbox, Option, ComboboxInput, ComboboxPopupContainer, OverlayModule, TranslocoDirective, ɵɵComboboxDialog, TranslocoPipe],
   templateUrl: './combobox.html',
   styles: `
   @reference "#styles.css";
   
   [ngListBox]>[ngOption][aria-selected="true"] {
-    @apply bg-base-300;
+    background-color: var(--color-base-300);
   }
 
-  [ngOption]:hover {
-    @apply bg-base-200;
-  }
-
-  [ngCombobox]:has([aria-expanded='false']) .menu {
+  [ngCombobox]:has([data-expanded='false']) .menu {
     @apply hidden;
   }
   `
@@ -28,7 +26,8 @@ export class Combobox {
   values = input.required<{ id: string; name: string }[]>();
   placeholder = input<string>("");
 
-  valueChanged = output<string>();
+  valueChanged = output<string | null>();
+  value = model<string | null>(null);
 
   searchTerm = signal("");
   listbox = viewChild<Listbox<string>>(Listbox);
@@ -36,7 +35,9 @@ export class Combobox {
   combobox = viewChild<NgCombobox<string>>(NgCombobox);
 
   showedValues = computed(() => this.values().filter(v => v.name.toLowerCase().includes(this.searchTerm().toLowerCase())))
+  selectedValue = computed(() => this.values().find(v => v.id === this.value())?.name ?? this.placeholder());
 
+  protected readonly faSearch = faSearch;
   constructor() {
     afterNextRender(() => {
       const option = this.options().find((opt) => opt.active());
@@ -46,15 +47,19 @@ export class Combobox {
     afterRenderEffect(() => {
       if (!this.combobox()?.expanded()) {
         setTimeout(() => this.listbox()?.element.scrollTo(0, 0), 150);
-        const option = this.options().find((opt) => opt.active());
-        if (option !== undefined) {
-          this.valueChanged.emit(option.value());
-        }
       }
     });
   }
 
-  resetInput() {
+  setValue(newValue: string[]) {
+    if (newValue.length === 0) return;
+    this.value.set(newValue.at(0)!);
+    this.valueChanged.emit(this.value());
+    this.combobox()?.close();
+  }
+
+  reset() {
     this.searchTerm.set("");
+    this.value.set(null);
   }
 }

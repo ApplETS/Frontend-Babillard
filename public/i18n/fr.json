@@ -392,6 +392,7 @@
 		"link-url": "Lien"
 	},
 	"combobox": {
-		"no-result": "Aucun résultat trouvé"
+		"no-result": "Aucun résultat trouvé",
+		"search": "Rechercher"
 	}
 }
