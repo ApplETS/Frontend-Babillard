@@ -8,10 +8,11 @@ import { Constants } from '@models/constants';
 import { ModalMode } from '@models/modal-mode';
 import { Tag } from '@models/tag';
 import { TagService } from '@services/tagService/tag-service';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
 	selector: 'app-post-details',
-	imports: [TranslocoDirective, FaIconComponent, FormField, TranslocoPipe, Combobox],
+	imports: [TranslocoDirective, FaIconComponent, FormField, TranslocoPipe, Combobox, MarkdownComponent],
 	styles: `
 	@reference "#styles.css";
 
@@ -49,7 +50,7 @@ export class PostDetails implements OnInit {
 			required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator }),
-				required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
+			required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
 			maxLength(schema.labels, 5, { message: "Labels cannot exceed 5 items" });
 			validate(schema.eventStartDate, ({ value, valueOf }) => {
 				const startDate = value();
@@ -82,7 +83,7 @@ export class PostDetails implements OnInit {
 					default:
 						return false;
 				}
-			})
+			});
 		});
 
 	combobox = viewChild.required(Combobox);

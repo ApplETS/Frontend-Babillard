@@ -127,27 +127,28 @@
 							} @else {
 								<div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
 							}
-							<!-- )}
-							{imageModalOpen && (
-							<Modal>
-								<div class={`bg-base-200 overflow-y-auto p-5 w-[50rem] rounded-2xl h-[26rem]`}>
-									<ImageCropper imageSrc={imageSrc} handleImageModalClose={handleImageModalClose}
-										handleImageModalConfirm={handleImageModalConfirm} />
-								</div>
-							</Modal>
-							)} -->
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- <div class="w-full z-40">
+			<div class="w-full z-40">
 				<label class="block">
-					{t('modal.content')}
-					{modalMode !== Constants.publicationModalStatus.moderator &&
-					missingFields.includes(t('modal.content')) && <span style={{ color: 'red' }}>*</span>}
+					<span transloco="post.modal.content"></span>
+					@if (postForm.content().required()) {
+						<span class="text-red">*</span>
+					}
+					@if (postForm.content().disabled()) {
+						<div class="relative">
+							<div class="disabled">
+								<markdown [data]="postForm.content().value()" class="p-2" />
+							</div>
+						</div>
+					} @else {
+						<textarea [formField]="postForm.content" class="w-full" ></textarea>
+					}
 				</label>
-				{!isDisabled ? (
+				<!-- {!isDisabled ? (
 				<EditorComp markdown={content.replace(/\[/g, '\\[' ).replace(/\(/g, '\\(' )}
 					onContentChange={handleContentChange} editorRef={editorRef} />
 				) : (
@@ -158,10 +159,11 @@
 						</Markdown>
 					</div>
 				</div>
-				)}
+				)} -->
 			</div>
 
 			<div class="divider my-1"></div>
+			<!--
 			{modalMode !== Constants.publicationModalStatus.moderator && missingFields.length > 0 && (
 			<span class="mr-2" style={{ color: 'red' }}>
 				* {t('required-fields')}
