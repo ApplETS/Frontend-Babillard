@@ -49,18 +49,30 @@ export class PostDetails implements OnInit {
 			required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator }),
-			required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
-			maxLength(schema.labels, 5, {message: "Labels cannot exceed 5 items"});
+				required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
+			maxLength(schema.labels, 5, { message: "Labels cannot exceed 5 items" });
 			validate(schema.eventStartDate, ({ value, valueOf }) => {
 				const startDate = value();
 				const endDate = valueOf(schema.eventEndDate);
-				
+
 				if (startDate && endDate && startDate > endDate) {
 					return { kind: 'invalidRange', message: 'Event start date cannot be after event end date' };
 				}
 
 				return null;
 			});
+			validate(schema.image, ({ valueOf }) => {
+				const image = valueOf(schema.image);
+				if (!image) {
+					return null;
+				}
+
+				if (!image.type.startsWith("image/")) {
+					return { kind: 'invalidType', message: 'File must be an image' };
+				}
+
+				return null;
+			})
 			disabled(schema, () => {
 				switch (this.modalMode()) {
 					case ModalMode.view:
@@ -97,7 +109,7 @@ export class PostDetails implements OnInit {
 	canAddTag = computed(() => !this.postForm.labels().disabled() && this.postForm.labels().value().length < this.postForm.labels().maxLength!()! && this.modalMode() !== ModalMode.moderator);
 
 	availableTags = computed(() => this.tags().filter(tag => !this.postForm.labels().value().includes(tag.id)).map(tag => ({ id: tag.id, name: tag.name })));
-	
+
 	async ngOnInit(): Promise<void> {
 		this.tags.set(await this.tagService.getAllTags());
 	}
@@ -109,6 +121,21 @@ export class PostDetails implements OnInit {
 	addTag(tagId: string) {
 		this.postForm.labels().value.update((labels) => [...labels, tagId]);
 		this.combobox().reset();
+	}
+
+	fileSelected(event: Event) {
+		const input = event.target as HTMLInputElement;
+		if (!input.files || !input.files[0]) {
+			return;
+		}
+
+		const file = input.files[0];
+		const reader = new FileReader();
+		this.postForm.image().value.update(() => file);
+		reader.onload = (e) => {
+			this.postForm.imageSrc().value.update(() => e.target?.result as string);
+		};
+		reader.readAsDataURL(file);
 	}
 }
 

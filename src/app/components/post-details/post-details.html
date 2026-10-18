@@ -112,9 +112,15 @@
 							</div>
 						</div>
 						<div class="flex-1 h-64 overflow-clip rounded-lg">
-							<input type="file" class="file-input file-input-bordered file-input-accent w-full" [formField]="postForm.imageSrc"
-								accept="image/*" 
+							<input type="file" 
+								class="file-input file-input-bordered file-input-accent w-full"
+							 	(change)="fileSelected($event)"
+								accept="image/*"
+								
 							/>
+							@if (postForm.image().errors().some(e => e.kind === "invalidType")) {
+								<span class="text-red">File must be an image</span>
+							}
 
 							@if (postForm.image().value()) {
 								<img [src]="postForm.imageSrc().value()" [alt]="postForm.imageAltText().value()" class="w-full aspect-[2/1] rounded-lg mt-2" />
