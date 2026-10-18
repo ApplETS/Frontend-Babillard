@@ -111,19 +111,17 @@
 								<input type="text" [formField]="postForm.imageAltText" class="input input-ghost w-full" />
 							</div>
 						</div>
-						<!-- <div class="flex-1 h-64 overflow-clip rounded-lg">
-							<input type="file" class="file-input file-input-bordered file-input-accent w-full" disabled={isDisabled}
-								accept="image/*" onChange={(e)=> {
-							if (e.target.files && e.target.files.length > 0) {
-							handleFileDrop(e.target.files[0]);
-							}
-							}}
+						<div class="flex-1 h-64 overflow-clip rounded-lg">
+							<input type="file" class="file-input file-input-bordered file-input-accent w-full" [formField]="postForm.imageSrc"
+								accept="image/*" 
 							/>
-							{imageSrc ? (
-							<img src={imageSrc} alt={imageAltText} class="w-full aspect-[2/1] rounded-lg mt-5" />
-							) : (
-							<div class={`w-full h-full rounded-lg mt-2 ${isLight ? 'bg-base-300 ' : 'bg-base-100' }`}></div>
-							)}
+
+							@if (postForm.image().value()) {
+								<img [src]="postForm.imageSrc().value()" [alt]="postForm.imageAltText().value()" class="w-full aspect-[2/1] rounded-lg mt-2" />
+							} @else {
+								<div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
+							}
+							<!-- )}
 							{imageModalOpen && (
 							<Modal>
 								<div class={`bg-base-200 overflow-y-auto p-5 w-[50rem] rounded-2xl h-[26rem]`}>
@@ -131,8 +129,8 @@
 										handleImageModalConfirm={handleImageModalConfirm} />
 								</div>
 							</Modal>
-							)}
-						</div> -->
+							)} -->
+						</div>
 					</div>
 				</div>
 			</div>

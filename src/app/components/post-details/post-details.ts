@@ -39,7 +39,8 @@ export class PostDetails implements OnInit {
 			imageAltText: "",
 			publicationDate: null,
 			labels: [],
-			title: ""
+			title: "",
+			image: null,
 		}), (schema) => {
 			debounce(schema, 300);
 			required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
@@ -48,6 +49,7 @@ export class PostDetails implements OnInit {
 			required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator }),
+			required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
 			maxLength(schema.labels, 5, {message: "Labels cannot exceed 5 items"});
 			validate(schema.eventStartDate, ({ value, valueOf }) => {
 				const startDate = value();
@@ -114,6 +116,7 @@ interface PostDetailsForm {
 	title: string;
 	imageSrc: string;
 	imageAltText: string;
+	image: Blob | null;
 	publicationDate: string | null;
 	eventStartDate: string | null;
 	eventEndDate: string | null;
