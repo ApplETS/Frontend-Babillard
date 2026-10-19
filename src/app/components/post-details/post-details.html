@@ -148,38 +148,20 @@
 						<textarea [formField]="postForm.content" class="w-full" ></textarea>
 					}
 				</label>
-				<!-- {!isDisabled ? (
-				<EditorComp markdown={content.replace(/\[/g, '\\[' ).replace(/\(/g, '\\(' )}
-					onContentChange={handleContentChange} editorRef={editorRef} />
-				) : (
-				<div style={{ position: 'relative' }}>
-					<div class={`${isDisabled ? 'border border-base-content rounded-lg markdown-custom-styling' : '' }`}>
-						<Markdown rehypePlugins={[rehypeRaw]} class={`${style.reactMarkDown} p-2`}>
-							{content}
-						</Markdown>
-					</div>
-				</div>
-				)} -->
 			</div>
 
 			<div class="divider my-1"></div>
-			<!--
-			{modalMode !== Constants.publicationModalStatus.moderator && missingFields.length > 0 && (
-			<span class="mr-2" style={{ color: 'red' }}>
-				* {t('required-fields')}
-			</span>
-			)}
-			<div class={`mt-2 ${ modalMode===Constants.publicationModalStatus.moderator ? 'flex justify-between'
-				: 'flex justify-start' }`}>
-				{(modalMode !== Constants.publicationModalStatus.modify || publication?.state === NewsStates.DRAFT) &&
-				modalMode !== Constants.publicationModalStatus.moderator && (
-				<button class="btn btn-info px-8 font-normal" disabled={publication?.state===NewsStates.APPROVED ?? false}
-					onClick={handleDraft} type="button">
-					{ta('modal.draft')}
-				</button>
-				)}
+			
+			<div class="mt-2 flex" [class.justify-between]="modalMode() === ModalMode.moderator" [class.justify-start]="modalMode() !== ModalMode.moderator">
+				@if (modalMode() !== ModalMode.moderator && (modalMode() !== ModalMode.modify || publication()?.state === EventState.Draft)) {
 
-				{modalMode === Constants.publicationModalStatus.moderator && (
+					<button class="btn btn-info px-8 font-normal" [disabled]="publication()?.state === EventState.Approved"
+						(click)="handleDraft()" type="button" transloco="post.modal.draft">
+					</button>
+				}
+				
+
+				<!-- {modalMode === Constants.publicationModalStatus.moderator && (
 				<>
 					{publication?.state !== NewsStates.PUBLISHED ? (
 					<div class="grid grid-cols-2 gap-6">
@@ -236,8 +218,8 @@
 							</button>
 							)}
 						</div>
-			</div>
-		</div> -->
+			</div> -->
+		</div>
 	
 </div>
 </form>

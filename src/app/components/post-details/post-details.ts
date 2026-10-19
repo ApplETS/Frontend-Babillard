@@ -5,8 +5,11 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faMobileScreen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
 import { Constants } from '@models/constants';
+import { Event as ModelEvent } from '@models/event';
+import { EventState } from '@models/event-state';
 import { ModalMode } from '@models/modal-mode';
 import { Tag } from '@models/tag';
+import { OrganizerEvent } from '@services/organizerEventService/organizer-event';
 import { TagService } from '@services/tagService/tag-service';
 import { MarkdownComponent } from 'ngx-markdown';
 
@@ -29,6 +32,7 @@ export class PostDetails implements OnInit {
 	tags = signal<Tag[]>([]);
 
 	tagService = inject(TagService);
+	organizerEventService = inject(OrganizerEvent);
 	protected readonly Constants = Constants;
 
 	postForm = form<PostDetailsForm>(
@@ -89,6 +93,7 @@ export class PostDetails implements OnInit {
 	combobox = viewChild.required(Combobox);
 
 	protected readonly ModalMode = ModalMode;
+	protected readonly EventState = EventState;
 	protected readonly mobileScreenIcon = faMobileScreen;
 	protected readonly faXmark = faXmark;
 
@@ -110,6 +115,7 @@ export class PostDetails implements OnInit {
 	canAddTag = computed(() => !this.postForm.labels().disabled() && this.postForm.labels().value().length < this.postForm.labels().maxLength!()! && this.modalMode() !== ModalMode.moderator);
 
 	availableTags = computed(() => this.tags().filter(tag => !this.postForm.labels().value().includes(tag.id)).map(tag => ({ id: tag.id, name: tag.name })));
+	publication = signal<ModelEvent | null>(null);
 
 	async ngOnInit(): Promise<void> {
 		this.tags.set(await this.tagService.getAllTags());
@@ -138,9 +144,21 @@ export class PostDetails implements OnInit {
 		};
 		reader.readAsDataURL(file);
 	}
+
+	async handleDraft() {
+	let result;
+
+	if (this.publication()?.id) {
+		result = await this.organizerEventService.updateDraft(this.postForm().value(), this.publication()!.id);
+	} else {
+		result = await this.organizerEventService.postDraft(this.postForm().value());
+	}
+
+	// if (result) onClose();
+	}
 }
 
-interface PostDetailsForm {
+export interface PostDetailsForm {
 	title: string;
 	imageSrc: string;
 	imageAltText: string;

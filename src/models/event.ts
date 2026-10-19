@@ -1,3 +1,4 @@
+import { EventState } from "./event-state";
 import { Tag } from "./tag";
 import { User } from "./user";
 
@@ -11,4 +12,5 @@ export interface Event {
  	eventEndDate: string;
   organizer: User | null;
   tags: Tag[];
+  state: EventState;
 }
