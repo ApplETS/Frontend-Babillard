@@ -123,7 +123,7 @@
 							}
 
 							@if (postForm.image().value()) {
-								<img [src]="postForm.imageSrc().value()" [alt]="postForm.imageAltText().value()" class="w-full aspect-[2/1] rounded-lg mt-2" />
+								<img [src]="postForm.imageUrl().value()" [alt]="postForm.imageAltText().value()" class="w-full aspect-[2/1] rounded-lg mt-2" />
 							} @else {
 								<div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
 							}

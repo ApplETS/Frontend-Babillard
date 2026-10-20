@@ -42,7 +42,7 @@ export class PostDetails implements OnInit {
 			content: "",
 			eventStartDate: null,
 			eventEndDate: null,
-			imageSrc: "",
+			imageUrl: "",
 			imageAltText: "",
 			publicationDate: null,
 			labels: [],
@@ -52,7 +52,7 @@ export class PostDetails implements OnInit {
 			debounce(schema, 300);
 			required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
-			required(schema.imageSrc, { when: () => this.modalMode() !== ModalMode.moderator });
+			required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator }),
@@ -142,7 +142,7 @@ export class PostDetails implements OnInit {
 		const reader = new FileReader();
 		this.postForm.image().value.update(() => file);
 		reader.onload = (e) => {
-			this.postForm.imageSrc().value.update(() => e.target?.result as string);
+			this.postForm.imageUrl().value.update(() => e.target?.result as string);
 		};
 		reader.readAsDataURL(file);
 	}
@@ -161,13 +161,13 @@ export class PostDetails implements OnInit {
 }
 
 export interface PostDetailsForm {
-	title: string;
-	imageSrc: string;
-	imageAltText: string;
 	image: Blob | null;
+	imageUrl: string;
+	title: string;
+	content: string;
 	publicationDate: string | null;
 	eventStartDate: string | null;
 	eventEndDate: string | null;
 	labels: string[];
-	content: string;
+	imageAltText: string;
 }
