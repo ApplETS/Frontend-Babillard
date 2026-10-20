@@ -9,10 +9,10 @@ export class OrganizerEvent extends ApiService {
   protected override apiController = 'organizer-event';
 
   async postDraft(form: PostDetailsForm) {
-
+    return false;
   }
 
   async updateDraft(form: PostDetailsForm, id: string) {
-    
+    return false;
   }
 }

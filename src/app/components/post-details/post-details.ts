@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnInit, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, model, OnInit, output, signal, viewChild } from '@angular/core';
 import { debounce, disabled, form, FormField, maxLength, required, validate } from '@angular/forms/signals';
 import { Combobox } from '@components/combobox/combobox';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -30,6 +30,8 @@ export class PostDetails implements OnInit {
 
 	showPreview = signal(false);
 	tags = signal<Tag[]>([]);
+
+	closed = output();
 
 	tagService = inject(TagService);
 	organizerEventService = inject(OrganizerEvent);
@@ -154,7 +156,7 @@ export class PostDetails implements OnInit {
 		result = await this.organizerEventService.postDraft(this.postForm().value());
 	}
 
-	// if (result) onClose();
+	if (result) this.closed.emit();
 	}
 }
 
