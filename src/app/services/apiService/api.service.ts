@@ -36,6 +36,36 @@ export abstract class ApiService {
 
     return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters }));
   }
+
+  protected async post<T>(action: string, body: unknown, routeParameters: unknown[] = [], queryParameters: HttpParams = new HttpParams()): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+    }
+
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+
+    return await lastValueFrom(this.httpService.post<T>(action, body, { params: queryParameters }));
+  }
+  
+  protected async postMultipartForm<T>(action: string, body: any, routeParameters: unknown[] = [], queryParameters: HttpParams = new HttpParams()): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+    }
+
+    const formBody = new FormData();
+    
+    for (const key of Object.keys(body)) {
+      formBody.append(key, body[key]);
+    }
+
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+
+    return await lastValueFrom(this.httpService.post<T>(action, body, { params: queryParameters }));
+  }
 }
 
 /**
