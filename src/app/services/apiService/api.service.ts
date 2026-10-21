@@ -64,7 +64,7 @@ export abstract class ApiService {
       action += routeParameters.join("/");
     }
 
-    return await lastValueFrom(this.httpService.post<T>(action, body, { params: queryParameters }));
+    return await lastValueFrom(this.httpService.post<T>(action, formBody, { params: queryParameters }));
   }
 }
 

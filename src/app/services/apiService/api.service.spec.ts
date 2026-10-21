@@ -25,7 +25,7 @@ export class TestApiService extends ApiService{
     return await super.post<T>(action, body, routeParameters, queryParameters);
   }
 
-  public override async postMultipartForm<T>(action: string, body: FormData, routeParameters: unknown[], queryParameters: HttpParams): Promise<T> {
+  public override async postMultipartForm<T>(action: string, body: any, routeParameters: unknown[], queryParameters: HttpParams): Promise<T> {
     return await super.postMultipartForm<T>(action, body, routeParameters, queryParameters);
   }
 }
@@ -105,8 +105,9 @@ describe('ApiService', () => {
     const action = "testAction";
     const routeParameters = ["param1", "param2"];
     const queryParameters = new HttpParams().set('key', 'value');
-    const body = new FormData();
-    body.append('data', 'test');
+    const body = {
+      data: "test"
+    };
     const expectedUrl = `${environment.API_URL}/api/test/${action}/${routeParameters.join("/")}`;
     const responsePromise = service.postMultipartForm<string>(service.getActionUrl(action), body, routeParameters, queryParameters);
 
