@@ -55,6 +55,6 @@ describe('OrganizerEvent', () => {
 
     expected.flush(mockError);
 
-    await expect(response).rejects.throws(new Error("Some error occurred"));
+    await expect(response).rejects.toThrow("Some error occurred");
   });
 });
