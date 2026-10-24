@@ -8,7 +8,7 @@ import { ApiService } from '@services/apiService/api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class OrganizerEvent extends ApiService {
+export class OrganizerEventService extends ApiService {
   protected override apiController = 'organizer-event';
 
   async postDraft(form: PostDetailsForm): Promise<Event> {

@@ -9,6 +9,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { ModalMode } from '@models/modal-mode';
 import { signal, twoWayBinding } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Combobox } from '@components/combobox/combobox';
 
 describe('PreviewDetails', () => {
   let component: PostDetails;
@@ -34,7 +35,7 @@ describe('PreviewDetails', () => {
             defaultLang: 'en',
           }
         }),
-
+        Combobox
       ],
       providers: [
         { provide: TagService, useValue: tagService },

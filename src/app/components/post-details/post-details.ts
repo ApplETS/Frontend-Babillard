@@ -9,7 +9,7 @@ import { Event as ModelEvent } from '@models/event';
 import { EventState } from '@models/event-state';
 import { ModalMode } from '@models/modal-mode';
 import { Tag } from '@models/tag';
-import { OrganizerEvent } from '@services/organizerEventService/organizer-event';
+import { OrganizerEventService } from '@services/organizerEventService/organizer-event.service';
 import { TagService } from '@services/tagService/tag-service';
 import { MarkdownComponent } from 'ngx-markdown';
 
@@ -34,7 +34,7 @@ export class PostDetails implements OnInit {
 	closed = output();
 
 	tagService = inject(TagService);
-	organizerEventService = inject(OrganizerEvent);
+	organizerEventService = inject(OrganizerEventService);
 	protected readonly Constants = Constants;
 
 	postForm = form<PostDetailsForm>(

@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { OrganizerEvent } from './organizer-event';
+import { OrganizerEventService } from "./organizer-event.service";
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
-describe('OrganizerEvent', () => {
-  let service: OrganizerEvent;
+describe('OrganizerEventService', () => {
+  let service: OrganizerEventService;
   let httpClientSpy: HttpTestingController;
 
   beforeEach(() => {
@@ -14,10 +14,10 @@ describe('OrganizerEvent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        OrganizerEvent
+        OrganizerEventService
       ]
     });
-    service = TestBed.inject(OrganizerEvent);
+    service = TestBed.inject(OrganizerEventService);
     httpClientSpy = TestBed.inject(HttpTestingController);
   });
 
