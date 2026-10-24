@@ -1,5 +1,5 @@
 import { Component, computed, inject, model, OnInit, output, signal, viewChild } from '@angular/core';
-import { debounce, disabled, form, FormField, maxLength, required, validate } from '@angular/forms/signals';
+import { debounce, disabled, FieldTree, form, FormField, maxLength, required, submit, TreeValidationResult, validate } from '@angular/forms/signals';
 import { Combobox } from '@components/combobox/combobox';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faMobileScreen, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -55,7 +55,7 @@ export class PostDetails implements OnInit {
 			required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
-			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator }),
+			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
 			maxLength(schema.tags, 5, { message: "tags cannot exceed 5 items" });
 			validate(schema.eventStartDate, ({ value, valueOf }) => {
@@ -148,15 +148,39 @@ export class PostDetails implements OnInit {
 	}
 
 	async handleDraft() {
-	let result;
+		if (this.postForm().invalid()) {
+			return;
+		}
 
-	if (this.publication()?.id) {
-		result = await this.organizerEventService.updateDraft(this.postForm().value(), this.publication()!.id);
-	} else {
-		result = await this.organizerEventService.postDraft(this.postForm().value());
+		const success = await submit(this.postForm, (field) => this.submitForm(field));
+		if (success) this.closed.emit();
 	}
 
-	if (result) this.closed.emit();
+	private async submitForm(form: FieldTree<PostDetailsForm>): Promise<TreeValidationResult> {
+		try {
+			if (this.publication() !== null) {
+				await this.organizerEventService.updateDraft(form().value(), this.publication()!.id);
+			} else {
+				await this.organizerEventService.postDraft(form().value());
+			}
+		} catch (e: unknown) {
+			if (e instanceof Error && Constants.badParameterPattern.test(e.message)) {
+				const field = e.message.substring(e.message.lastIndexOf("_") + 1).toLowerCase();
+				switch (field) {
+					case "tags":
+						return { kind: "toManyTags", message: "post.modal.tooManyTagsError", fieldTree: form.tags };
+					case "image":
+						return [ 
+							{ kind: "required", message: "post.modal.imageRequired", fieldTree: form.image },
+							{ kind: "required", message: "post.modal.imageRequired", fieldTree: form.imageUrl }
+						];
+					default:
+						return { kind: "serverError", message: "post.modal.genericError" };
+				}
+			} else {
+				return { kind: "serverError", message: "post.modal.genericError" };
+			}
+		}
 	}
 }
 

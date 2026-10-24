@@ -10,6 +10,7 @@ import { ModalMode } from '@models/modal-mode';
 import { signal, twoWayBinding } from '@angular/core';
 import { Combobox } from '@components/combobox/combobox';
 import { OrganizerEventService } from '@services/organizerEventService/organizer-event.service';
+import { EventState } from '@models/event-state';
 
 describe("PreviewDetails", () => {
   let component: PostDetails;
@@ -88,7 +89,7 @@ describe("PreviewDetails", () => {
   });
 
   it("should call OrganizerEventService.postDraft() when form is valid and publication is null", async () => {
-    organizerEventService.postDraft.mockReturnValue(new Promise(resolve => resolve({ id: "1" })));
+    organizerEventService.postDraft.mockReturnValue(Promise.resolve({ id: "1" }));
 
     setValidForm();
 
@@ -99,7 +100,8 @@ describe("PreviewDetails", () => {
   });
 
   it("should call OrganizerEventService.updateDraft() when form is valid and publication is not null", async () => {
-    organizerEventService.updateDraft.mockReturnValue(new Promise(resolve => resolve({ id: "1" })));
+    organizerEventService.updateDraft.mockReturnValue(Promise.resolve({ id: "1" }));
+    component.publication.set({ id: "1", eventEndDate: "", eventStartDate: "", content: "", imageAltText: "", imageUrl: "", state: EventState.OnHold, tags: [], title: "", organizer: null });
 
     setValidForm();
 
@@ -110,7 +112,7 @@ describe("PreviewDetails", () => {
   });
 
   it("should call OrganizerEventService.postDraft() and handle generic error when form is valid and publication is null", async () => {
-    organizerEventService.postDraft.mockReturnValue(new Promise((resolve, reject) => reject("Some error occurred")));
+    organizerEventService.postDraft.mockReturnValue(Promise.reject(new Error("Some error occurred")));
     setValidForm();
 
     await component.handleDraft();
@@ -124,7 +126,8 @@ describe("PreviewDetails", () => {
   });
 
   it("should call OrganizerEventService.updateDraft() and handle generic error when form is valid and publication is not null", async () => {
-    organizerEventService.updateDraft.mockReturnValue(new Promise((resolve, reject) => reject("Some error occurred")));
+    organizerEventService.updateDraft.mockReturnValue(Promise.reject(new Error("Some error occurred")));
+    component.publication.set({ id: "1", eventEndDate: "", eventStartDate: "", content: "", imageAltText: "", imageUrl: "", state: EventState.OnHold, tags: [], title: "", organizer: null });
     setValidForm();
 
     await component.handleDraft();
@@ -138,7 +141,7 @@ describe("PreviewDetails", () => {
   });
 
   it("should call OrganizerEventService.postDraft() and throw 'BAD_PARAM_EVENT_Tags' error when form is valid and publication is null", async () => {
-    organizerEventService.postDraft.mockReturnValue(new Promise((resolve, reject) => reject("BAD_PARAM_EVENT_Tags")));
+    organizerEventService.postDraft.mockReturnValue(Promise.reject(new Error("BAD_PARAM_EVENT_Tags")));
     setValidForm();
 
     await component.handleDraft();
@@ -153,7 +156,7 @@ describe("PreviewDetails", () => {
   });
 
   it("should call OrganizerEventService.postDraft() and throw 'BAD_PARAM_EVENT_image' error when form is valid and publication is null", async () => {
-    organizerEventService.postDraft.mockReturnValue(new Promise((resolve, reject) => reject("BAD_PARAM_EVENT_image")));
+    organizerEventService.postDraft.mockReturnValue(Promise.reject(new Error("BAD_PARAM_EVENT_image")));
     setValidForm();
 
     await component.handleDraft();
