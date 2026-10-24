@@ -44,6 +44,7 @@ describe('PreviewDetails', () => {
 
     fixture = TestBed.createComponent(PostDetails, {bindings: [twoWayBinding('modalMode', signal(ModalMode.create))]});
     component = fixture.componentInstance;
+    tagService.getAllTags.mockReturnValue(new Promise<Tag[]>(resolve => resolve([])));
     await fixture.whenStable();
   });
 
