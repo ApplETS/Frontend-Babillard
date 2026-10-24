@@ -45,7 +45,7 @@ export class PostDetails implements OnInit {
 			imageUrl: "",
 			imageAltText: "",
 			publicationDate: null,
-			labels: [],
+			tags: [],
 			title: "",
 			image: null,
 		}), (schema) => {
@@ -57,7 +57,7 @@ export class PostDetails implements OnInit {
 			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator }),
 			required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
-			maxLength(schema.labels, 5, { message: "Labels cannot exceed 5 items" });
+			maxLength(schema.tags, 5, { message: "tags cannot exceed 5 items" });
 			validate(schema.eventStartDate, ({ value, valueOf }) => {
 				const startDate = value();
 				const endDate = valueOf(schema.eventEndDate);
@@ -114,9 +114,9 @@ export class PostDetails implements OnInit {
 		}
 	});
 
-	canAddTag = computed(() => !this.postForm.labels().disabled() && this.postForm.labels().value().length < this.postForm.labels().maxLength!()! && this.modalMode() !== ModalMode.moderator);
+	canAddTag = computed(() => !this.postForm.tags().disabled() && this.postForm.tags().value().length < this.postForm.tags().maxLength!()! && this.modalMode() !== ModalMode.moderator);
 
-	availableTags = computed(() => this.tags().filter(tag => !this.postForm.labels().value().includes(tag.id)).map(tag => ({ id: tag.id, name: tag.name })));
+	availableTags = computed(() => this.tags().filter(tag => !this.postForm.tags().value().includes(tag.id)).map(tag => ({ id: tag.id, name: tag.name })));
 	publication = signal<ModelEvent | null>(null);
 
 	async ngOnInit(): Promise<void> {
@@ -124,11 +124,11 @@ export class PostDetails implements OnInit {
 	}
 
 	removeTag(tagId: string) {
-		this.postForm.labels().value.update((labels) => labels.filter(label => label !== tagId));
+		this.postForm.tags().value.update((tags) => tags.filter(label => label !== tagId));
 	}
 
 	addTag(tagId: string) {
-		this.postForm.labels().value.update((labels) => [...labels, tagId]);
+		this.postForm.tags().value.update((tags) => [...tags, tagId]);
 		this.combobox().reset();
 	}
 
@@ -168,6 +168,6 @@ export interface PostDetailsForm {
 	publicationDate: string | null;
 	eventStartDate: string | null;
 	eventEndDate: string | null;
-	labels: string[];
+	tags: string[];
 	imageAltText: string;
 }
