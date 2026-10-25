@@ -25,6 +25,6 @@ export class Posts {
   resetModal() {
     this.createPost.set(false);
     this.modalMode.set(null!);
-    console.log('Modal has been reset');
+    this.modal().dismissModal();
   }
 }

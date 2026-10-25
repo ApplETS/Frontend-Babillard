@@ -12,4 +12,8 @@ export class Modal {
   showModal() {
     this.modal().nativeElement.showModal();
   }
+
+  dismissModal() {
+    this.modal().nativeElement.close();
+  }
 }
