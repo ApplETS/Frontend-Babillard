@@ -150,6 +150,8 @@
 			"image-format-error-toast-message": "Le format de l'image n'est pas supporté",
 			"success-toast-message": "Publication envoyée pour approbation",
 			"post-error-toast-message": "Une erreur est survenue lors de l'envoi de la publication",
+			"image-type-error": "Le fichier sélectionné n'est pas une image",
+			"image-required-error": "Une image est requise",
 			"preview": "Aperçu",
 			"delete-title": "Êtes-vous sûr de vouloir supprimer cette publication?",
 			"delete-button": "Supprimer",

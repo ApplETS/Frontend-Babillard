@@ -5,7 +5,7 @@
 			<div class="flex items-center gap-2">
 				<h1 class="text-2xl block" [transloco]="modalTitle()"></h1>
 				@if (modalMode() === ModalMode.modify) {
-				<div class="tooltip tooltip-bottom ml-2" data-tip="'post.modal.tool-tip-text'">
+				<div class="tooltip tooltip-bottom ml-2" [attr.data-tip]="'post.modal.tool-tip-text' | transloco">
 					<button type="button"
 						class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
 						!
@@ -100,7 +100,7 @@
 										<span class="text-red">*</span>
 									}
 								</label>
-								<div class="tooltip tooltip-bottom ml-2" data-tip="t('modal.alt-text-tooltip')">
+								<div class="tooltip tooltip-bottom ml-2" [attr.data-tip]="'post.modal.alt-text-tooltip' | transloco">
 									<button type="button"
 										class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
 										?
@@ -118,8 +118,9 @@
 								accept="image/*"
 								
 							/>
-							@if (postForm.image().errors().some(e => e.kind === "invalidType")) {
-								<span class="text-red">File must be an image</span>
+							@let imageTypeError = postForm.image().errors().find(e => e.kind === "invalidType");
+							@if (imageTypeError) {
+								<span class="text-red" [transloco]="imageTypeError.message"></span>
 							}
 
 							@if (postForm.image().value()) {
@@ -150,13 +151,17 @@
 				</label>
 			</div>
 
+			@for (error of postForm().errors(); track error.kind) {
+				<span class="text-red" [transloco]="error.message"></span>
+			}
+
 			<div class="divider my-1"></div>
 			
 			<div class="mt-2 flex" [class.justify-between]="modalMode() === ModalMode.moderator" [class.justify-start]="modalMode() !== ModalMode.moderator">
 				@if (modalMode() !== ModalMode.moderator && (modalMode() !== ModalMode.modify || publication()?.state === EventState.Draft)) {
 
 					<button class="btn btn-info px-8 font-normal" [disabled]="publication()?.state === EventState.Approved"
-						(click)="handleDraft()" type="button" transloco="post.modal.draft">
+						(click)="handleDraft()" type="button" transloco="approbations.modal.draft">
 					</button>
 				}
 				

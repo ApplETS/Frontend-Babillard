@@ -122,7 +122,7 @@ describe("PreviewDetails", () => {
     expect(postForm().errors(), "form should have errors").length(1);
     const error = postForm().errors()![0];
     expect(error.kind, "error kind should be 'serverError'").toBe("serverError");
-    expect(error.message, "error message should be 'post.modal.genericError'").toBe("post.modal.genericError");
+    expect(error.message, "error message should be 'post.modal.post-error-toast-message'").toBe("post.modal.post-error-toast-message");
   });
 
   it("should call OrganizerEventService.updateDraft() and handle generic error when form is valid and publication is not null", async () => {
@@ -137,7 +137,7 @@ describe("PreviewDetails", () => {
     expect(postForm().errors(), "form should have errors").length(1);
     const error = postForm().errors()![0];
     expect(error.kind, "error kind should be 'serverError'").toBe("serverError");
-    expect(error.message, "error message should be 'post.modal.genericError'").toBe("post.modal.genericError");
+    expect(error.message, "error message should be 'post.modal.post-error-toast-message'").toBe("post.modal.post-error-toast-message");
   });
 
   it("should call OrganizerEventService.postDraft() and throw 'BAD_PARAM_EVENT_Tags' error when form is valid and publication is null", async () => {
@@ -168,7 +168,7 @@ describe("PreviewDetails", () => {
     expect(postForm.imageUrl().errors(), "imageUrl field should have errors").length(1);
     const error = postForm.image().errors()![0];
     expect(error.kind, "error kind should be 'required'").toBe("required");
-    expect(error.message, "error message should be 'post.modal.imageRequired'").toBe("post.modal.imageRequired");
+    expect(error.message, "error message should be 'post.modal.image-required-error'").toBe("post.modal.image-required-error");
   });
 
   // it("should call OrganizerEventService.updateDraft() and handle specific error when form is valid and publication is not null", async () => {

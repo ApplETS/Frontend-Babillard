@@ -56,8 +56,8 @@ export class PostDetails implements OnInit {
 			required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
 			required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
-			required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator });
-			maxLength(schema.tags, 5, { message: "tags cannot exceed 5 items" });
+			required(schema.image, { when: () => this.modalMode() !== ModalMode.moderator, message: "post.modal.image-required-error" });
+			maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
 			validate(schema.eventStartDate, ({ value, valueOf }) => {
 				const startDate = value();
 				const endDate = valueOf(schema.eventEndDate);
@@ -75,7 +75,7 @@ export class PostDetails implements OnInit {
 				}
 
 				if (!image.type.startsWith("image/")) {
-					return { kind: 'invalidType', message: 'File must be an image' };
+					return { kind: "invalidType", message: "post.modal.image-type-error" };
 				}
 
 				return null;
@@ -168,17 +168,17 @@ export class PostDetails implements OnInit {
 				const field = e.message.substring(e.message.lastIndexOf("_") + 1).toLowerCase();
 				switch (field) {
 					case "tags":
-						return { kind: "toManyTags", message: "post.modal.tooManyTagsError", fieldTree: form.tags };
+						return { kind: "maxLength", message: "post.modal.tooManyTagsError", fieldTree: form.tags };
 					case "image":
 						return [ 
-							{ kind: "required", message: "post.modal.imageRequired", fieldTree: form.image },
-							{ kind: "required", message: "post.modal.imageRequired", fieldTree: form.imageUrl }
+							{ kind: "required", message: "post.modal.image-required-error", fieldTree: form.image },
+							{ kind: "required", message: "post.modal.image-required-error", fieldTree: form.imageUrl }
 						];
 					default:
-						return { kind: "serverError", message: "post.modal.genericError" };
+						return { kind: "serverError", message: "post.modal.post-error-toast-message" };
 				}
 			} else {
-				return { kind: "serverError", message: "post.modal.genericError" };
+				return { kind: "serverError", message: "post.modal.post-error-toast-message" };
 			}
 		}
 	}
