@@ -54,12 +54,13 @@ export class Combobox {
   setValue(newValue: string[]) {
     if (newValue.length === 0) return;
     this.value.set(newValue.at(0)!);
-    this.valueChanged.emit(this.value());
     this.combobox()?.close();
+    this.valueChanged.emit(this.value());
   }
 
   reset() {
     this.searchTerm.set("");
     this.value.set(null);
+    this.options().filter(opt => opt.active()).forEach(opt => opt.element.ariaSelected = "false");
   }
 }
