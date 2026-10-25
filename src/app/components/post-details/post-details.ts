@@ -158,10 +158,18 @@ export class PostDetails implements OnInit {
 
 	private async submitForm(form: FieldTree<PostDetailsForm>): Promise<TreeValidationResult> {
 		try {
+			const value = form().value();
+			value.eventEndDate = value.eventEndDate ? new Date(value.eventEndDate).toISOString() : null;
+			value.eventStartDate = value.eventStartDate ? new Date(value.eventStartDate).toISOString() : null;
+			value.publicationDate = value.publicationDate ? new Date(value.publicationDate).toISOString() : null;
+			if (value.tags.length === 0) {
+				value.tags = null!;
+			}
+
 			if (this.publication() !== null) {
-				await this.organizerEventService.updateDraft(form().value(), this.publication()!.id);
+				await this.organizerEventService.updateDraft(value, this.publication()!.id);
 			} else {
-				await this.organizerEventService.postDraft(form().value());
+				await this.organizerEventService.postDraft(value);
 			}
 		} catch (e: unknown) {
 			if (e instanceof Error && Constants.badParameterPattern.test(e.message)) {

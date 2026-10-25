@@ -9,7 +9,7 @@ import { ApiService } from '@services/apiService/api.service';
   providedIn: 'root',
 })
 export class OrganizerEventService extends ApiService {
-  protected override apiController = 'organizer-event';
+  protected override apiController = 'organizer-events';
 
   async postDraft(form: PostDetailsForm): Promise<Event> {
       const response = await this.postMultipartForm<Response<Event, string>>(this.getActionUrl(""), form);

@@ -31,7 +31,7 @@ describe('OrganizerEventService', () => {
     const response = service.postDraft({} as any);
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-event/`);
+    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/`);
     expect(expected.request.method).toBe('POST');
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
@@ -48,7 +48,7 @@ describe('OrganizerEventService', () => {
     const response = service.postDraft({} as any);
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-event/`);
+    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/`);
     expect(expected.request.method).toBe('POST');
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
