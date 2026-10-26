@@ -102,6 +102,6 @@ export interface PaginatedResponse<T> {
 export interface PaginationParameters {
   pageNumber: number;
   pageSize: number;
-  orderBy: string | null;
+  orderBy: string;
   descending: boolean;
 }

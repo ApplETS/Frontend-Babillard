@@ -386,7 +386,7 @@
     "page": "Page",
     "of": "of",
     "goToPage": "Go to page",
-    "show": "Show {count}"
+    "show": "Show {{count}}"
   },
   "none": "None",
   "mdxEditor": {

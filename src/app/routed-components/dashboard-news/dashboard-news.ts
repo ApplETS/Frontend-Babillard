@@ -48,6 +48,7 @@ export class DashboardNews implements OnInit {
           pageSize: 0,
           totalRecords: 0,
           totalPages: 0,
+          pageNumber: 0,
         });
       }
 
