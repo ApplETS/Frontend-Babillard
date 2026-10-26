@@ -3,7 +3,7 @@ import { CanActivateFn } from "@angular/router";
 import { UserType } from "@models/user-types";
 import { AuthService } from "@services/authService/auth.service";
 
-export const organizerGuard: CanActivateFn = (route, state) => {
+export const organizerGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const isAuthenticated = authService.isAuthenticated();
 

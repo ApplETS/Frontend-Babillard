@@ -7,7 +7,7 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
   providedIn: "root",
 })
 export class AuthService extends ApiService {
-  protected override apiController: string = "me";
+  protected override apiController = "me";
   oidcSecurityService = inject(OidcSecurityService);
 
   public isAuthenticated = signal<boolean>(false);

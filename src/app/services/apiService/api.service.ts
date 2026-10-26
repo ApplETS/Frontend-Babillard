@@ -60,7 +60,7 @@ export abstract class ApiService {
 
   protected async postMultipartForm<T>(
     action: string,
-    body: any,
+    body: Map<string, unknown>,
     routeParameters: unknown[] = [],
     queryParameters: HttpParams = new HttpParams(),
   ): Promise<T> {
@@ -71,7 +71,7 @@ export abstract class ApiService {
     const formBody = new FormData();
 
     for (const key of Object.keys(body)) {
-      formBody.append(key, body[key]);
+      formBody.append(key, body.get(key) as string | Blob);
     }
 
     if (routeParameters.length > 0) {

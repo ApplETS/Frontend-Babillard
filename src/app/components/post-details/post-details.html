@@ -3,7 +3,7 @@
     <div class="p-5 bg-base-200 max-h-full w-full rounded-2xl overflow-y-auto">
       <div class="grid grid-cols-2 gap-2"></div>
       <div class="flex items-center gap-2">
-        <h1 class="text-2xl block" [transloco]="modalTitle()"></h1>
+        <h1 class="text-2xl block" [transloco]="modalTitle()"> </h1>
         @if (modalMode() === ModalMode.modify) {
           <div
             class="tooltip tooltip-bottom ml-2"
@@ -102,7 +102,7 @@
               </div>
             </div>
             <div class="mb-3">
-              <label class="block" transloco="post.modal.tags-title"></label>
+              <span class="block" transloco="post.modal.tags-title"></span>
               <div
                 class="flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg"
               >
@@ -134,7 +134,7 @@
           <div class="ml-4 flex flex-col gap-3">
             <div>
               <div class="flex items-center mt-1">
-                <label class="block">
+                <label class="block" [formField]="postForm.imageAltText" for="alt-text">
                   <span transloco="post.modal.alt-text"></span>
                   @if (postForm.imageAltText().required()) {
                     <span class="text-red">*</span>
@@ -157,6 +157,7 @@
                   type="text"
                   [formField]="postForm.imageAltText"
                   class="input input-ghost w-full"
+									id="alt-text"
                 />
               </div>
             </div>
@@ -191,7 +192,7 @@
       </div>
 
       <div class="w-full z-40">
-        <label class="block">
+        <label class="block" for="content">
           <span transloco="post.modal.content"></span>
           @if (postForm.content().required()) {
             <span class="text-red">*</span>
@@ -203,7 +204,7 @@
               </div>
             </div>
           } @else {
-            <textarea [formField]="postForm.content" class="w-full"></textarea>
+            <textarea [formField]="postForm.content" class="w-full" id="content"></textarea>
           }
         </label>
       </div>
@@ -229,7 +230,7 @@
             (click)="handleDraft()"
             type="button"
             transloco="approbations.modal.draft"
-          ></button>
+          > </button>
         }
 
         <!-- {modalMode === Constants.publicationModalStatus.moderator && (

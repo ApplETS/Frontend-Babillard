@@ -18,7 +18,6 @@ import {
 import { Listbox, Option, ɵɵComboboxDialog } from "@angular/aria/listbox";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 @Component({

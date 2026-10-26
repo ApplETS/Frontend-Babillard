@@ -6,7 +6,7 @@ import { ApiService } from "@services/apiService/api.service";
   providedIn: "root",
 })
 export class TagService extends ApiService {
-  protected override apiController: string = "tags";
+  protected override apiController = "tags";
 
   async getAllTags(): Promise<Tag[]> {
     const response = await this.get<{

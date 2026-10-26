@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { PostDetailsForm } from "@components/post-details/post-details";
 import { Event } from "@models/event";
-import { EventResponseDTO } from "@models/eventResponseDTO.interface";
 import { Response } from "@models/response";
 import { ApiService } from "@services/apiService/api.service";
 
@@ -24,6 +23,8 @@ export class OrganizerEventService extends ApiService {
   }
 
   async updateDraft(form: PostDetailsForm, id: string) {
+    console.log(id);
+    console.log(form);
     return false;
   }
 }

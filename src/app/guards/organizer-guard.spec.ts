@@ -8,7 +8,7 @@ import { UserType } from "@models/user-types";
 describe("organizerGuard", () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => organizerGuard(...guardParameters));
-  let authService = {
+  const authService = {
     isAuthenticated: vi.fn(),
     userInfo: vi.fn(),
   };
@@ -18,6 +18,10 @@ describe("organizerGuard", () => {
       providers: [{ provide: AuthService, useValue: authService }],
     });
   });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  })
 
   it("should be created", () => {
     expect(executeGuard).toBeTruthy();

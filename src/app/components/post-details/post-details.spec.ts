@@ -16,16 +16,16 @@ describe("PreviewDetails", () => {
   let component: PostDetails;
   let fixture: ComponentFixture<PostDetails>;
 
-  let tagService = {
+  const tagService = {
     getAllTags: vi.fn(),
   };
 
-  let organizerEventService = {
+  const organizerEventService = {
     postDraft: vi.fn(),
     updateDraft: vi.fn(),
   };
 
-  let closedCount = signal(0);
+  const closedCount = signal(0);
   let postForm: FieldTree<PostDetailsForm>;
 
   beforeEach(async () => {
