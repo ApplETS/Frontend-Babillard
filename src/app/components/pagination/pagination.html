@@ -1,0 +1,59 @@
+		<div class="my-2">
+			<div class="flex flex-row justify-between items-center gap-2">
+				<span class="flex items-center gap-1">
+					<div transloco="pagination.page"></div>
+					<strong>
+            <span>{{ paginationResponse().pageNumber }}</span>
+            <span transloco="pagination.of"></span>
+            <span> {{ paginationResponse().totalPages }} </span>
+					</strong>
+				</span>
+				<div class="flex flex-row items-center">
+					<span class="flex items-center gap-1">
+						<div transloco="pagination.goToPage"></div>
+						<input
+              [value]="paginationResponse().pageNumber"
+              
+							type="number"
+              (input)="verifyPageNumber($event.target.valueAsNumber)"
+							class="input input-bordered w-20 input-sm mx-2"
+						/>
+					</span>
+					<select
+            [value]="paginationResponse().pageSize"
+            (input)="onPageSizeChangeEvent($event)"
+						class="select select-sm select-bordered"
+					>
+            @for (size of pageSizes; track size) {
+              <option transloco="pagination.show" [translocoParams]="{ count: size }">a</option>
+            }
+					</select>
+					<div class="join btn-group btn-sm">
+						<button class="join-item  btn btn-sm" (click)="verifyPageNumber(1)" [disabled]="!canMoveBack()">
+							&lt;&lt;
+						</button>
+						<button
+							class="join-item btn btn-sm"
+              (click)="verifyPageNumber(paginationResponse().pageNumber - 1)"
+              [disabled]="!canMoveBack()"
+						>
+							&lt;
+            </button>
+						<button
+							class="join-item btn btn-sm"
+              (click)="verifyPageNumber(paginationResponse().pageNumber + 1)"
+							[disabled]="!canMoveForward()"
+						>
+							&gt;
+						</button>
+						<button
+							class="join-item btn btn-sm"
+              (click)="verifyPageNumber(paginationResponse().totalPages)"
+							[disabled]="!canMoveForward()"
+						>
+							&gt;&gt;
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
