@@ -21,7 +21,7 @@ describe("organizerGuard", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-  })
+  });
 
   it("should be created", () => {
     expect(executeGuard).toBeTruthy();

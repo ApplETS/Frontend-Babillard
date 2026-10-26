@@ -60,7 +60,8 @@ export abstract class ApiService {
 
   protected async postMultipartForm<T>(
     action: string,
-    body: Map<string, unknown>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body: any,
     routeParameters: unknown[] = [],
     queryParameters: HttpParams = new HttpParams(),
   ): Promise<T> {
@@ -71,7 +72,7 @@ export abstract class ApiService {
     const formBody = new FormData();
 
     for (const key of Object.keys(body)) {
-      formBody.append(key, body.get(key) as string | Blob);
+      formBody.append(key, body[key]);
     }
 
     if (routeParameters.length > 0) {
