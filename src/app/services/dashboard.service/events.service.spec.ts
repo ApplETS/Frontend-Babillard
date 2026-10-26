@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
@@ -8,7 +8,7 @@ import { PaginatedResponse } from '@services/apiService/api.service';
 import { Event } from '@models/event';
 import { EventState } from '@models/event-state';
 
-describe('EventService', () => {
+describe("EventService", () => {
   let service: EventsService;
   let httpClientSpy: HttpTestingController;
 
@@ -17,24 +17,24 @@ describe('EventService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        EventsService
-      ]
+        EventsService,
+      ],
     });
     service = TestBed.inject(EventsService);
     httpClientSpy = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return events and call without activityArea', async () => {
+  it("should return events and call without activityArea", async () => {
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000`;
-   
+
     const response = service.getEvents([]);
     await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
-    expect(request.request.method).toBe('GET');
+    expect(request.request.method).toBe("GET");
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
@@ -43,23 +43,23 @@ describe('EventService', () => {
       pageSize: 1000,
       totalRecords: 1,
       totalPages: 1,
-      error: null
+      error: null,
     };
 
     request.flush(mockResponse);
-    
+
     const result = await response;
     expect(result).toEqual(mockResponse);
   });
 
-  it('should return events and call with single activityArea', async () => {
-    const activityAreas = ['tag1'];
+  it("should return events and call with single activityArea", async () => {
+    const activityAreas = ["tag1"];
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000&activityAreas=tag1`;
 
     const response = service.getEvents(activityAreas);
     await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
-    expect(request.request.method).toBe('GET');
+    expect(request.request.method).toBe("GET");
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
@@ -68,7 +68,7 @@ describe('EventService', () => {
       error: null,
       pageSize: 1000,
       totalRecords: 1,
-      totalPages: 1
+      totalPages: 1,
     };
 
     request.flush(mockResponse);
@@ -77,14 +77,14 @@ describe('EventService', () => {
     expect(result).toEqual(mockResponse);
   });
 
-    it('should return events and call with multiple activityAreas', async () => {
-    const activityAreas = ['tag1', 'tag2'];
+  it("should return events and call with multiple activityAreas", async () => {
+    const activityAreas = ["tag1", "tag2"];
     const expectedPath = `${environment.API_URL}/api/events/?pageNumber=1&pageSize=1000&activityAreas=tag1&activityAreas=tag2`;
 
     const response = service.getEvents(activityAreas);
     await new Promise((resolve) => setTimeout(resolve, 0));
     const request = httpClientSpy.expectOne(expectedPath);
-    expect(request.request.method).toBe('GET');
+    expect(request.request.method).toBe("GET");
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
@@ -93,7 +93,7 @@ describe('EventService', () => {
       error: null,
       pageSize: 1000,
       totalRecords: 1,
-      totalPages: 1
+      totalPages: 1,
     };
 
     request.flush(mockResponse);

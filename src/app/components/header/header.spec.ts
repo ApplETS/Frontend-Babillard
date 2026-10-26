@@ -1,24 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslocoService, TranslocoTestingModule } from '@jsverse/transloco';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { TranslocoService, TranslocoTestingModule } from "@jsverse/transloco";
 
-import { HeaderComponent } from './header';
-import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
-import { AuthService } from '@services/authService/auth.service';
-import { Router, RouterLink } from '@angular/router';
-import { HttpClient, HttpParams, provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { LangSwitcher } from '@components/lang-switcher/lang-switcher';
-import { ThemeSwitcher } from '@components/theme-switcher/theme-switcher';
-import { ThemeService } from '@services/themeService/theme.service';
-import { FormsModule } from '@angular/forms';
-import { of } from 'rxjs';
-import { Avatar } from '@components/avatar/avatar';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { DOCUMENT, RendererFactory2, signal } from '@angular/core';
-import { UserResponseDTO } from '@models/userResponseDTO.interface';
-import { UserType } from '@models/user-types';
+import { HeaderComponent } from "./header";
+import { OidcSecurityService, UserDataResult } from "angular-auth-oidc-client";
+import { AuthService } from "@services/authService/auth.service";
+import { Router, RouterLink } from "@angular/router";
+import { HttpClient, HttpParams, provideHttpClient } from "@angular/common/http";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { LangSwitcher } from "@components/lang-switcher/lang-switcher";
+import { ThemeSwitcher } from "@components/theme-switcher/theme-switcher";
+import { ThemeService } from "@services/themeService/theme.service";
+import { FormsModule } from "@angular/forms";
+import { of } from "rxjs";
+import { Avatar } from "@components/avatar/avatar";
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { DOCUMENT, RendererFactory2, signal } from "@angular/core";
+import { UserResponseDTO } from "@models/userResponseDTO.interface";
+import { UserType } from "@models/user-types";
 
-describe('Header', () => {
+describe("Header", () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let oidcSecurityService: any;
@@ -29,7 +29,7 @@ describe('Header', () => {
       isAuthenticated: of(vi.fn().mockReturnValue(false)),
       checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: false })),
       authenticated: vi.fn().mockReturnValue({ isAuthenticated: false }),
-      getAccessToken: vi.fn().mockReturnValue(of('mock-token')),
+      getAccessToken: vi.fn().mockReturnValue(of("mock-token")),
       userData$: of(null),
     };
 
@@ -38,7 +38,7 @@ describe('Header', () => {
         HeaderComponent,
         TranslocoTestingModule.forRoot({
           langs: { en: {}, fr: {} },
-          translocoConfig: { defaultLang: 'en' },
+          translocoConfig: { defaultLang: "en" },
         }),
         FaIconComponent,
       ],
@@ -50,15 +50,13 @@ describe('Header', () => {
         provideHttpClientTesting(),
       ],
     })
-    .overrideComponent(HeaderComponent, {
-      set: {
-        template: "<div></div>",
-        imports: [
-          FaIconComponent
-        ]
-      }
-    })
-    .compileComponents();
+      .overrideComponent(HeaderComponent, {
+        set: {
+          template: "<div></div>",
+          imports: [FaIconComponent],
+        },
+      })
+      .compileComponents();
 
     authService = TestBed.inject(AuthService);
     fixture = TestBed.createComponent(HeaderComponent);
@@ -67,18 +65,18 @@ describe('Header', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show Guest routes', () => {
+  it("should show Guest routes", () => {
     const routes = component.routes();
 
     expect(routes.length).toBe(1);
     expect(routes[0].route).toBe("/");
   });
 
-  it('should show Authenticated routes', () => {
+  it("should show Authenticated routes", () => {
     authService.isAuthenticated.set(true);
     fixture.detectChanges();
 
@@ -88,7 +86,7 @@ describe('Header', () => {
     expect(routes[0].route).toBe("/");
   });
 
-  it('should show Moderator routes', () => {
+  it("should show Moderator routes", () => {
     authService.isAuthenticated.set(true);
     authService.userInfo.set({ type: UserType.MODERATOR });
     fixture.detectChanges();
@@ -126,5 +124,5 @@ describe('Header', () => {
   afterEach(() => {
     authService.isAuthenticated.set(false);
     authService.userInfo.set(undefined);
-  })
+  });
 });

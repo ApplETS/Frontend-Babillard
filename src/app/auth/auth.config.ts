@@ -1,5 +1,5 @@
-import { LogLevel, PassedInitialConfig } from 'angular-auth-oidc-client';
-import { environment } from '@environments/environment';
+import { LogLevel, PassedInitialConfig } from "angular-auth-oidc-client";
+import { environment } from "@environments/environment";
 
 export const authConfig: PassedInitialConfig = {
   config: {
@@ -8,8 +8,8 @@ export const authConfig: PassedInitialConfig = {
     redirectUrl: environment.REDIRECT_URL,
     postLogoutRedirectUri: environment.POST_LOGOUT_REDIRECT_URI,
     clientId: environment.OPENID_CLIENT_ID,
-    scope: 'openid profile email offline_access',
-    responseType: 'code',
+    scope: "openid profile email offline_access",
+    responseType: "code",
     silentRenew: true,
     useRefreshToken: true,
     logLevel: LogLevel.Debug,

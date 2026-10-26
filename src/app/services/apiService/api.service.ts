@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export abstract class ApiService {
   protected abstract apiController: string;
@@ -22,13 +22,17 @@ export abstract class ApiService {
    * @param queryParameters Parameters to add to the endpoint as query parameters
    * @returns T type result from the API
    */
-  protected async get<T>(action: string, routeParameters: unknown[] = [], queryParameters: HttpParams = new HttpParams()): Promise<T> {
+  protected async get<T>(
+    action: string,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
     if (!action.endsWith("/") && routeParameters.length > 0) {
       action += "/";
     }
 
     console.log("Route parameters:", routeParameters.join("/"));
-    
+
     if (routeParameters.length > 0) {
       action += routeParameters.join("/");
     }
