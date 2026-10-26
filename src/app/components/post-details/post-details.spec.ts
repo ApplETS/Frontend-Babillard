@@ -185,7 +185,7 @@ describe("PreviewDetails", () => {
     expect(postForm().errors(), "form should not have error").length(0);
     expect(postForm.tags().errors(), "tags field should have errors").length(1);
     const error = postForm.tags().errors()![0];
-    expect(error.kind, "error kind should be 'toManyTags'").toBe("toManyTags");
+    expect(error.kind, "error kind should be 'maxLength'").toBe("maxLength");
     expect(error.message, "error message should be 'post.modal.tooManyTagsError'").toBe(
       "post.modal.tooManyTagsError",
     );
