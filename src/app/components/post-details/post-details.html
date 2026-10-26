@@ -1,172 +1,238 @@
 <div class="overflow-y-auto p-4 items-start">
-	<form class="overflow-y-auto max-h-full h-full w-full">
-		<div class="p-5 bg-base-200 max-h-full w-full rounded-2xl overflow-y-auto">
-			<div class="grid grid-cols-2 gap-2"></div>
-			<div class="flex items-center gap-2">
-				<h1 class="text-2xl block" [transloco]="modalTitle()"></h1>
-				@if (modalMode() === ModalMode.modify) {
-				<div class="tooltip tooltip-bottom ml-2" [attr.data-tip]="'post.modal.tool-tip-text' | transloco">
-					<button type="button"
-						class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
-						!
-					</button>
-				</div>
-				}
-				@if (!postForm().disabled()) {
-				<div class="ml-auto">
-					<button type="button" class="btn btn-primary" transloco="modal.preview" (click)="showPreview.set(true)">
-						<fa-icon [icon]="mobileScreenIcon" class="ml-1" />
-					</button>
-				</div>
-				}
-			</div>
-			<div class="flex mb-3 w-full">
-				<div class="grid grid-cols-3 gap-4 w-full">
-					<div class="col-span-2 mt-4">
-							<label class="block mb-3">
-								<span transloco="post.modal.title"></span>
-								@if (postForm.title().required()) {
-								<span class="text-red">*</span>
-								}
-								<div [class.disabled]="postForm.title().disabled()">
-									<input [formField]="postForm.title" type="text" class="input input-ghost w-full cursor-pointer" />
-								</div>
-							</label>
-						
-						<div class="grid grid-cols-2 gap-4">
-							<div>
-								<div class="mt-3">
-									<label class="block">
-										<span transloco="post.modal.published-date"></span>
-										@if (postForm.publicationDate().required()) {
-											<span class="text-red">*</span>
-										}
-										<div [class.disabled]="postForm.publicationDate().disabled()">
-											<input type="datetime-local" [formField]="postForm.publicationDate" class="input input-ghost w-full" />
-										</div>
-									</label>
-								</div>
-							</div>
+  <form class="overflow-y-auto max-h-full h-full w-full">
+    <div class="p-5 bg-base-200 max-h-full w-full rounded-2xl overflow-y-auto">
+      <div class="grid grid-cols-2 gap-2"></div>
+      <div class="flex items-center gap-2">
+        <h1 class="text-2xl block" [transloco]="modalTitle()"></h1>
+        @if (modalMode() === ModalMode.modify) {
+          <div
+            class="tooltip tooltip-bottom ml-2"
+            [attr.data-tip]="'post.modal.tool-tip-text' | transloco"
+          >
+            <button
+              type="button"
+              class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2"
+            >
+              !
+            </button>
+          </div>
+        }
+        @if (!postForm().disabled()) {
+          <div class="ml-auto">
+            <button
+              type="button"
+              class="btn btn-primary"
+              transloco="modal.preview"
+              (click)="showPreview.set(true)"
+            >
+              <fa-icon [icon]="mobileScreenIcon" class="ml-1" />
+            </button>
+          </div>
+        }
+      </div>
+      <div class="flex mb-3 w-full">
+        <div class="grid grid-cols-3 gap-4 w-full">
+          <div class="col-span-2 mt-4">
+            <label class="block mb-3">
+              <span transloco="post.modal.title"></span>
+              @if (postForm.title().required()) {
+                <span class="text-red">*</span>
+              }
+              <div [class.disabled]="postForm.title().disabled()">
+                <input
+                  [formField]="postForm.title"
+                  type="text"
+                  class="input input-ghost w-full cursor-pointer"
+                />
+              </div>
+            </label>
 
-							<div class="mt-3">
-								<label class="block">
-									<span transloco="post.modal.event-start-date"></span>
-									@if (postForm.eventStartDate().required()) {
-										<span class="text-red">*</span>
-									}
-									<div [class.disabled]="postForm.eventStartDate().disabled()">
-										<input type="datetime-local" [formField]="postForm.eventStartDate" class="input input-ghost w-full" />
-									</div>
-								</label>
-							</div>
-							<div class="mb-3">
-								<label class="block">
-									<span transloco="post.modal.event-end-date"></span>
-									@if (postForm.eventEndDate().required()) {
-										<span class="text-red">*</span>
-									}
-									<div [class.disabled]="postForm.eventStartDate().invalid() || postForm.eventEndDate().disabled()">
-										<input type="datetime-local" [formField]="postForm.eventEndDate" class="input input-ghost w-full">
-									</div>
-								</label>
-							</div>
-						</div>
-						<div class="mb-3">
-							<label class="block" transloco="post.modal.tags-title"></label>
-							<div class="flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg">
-								@for (tag of postForm.tags().value(); track tag) {
-									<div [class]="Constants.colors.at($index)" class="badge text-black py-4 px-3 flex items-center
-										whitespace-nowrap overflow-hidden" style="max-width: 'calc(100% - 30px)';">
-										<span class="truncate">{{ tags().find(t => t.id === tag)?.name }}</span>
-										@if (!postForm.tags().disabled()) {
-											<button type="button" (click)="removeTag(tag)"><fa-icon class="ml-2 cursor-pointer" [icon]="faXmark" /></button>
-										}
-									</div>
-								}
-								@if (canAddTag()) {
-									<app-combobox [values]="availableTags()" [placeholder]="'post.search' | transloco"
-										(valueChanged)="addTag($event!)" />
-								}
-							</div>
-						</div>
-					</div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="mt-3">
+                  <label class="block">
+                    <span transloco="post.modal.published-date"></span>
+                    @if (postForm.publicationDate().required()) {
+                      <span class="text-red">*</span>
+                    }
+                    <div [class.disabled]="postForm.publicationDate().disabled()">
+                      <input
+                        type="datetime-local"
+                        [formField]="postForm.publicationDate"
+                        class="input input-ghost w-full"
+                      />
+                    </div>
+                  </label>
+                </div>
+              </div>
 
-					<div class="ml-4 flex flex-col gap-3">
-						<div>
-							<div class="flex items-center mt-1">
-								<label class="block">
-									<span transloco="post.modal.alt-text"></span>
-									@if (postForm.imageAltText().required()) {
-										<span class="text-red">*</span>
-									}
-								</label>
-								<div class="tooltip tooltip-bottom ml-2" [attr.data-tip]="'post.modal.alt-text-tooltip' | transloco">
-									<button type="button"
-										class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
-										?
-									</button>
-								</div>
-							</div>
-							<div [class.disabled]="postForm.imageAltText().disabled()">
-								<input type="text" [formField]="postForm.imageAltText" class="input input-ghost w-full" />
-							</div>
-						</div>
-						<div class="flex-1 h-64 overflow-clip rounded-lg">
-							<input type="file" 
-								class="file-input file-input-bordered file-input-accent w-full"
-							 	(change)="fileSelected($event)"
-								accept="image/*"
-								
-							/>
-							@let imageTypeError = postForm.image().errors().find(e => e.kind === "invalidType");
-							@if (imageTypeError) {
-								<span class="text-red" [transloco]="imageTypeError.message"></span>
-							}
+              <div class="mt-3">
+                <label class="block">
+                  <span transloco="post.modal.event-start-date"></span>
+                  @if (postForm.eventStartDate().required()) {
+                    <span class="text-red">*</span>
+                  }
+                  <div [class.disabled]="postForm.eventStartDate().disabled()">
+                    <input
+                      type="datetime-local"
+                      [formField]="postForm.eventStartDate"
+                      class="input input-ghost w-full"
+                    />
+                  </div>
+                </label>
+              </div>
+              <div class="mb-3">
+                <label class="block">
+                  <span transloco="post.modal.event-end-date"></span>
+                  @if (postForm.eventEndDate().required()) {
+                    <span class="text-red">*</span>
+                  }
+                  <div
+                    [class.disabled]="
+                      postForm.eventStartDate().invalid() || postForm.eventEndDate().disabled()
+                    "
+                  >
+                    <input
+                      type="datetime-local"
+                      [formField]="postForm.eventEndDate"
+                      class="input input-ghost w-full"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="block" transloco="post.modal.tags-title"></label>
+              <div
+                class="flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg"
+              >
+                @for (tag of postForm.tags().value(); track tag) {
+                  <div
+                    [class]="Constants.colors.at($index)"
+                    class="badge text-black py-4 px-3 flex items-center whitespace-nowrap overflow-hidden"
+                    style="max-width: &quot;calc(100% - 30px)&quot;"
+                  >
+                    <span class="truncate">{{ tags().find((t) => t.id === tag)?.name }}</span>
+                    @if (!postForm.tags().disabled()) {
+                      <button type="button" (click)="removeTag(tag)">
+                        <fa-icon class="ml-2 cursor-pointer" [icon]="faXmark" />
+                      </button>
+                    }
+                  </div>
+                }
+                @if (canAddTag()) {
+                  <app-combobox
+                    [values]="availableTags()"
+                    [placeholder]="'post.search' | transloco"
+                    (valueChanged)="addTag($event!)"
+                  />
+                }
+              </div>
+            </div>
+          </div>
 
-							@if (postForm.image().value()) {
-								<img [src]="postForm.imageUrl().value()" [alt]="postForm.imageAltText().value()" class="w-full aspect-[2/1] rounded-lg mt-2" />
-							} @else {
-								<div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
-							}
-						</div>
-					</div>
-				</div>
-			</div>
+          <div class="ml-4 flex flex-col gap-3">
+            <div>
+              <div class="flex items-center mt-1">
+                <label class="block">
+                  <span transloco="post.modal.alt-text"></span>
+                  @if (postForm.imageAltText().required()) {
+                    <span class="text-red">*</span>
+                  }
+                </label>
+                <div
+                  class="tooltip tooltip-bottom ml-2"
+                  [attr.data-tip]="'post.modal.alt-text-tooltip' | transloco"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2"
+                  >
+                    ?
+                  </button>
+                </div>
+              </div>
+              <div [class.disabled]="postForm.imageAltText().disabled()">
+                <input
+                  type="text"
+                  [formField]="postForm.imageAltText"
+                  class="input input-ghost w-full"
+                />
+              </div>
+            </div>
+            <div class="flex-1 h-64 overflow-clip rounded-lg">
+              <input
+                type="file"
+                class="file-input file-input-bordered file-input-accent w-full"
+                (change)="fileSelected($event)"
+                accept="image/*"
+              />
+              @let imageTypeError =
+                postForm
+                  .image()
+                  .errors()
+                  .find((e) => e.kind === "invalidType");
+              @if (imageTypeError) {
+                <span class="text-red" [transloco]="imageTypeError.message"></span>
+              }
 
-			<div class="w-full z-40">
-				<label class="block">
-					<span transloco="post.modal.content"></span>
-					@if (postForm.content().required()) {
-						<span class="text-red">*</span>
-					}
-					@if (postForm.content().disabled()) {
-						<div class="relative">
-							<div class="disabled">
-								<markdown [data]="postForm.content().value()" class="p-2" />
-							</div>
-						</div>
-					} @else {
-						<textarea [formField]="postForm.content" class="w-full" ></textarea>
-					}
-				</label>
-			</div>
+              @if (postForm.image().value()) {
+                <img
+                  [src]="postForm.imageUrl().value()"
+                  [alt]="postForm.imageAltText().value()"
+                  class="w-full aspect-[2/1] rounded-lg mt-2"
+                />
+              } @else {
+                <div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
 
-			@for (error of postForm().errors(); track error.kind) {
-				<span class="text-red" [transloco]="error.message"></span>
-			}
+      <div class="w-full z-40">
+        <label class="block">
+          <span transloco="post.modal.content"></span>
+          @if (postForm.content().required()) {
+            <span class="text-red">*</span>
+          }
+          @if (postForm.content().disabled()) {
+            <div class="relative">
+              <div class="disabled">
+                <markdown [data]="postForm.content().value()" class="p-2" />
+              </div>
+            </div>
+          } @else {
+            <textarea [formField]="postForm.content" class="w-full"></textarea>
+          }
+        </label>
+      </div>
 
-			<div class="divider my-1"></div>
-			
-			<div class="mt-2 flex" [class.justify-between]="modalMode() === ModalMode.moderator" [class.justify-start]="modalMode() !== ModalMode.moderator">
-				@if (modalMode() !== ModalMode.moderator && (modalMode() !== ModalMode.modify || publication()?.state === EventState.Draft)) {
+      @for (error of postForm().errors(); track error.kind) {
+        <span class="text-red" [transloco]="error.message"></span>
+      }
 
-					<button class="btn btn-info px-8 font-normal" [disabled]="publication()?.state === EventState.Approved"
-						(click)="handleDraft()" type="button" transloco="approbations.modal.draft">
-					</button>
-				}
-				
+      <div class="divider my-1"></div>
 
-				<!-- {modalMode === Constants.publicationModalStatus.moderator && (
+      <div
+        class="mt-2 flex"
+        [class.justify-between]="modalMode() === ModalMode.moderator"
+        [class.justify-start]="modalMode() !== ModalMode.moderator"
+      >
+        @if (
+          modalMode() !== ModalMode.moderator &&
+          (modalMode() !== ModalMode.modify || publication()?.state === EventState.Draft)
+        ) {
+          <button
+            class="btn btn-info px-8 font-normal"
+            [disabled]="publication()?.state === EventState.Approved"
+            (click)="handleDraft()"
+            type="button"
+            transloco="approbations.modal.draft"
+          ></button>
+        }
+
+        <!-- {modalMode === Constants.publicationModalStatus.moderator && (
 				<>
 					{publication?.state !== NewsStates.PUBLISHED ? (
 					<div class="grid grid-cols-2 gap-6">
@@ -224,10 +290,9 @@
 							)}
 						</div>
 			</div> -->
-		</div>
-	
-</div>
-</form>
+      </div>
+    </div>
+  </form>
 </div>
 <!-- {showPreview && (
 <div class="inset-0">

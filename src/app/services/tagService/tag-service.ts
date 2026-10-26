@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Tag } from '@models/tag';
-import { ApiService } from '@services/apiService/api.service';
+import { Injectable } from "@angular/core";
+import { Tag } from "@models/tag";
+import { ApiService } from "@services/apiService/api.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class TagService extends ApiService {
   protected override apiController: string = "tags";

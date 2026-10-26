@@ -37,13 +37,19 @@ export class HeaderComponent implements OnInit {
       return [{ route: "/", label: "Babillard", activeRoute: computed(() => false) }];
     } else {
       const routesPart = [
-        { route: "/", label: "dashboard.news", activeRoute: isActive("/dashboard/news", this.router) },
+        {
+          route: "/",
+          label: "dashboard.news",
+          activeRoute: isActive("/dashboard/news", this.router),
+        },
       ];
 
       if (this.authService.userInfo()?.type?.match(UserType.ORGANIZER)) {
-        routesPart.push(
-          { route: "/posts", label: "navbar.post", activeRoute: isActive("/posts", this.router) },
-        )
+        routesPart.push({
+          route: "/posts",
+          label: "navbar.post",
+          activeRoute: isActive("/posts", this.router),
+        });
       }
 
       if (this.authService.userInfo()?.type?.match(UserType.MODERATOR)) {

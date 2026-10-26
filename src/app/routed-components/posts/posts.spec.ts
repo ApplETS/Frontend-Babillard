@@ -1,26 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { Posts } from './posts';
-import { TranslocoTestingModule } from '@jsverse/transloco';
-import { Modal } from '@components/modal/modal';
+import { Posts } from "./posts";
+import { TranslocoTestingModule } from "@jsverse/transloco";
+import { Modal } from "@components/modal/modal";
 
-describe('Posts', () => {
+describe("Posts", () => {
   let component: Posts;
   let fixture: ComponentFixture<Posts>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Posts,
+      imports: [
+        Posts,
         TranslocoTestingModule.forRoot({
           langs: {
             en: {},
             fr: {},
           },
           preloadLangs: true,
-          translocoConfig: {
-          }
+          translocoConfig: {},
         }),
-        Modal
+        Modal,
       ],
     }).compileComponents();
 
@@ -29,7 +29,7 @@ describe('Posts', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

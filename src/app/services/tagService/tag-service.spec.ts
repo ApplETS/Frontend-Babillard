@@ -1,31 +1,28 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { TagService } from './tag-service';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { environment } from '@environments/environment.development';
+import { TagService } from "./tag-service";
+import { provideHttpClient } from "@angular/common/http";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { environment } from "@environments/environment.development";
 
-describe('TagService', () => {
+describe("TagService", () => {
   let service: TagService;
   let httpClient: HttpTestingController;
   const url = `${environment.API_URL}/api/tags/`;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting()
-      ]
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(TagService);
     httpClient = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch all tags', async () => {
+  it("should fetch all tags", async () => {
     const tags = service.getAllTags();
 
     const req = httpClient.expectOne(url);
@@ -37,13 +34,13 @@ describe('TagService', () => {
     expect(result.length).toBe(0);
   });
 
-  it('should throw an error when the request fails', async () => {
+  it("should throw an error when the request fails", async () => {
     const tags = service.getAllTags();
 
     const req = httpClient.expectOne(url);
-    req.flush({ error: 'Failed to fetch tags', data: null });
+    req.flush({ error: "Failed to fetch tags", data: null });
 
     await expect(tags).rejects.instanceOf(Error);
-    await expect(tags).rejects.toThrow('Failed to fetch tags');
+    await expect(tags).rejects.toThrow("Failed to fetch tags");
   });
 });

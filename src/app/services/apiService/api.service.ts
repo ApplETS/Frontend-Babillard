@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '@environments/environment.development';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
+import { inject, Injectable } from "@angular/core";
+import { environment } from "@environments/environment.development";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { lastValueFrom } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -41,7 +41,12 @@ export abstract class ApiService {
     return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters }));
   }
 
-  protected async post<T>(action: string, body: unknown, routeParameters: unknown[] = [], queryParameters: HttpParams = new HttpParams()): Promise<T> {
+  protected async post<T>(
+    action: string,
+    body: unknown,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
     if (!action.endsWith("/") && routeParameters.length > 0) {
       action += "/";
     }
@@ -52,14 +57,19 @@ export abstract class ApiService {
 
     return await lastValueFrom(this.httpService.post<T>(action, body, { params: queryParameters }));
   }
-  
-  protected async postMultipartForm<T>(action: string, body: any, routeParameters: unknown[] = [], queryParameters: HttpParams = new HttpParams()): Promise<T> {
+
+  protected async postMultipartForm<T>(
+    action: string,
+    body: any,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
     if (!action.endsWith("/") && routeParameters.length > 0) {
       action += "/";
     }
 
     const formBody = new FormData();
-    
+
     for (const key of Object.keys(body)) {
       formBody.append(key, body[key]);
     }
@@ -68,7 +78,9 @@ export abstract class ApiService {
       action += routeParameters.join("/");
     }
 
-    return await lastValueFrom(this.httpService.post<T>(action, formBody, { params: queryParameters }));
+    return await lastValueFrom(
+      this.httpService.post<T>(action, formBody, { params: queryParameters }),
+    );
   }
 }
 

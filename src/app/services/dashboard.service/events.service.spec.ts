@@ -1,12 +1,12 @@
 import { TestBed } from "@angular/core/testing";
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
-import { EventsService } from './events.service';
-import { PaginatedResponse } from '@services/apiService/api.service';
-import { Event } from '@models/event';
-import { EventState } from '@models/event-state';
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { provideHttpClient } from "@angular/common/http";
+import { environment } from "@environments/environment";
+import { EventsService } from "./events.service";
+import { PaginatedResponse } from "@services/apiService/api.service";
+import { Event } from "@models/event";
+import { EventState } from "@models/event-state";
 
 describe("EventService", () => {
   let service: EventsService;
@@ -14,11 +14,7 @@ describe("EventService", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        EventsService,
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting(), EventsService],
     });
     service = TestBed.inject(EventsService);
     httpClientSpy = TestBed.inject(HttpTestingController);
@@ -38,7 +34,18 @@ describe("EventService", () => {
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
-        { id: '1', title: 'Event 1', content: 'Content 1', imageUrl: 'url1', imageAltText: 'alt1', eventStartDate: '2024-01-01', eventEndDate: '2024-01-02', organizer: null, tags: [{id: "tag1", name: "tag", createdAt: "", updatedAt: ""}], state: EventState.Published }
+        {
+          id: "1",
+          title: "Event 1",
+          content: "Content 1",
+          imageUrl: "url1",
+          imageAltText: "alt1",
+          eventStartDate: "2024-01-01",
+          eventEndDate: "2024-01-02",
+          organizer: null,
+          tags: [{ id: "tag1", name: "tag", createdAt: "", updatedAt: "" }],
+          state: EventState.Published,
+        },
       ],
       pageSize: 1000,
       totalRecords: 1,
@@ -63,7 +70,18 @@ describe("EventService", () => {
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
-        { id: '1', title: 'Event 1', content: 'Content 1', imageUrl: 'url1', imageAltText: 'alt1', eventStartDate: '2024-01-01', eventEndDate: '2024-01-02', organizer: null, tags: [{id: "tag1", name: "tag", createdAt: "", updatedAt: ""}], state: EventState.Published }
+        {
+          id: "1",
+          title: "Event 1",
+          content: "Content 1",
+          imageUrl: "url1",
+          imageAltText: "alt1",
+          eventStartDate: "2024-01-01",
+          eventEndDate: "2024-01-02",
+          organizer: null,
+          tags: [{ id: "tag1", name: "tag", createdAt: "", updatedAt: "" }],
+          state: EventState.Published,
+        },
       ],
       error: null,
       pageSize: 1000,
@@ -88,7 +106,18 @@ describe("EventService", () => {
 
     const mockResponse: PaginatedResponse<Event> = {
       data: [
-        { id: '1', title: 'Event 1', content: 'Content 1', imageUrl: 'url1', imageAltText: 'alt1', eventStartDate: '2024-01-01', eventEndDate: '2024-01-02', organizer: null, tags: [{id: "tag1", name: "tag", createdAt: "", updatedAt: ""}], state: EventState.Published }
+        {
+          id: "1",
+          title: "Event 1",
+          content: "Content 1",
+          imageUrl: "url1",
+          imageAltText: "alt1",
+          eventStartDate: "2024-01-01",
+          eventEndDate: "2024-01-02",
+          organizer: null,
+          tags: [{ id: "tag1", name: "tag", createdAt: "", updatedAt: "" }],
+          state: EventState.Published,
+        },
       ],
       error: null,
       pageSize: 1000,

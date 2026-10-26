@@ -1,9 +1,17 @@
 <div ngCombobox class="flex flex-col w-full relative" #combobox="ngCombobox" [readonly]="true">
   <div class="dropdown w-full z-40">
-    <input ngComboboxInput class="input input-ghost full mb-2" [placeholder]="placeholder()" [value]="selectedValue()" />
+    <input
+      ngComboboxInput
+      class="input input-ghost full mb-2"
+      [placeholder]="placeholder()"
+      [value]="selectedValue()"
+    />
   </div>
   <ng-template ngComboboxPopupContainer>
-    <dialog ngComboboxDialog class="absolute left-auto right-auto top-auto bottom-auto p-0 border border-solid">
+    <dialog
+      ngComboboxDialog
+      class="absolute left-auto right-auto top-auto bottom-auto p-0 border border-solid"
+    >
       <div ngCombobox #combobox="ngCombobox" filterMode="manual" [alwaysExpanded]="true">
         <div class="dropdown-content menu p-4 shadow bg-base-100 rounded-box w-full mb-1">
           <input
@@ -16,9 +24,19 @@
         </div>
 
         <ng-template ngComboboxPopupContainer>
-          <div ngListbox (valuesChange)="setValue($event)" ngListbox class="max-h-40 overflow-y-auto p-4">
+          <div
+            ngListbox
+            (valuesChange)="setValue($event)"
+            ngListbox
+            class="max-h-40 overflow-y-auto p-4"
+          >
             @for (option of showedValues(); track option) {
-              <div ngOption [value]="option.id" [label]="option.name" class="cursor-pointer active:bg-base-200 active:border-base-content active:outline-2">
+              <div
+                ngOption
+                [value]="option.id"
+                [label]="option.name"
+                class="cursor-pointer active:bg-base-200 active:border-base-content active:outline-2"
+              >
                 <span class="w-full text-left">{{ option.name }}</span>
               </div>
             } @empty {
@@ -30,4 +48,3 @@
     </dialog>
   </ng-template>
 </div>
-

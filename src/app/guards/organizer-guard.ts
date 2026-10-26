@@ -1,7 +1,7 @@
-import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
-import { UserType } from '@models/user-types';
-import { AuthService } from '@services/authService/auth.service';
+import { inject } from "@angular/core";
+import { CanActivateFn } from "@angular/router";
+import { UserType } from "@models/user-types";
+import { AuthService } from "@services/authService/auth.service";
 
 export const organizerGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);

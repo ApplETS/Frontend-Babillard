@@ -1,38 +1,34 @@
 import { TestBed } from "@angular/core/testing";
 
 import { OrganizerEventService } from "./organizer-event.service";
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { provideHttpClient } from "@angular/common/http";
+import { environment } from "@environments/environment";
 
-describe('OrganizerEventService', () => {
+describe("OrganizerEventService", () => {
   let service: OrganizerEventService;
   let httpClientSpy: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        OrganizerEventService
-      ]
+      providers: [provideHttpClient(), provideHttpClientTesting(), OrganizerEventService],
     });
     service = TestBed.inject(OrganizerEventService);
     httpClientSpy = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 
   it("should return an event when postDraft is called and error is null", async () => {
-    const mockEvent = { error: null, data: {id: "1", name: "Test Event"} } as any; // Replace with actual Event type if needed
-    
+    const mockEvent = { error: null, data: { id: "1", name: "Test Event" } } as any; // Replace with actual Event type if needed
+
     const response = service.postDraft({} as any);
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/`);
-    expect(expected.request.method).toBe('POST');
+    expect(expected.request.method).toBe("POST");
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
@@ -49,7 +45,7 @@ describe('OrganizerEventService', () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/`);
-    expect(expected.request.method).toBe('POST');
+    expect(expected.request.method).toBe("POST");
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 

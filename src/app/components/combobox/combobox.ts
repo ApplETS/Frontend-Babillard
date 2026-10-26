@@ -1,26 +1,51 @@
-import { afterNextRender, afterRenderEffect, Component, computed, input, model, output, signal, viewChild, viewChildren } from '@angular/core';
-import { Combobox as NgCombobox, ComboboxInput, ComboboxPopupContainer } from '@angular/aria/combobox';
-import { Listbox, Option, ɵɵComboboxDialog } from '@angular/aria/listbox';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  afterNextRender,
+  afterRenderEffect,
+  Component,
+  computed,
+  input,
+  model,
+  output,
+  signal,
+  viewChild,
+  viewChildren,
+} from "@angular/core";
+import {
+  Combobox as NgCombobox,
+  ComboboxInput,
+  ComboboxPopupContainer,
+} from "@angular/aria/combobox";
+import { Listbox, Option, ɵɵComboboxDialog } from "@angular/aria/listbox";
+import { OverlayModule } from "@angular/cdk/overlay";
+import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
-  selector: 'app-combobox',
-  imports: [NgCombobox, Listbox, Option, ComboboxInput, ComboboxPopupContainer, OverlayModule, TranslocoDirective, ɵɵComboboxDialog, TranslocoPipe],
-  templateUrl: './combobox.html',
+  selector: "app-combobox",
+  imports: [
+    NgCombobox,
+    Listbox,
+    Option,
+    ComboboxInput,
+    ComboboxPopupContainer,
+    OverlayModule,
+    TranslocoDirective,
+    ɵɵComboboxDialog,
+    TranslocoPipe,
+  ],
+  templateUrl: "./combobox.html",
   styles: `
-  @reference "#styles.css";
-  
-  [ngListBox]>[ngOption][aria-selected="true"] {
-    background-color: var(--color-base-300);
-  }
+    @reference "#styles.css";
 
-  [ngCombobox]:has([data-expanded='false']) .menu {
-    @apply hidden;
-  }
-  `
+    [ngListBox] > [ngOption][aria-selected="true"] {
+      background-color: var(--color-base-300);
+    }
+
+    [ngCombobox]:has([data-expanded="false"]) .menu {
+      @apply hidden;
+    }
+  `,
 })
 export class Combobox {
   values = input.required<{ id: string; name: string }[]>();
@@ -34,14 +59,18 @@ export class Combobox {
   options = viewChildren<Option<string>>(Option);
   combobox = viewChild<NgCombobox<string>>(NgCombobox);
 
-  showedValues = computed(() => this.values().filter(v => v.name.toLowerCase().includes(this.searchTerm().toLowerCase())))
-  selectedValue = computed(() => this.values().find(v => v.id === this.value())?.name ?? this.placeholder());
+  showedValues = computed(() =>
+    this.values().filter((v) => v.name.toLowerCase().includes(this.searchTerm().toLowerCase())),
+  );
+  selectedValue = computed(
+    () => this.values().find((v) => v.id === this.value())?.name ?? this.placeholder(),
+  );
 
   protected readonly faSearch = faSearch;
   constructor() {
     afterNextRender(() => {
       const option = this.options().find((opt) => opt.active());
-      setTimeout(() => option?.element.scrollIntoView({ block: 'nearest' }), 50);
+      setTimeout(() => option?.element.scrollIntoView({ block: "nearest" }), 50);
     });
 
     afterRenderEffect(() => {
@@ -61,6 +90,8 @@ export class Combobox {
   reset() {
     this.searchTerm.set("");
     this.value.set(null);
-    this.options().filter(opt => opt.active()).forEach(opt => opt.element.ariaSelected = "false");
+    this.options()
+      .filter((opt) => opt.active())
+      .forEach((opt) => (opt.element.ariaSelected = "false"));
   }
 }
