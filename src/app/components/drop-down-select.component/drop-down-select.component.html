@@ -1,6 +1,6 @@
 <div class="flex items-center space-x-4">
   <div class="inline-block relative">
-    <button class="m-1 btn flex items-center btn-outline btn-accent" (click)="toggleDropdown()">
+    <button class="m-1 btn flex items-center btn-outline btn-accent" type="button" (click)="toggleDropdown()">
       <fa-icon [icon]="filter" />
       {{ title }}
       <fa-icon [icon]="isDropdownOpen() ? chevronUp : chevronDown" class="w-5 ml-2" />
