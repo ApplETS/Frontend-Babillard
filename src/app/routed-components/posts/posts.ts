@@ -6,15 +6,16 @@ import { PostDetails } from "@components/post-details/post-details";
 import { ModalMode } from "@models/modal-mode";
 import { EventTable } from "@components/event-table/event-table";
 import { Pagination } from "@components/pagination/pagination";
-import { form, FormField } from "@angular/forms/signals";
+import { form, FormField, submit, FormRoot } from "@angular/forms/signals";
 import { PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
 import { Event } from "@models/event";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
+import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
 
 @Component({
   selector: "app-posts",
-  imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField],
+  imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot],
   templateUrl: "./posts.html",
 })
 export class Posts implements OnInit {
@@ -59,18 +60,31 @@ export class Posts implements OnInit {
       orderBy: "",
       descending: false,
     },
-  }));
+  }), {submission: {
+    action: async (field) => {
+      const formValue = {
+        title: field.title().value(),
+        startDate: field.startDate().value(),
+        endDate: field.endDate().value(),
+        activityAreas: field.activityAreas().value(),
+        tags: field.tags().value(),
+        state: field.state().value(),
+        pageNumber: field.pagination().value().pageNumber,
+        pageSize: field.pagination().value().pageSize,
+        orderBy: field.pagination().value().orderBy,
+        descending: field.pagination().value().descending,
+      };
+
+      this.paginatedEvents.set(await this.organizerEventService.getOrganizerEvents(formValue));
+    }
+  }});
 
   async ngOnInit(): Promise<void> {
-    this.paginatedEvents.set(await this.organizerEventService.getOrganizerEvents({
-      ...this.searchEventForm.pagination().value(),
-      activityAreas: this.searchEventForm.activityAreas().value(),
-      tags: this.searchEventForm.tags().value(),
-      title: this.searchEventForm.title().value(),
-      startDate: this.searchEventForm.startDate().value(),
-      endDate: this.searchEventForm.endDate().value(),
-      state: this.searchEventForm.state().value(),
-    }));
+    this.searchEvents();
+  }
+
+  searchEvents() {
+    submit(this.searchEventForm);
   }
 }
 
