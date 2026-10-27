@@ -1,8 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { environment } from "@environments/environment.development";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { lastValueFrom } from "rxjs";
-import { OidcSecurityService } from "angular-auth-oidc-client";
 
 @Injectable({
   providedIn: "root",
@@ -10,7 +9,6 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 export abstract class ApiService {
   protected abstract apiController: string;
   private readonly httpService = inject(HttpClient);
-  protected readonly oidcSecurityService = inject(OidcSecurityService);
 
   protected getActionUrl(action: string): string {
     return `${environment.API_URL}/api/${this.apiController}/${action}`;
@@ -39,15 +37,50 @@ export abstract class ApiService {
       action += routeParameters.join("/");
     }
     console.log(action);
-    let headers = new HttpHeaders({});
 
-    if (this.oidcSecurityService.authenticated().isAuthenticated) {
-      const accessToken = await lastValueFrom(this.oidcSecurityService.getAccessToken());
-      headers = headers.set("Authorization", `Bearer ${accessToken}`);
+    return await lastValueFrom(this.httpService.get<T>(action, { params: queryParameters }));
+  }
+
+  protected async post<T>(
+    action: string,
+    body: unknown,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+    }
+
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+
+    return await lastValueFrom(this.httpService.post<T>(action, body, { params: queryParameters }));
+  }
+
+  protected async postMultipartForm<T>(
+    action: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body: any,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+    }
+
+    const formBody = new FormData();
+
+    for (const key of Object.keys(body)) {
+      formBody.append(key, body[key]);
+    }
+
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
     }
 
     return await lastValueFrom(
-      this.httpService.get<T>(action, { params: queryParameters, headers: headers }),
+      this.httpService.post<T>(action, formBody, { params: queryParameters }),
     );
   }
 }

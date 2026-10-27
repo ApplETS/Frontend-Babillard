@@ -42,12 +42,15 @@ export class HeaderComponent implements OnInit {
           label: "dashboard.news",
           activeRoute: isActive("/dashboard/news", this.router),
         },
-        {
-          route: "/posts",
-          label: "navbar.publication",
-          activeRoute: isActive("/posts", this.router),
-        },
       ];
+
+      if (this.authService.userInfo()?.type?.match(UserType.ORGANIZER)) {
+        routesPart.push({
+          route: "/posts",
+          label: "navbar.post",
+          activeRoute: isActive("/posts", this.router),
+        });
+      }
 
       if (this.authService.userInfo()?.type?.match(UserType.MODERATOR)) {
         routesPart.push({
