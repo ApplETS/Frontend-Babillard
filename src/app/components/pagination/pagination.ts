@@ -1,4 +1,4 @@
-import { Component, computed, input, InputSignal, InputSignalWithTransform, model, ModelSignal, OutputRef } from "@angular/core";
+import { Component, computed, input, InputSignal, InputSignalWithTransform, model, ModelSignal, output, OutputRef } from "@angular/core";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
 import { FormValueControl } from "@angular/forms/signals";
@@ -12,6 +12,7 @@ export class Pagination implements FormValueControl<PaginationParameters> {
   value = model<PaginationParameters>({descending: false, orderBy: "", pageNumber: 1, pageSize: 10});
 
   paginationResponse = input.required<PaginatedResponse<unknown>>();
+  change = output<PaginationParameters>();
 
   pageSizes = [10, 20, 30, 40, 50];
   
@@ -28,6 +29,7 @@ export class Pagination implements FormValueControl<PaginationParameters> {
       ...v,
       pageNumber: effectiveValue,
     }));
+    this.change.emit(this.value());
   }
 
   protected onPageSizeChangeEvent(e: Event) {
@@ -37,6 +39,7 @@ export class Pagination implements FormValueControl<PaginationParameters> {
       pageSize: newPageSize,
       pageNumber: 1,
     }));
+    this.change.emit(this.value());
   }
 
   canMoveBack = computed(() => this.paginationResponse().pageNumber > 1);
