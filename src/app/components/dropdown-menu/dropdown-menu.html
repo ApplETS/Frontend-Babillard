@@ -1,0 +1,20 @@
+<div class="flex items-center space-x-4">
+  <div class="dropdown relative">
+    <button class="flex items-center" (click)="dropdownOpened.update(opened => !opened)">
+      <fa-icon [icon]="faEllipsisVertical" class="w-5 ml-2" />
+    </button>
+    @if (dropdownOpened()) {
+    <ul class="p-2 shadow menu dropdown-content bg-base-200 rounded-box absolute z-10 right-0">
+      @for (item of items(); track item.id) {
+
+      <li class="flex w-40" [class]="item.color">
+        <a href="#" class="flex space-x-2 w-full" (click)="selectMenuItem(item)">
+          <fa-icon [icon]="item.icon" class="w-5" />
+          <span [transloco]="item.label"></span>
+        </a>
+      </li>
+      }
+    </ul>
+    }
+  </div>
+</div>

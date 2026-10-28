@@ -1,14 +1,17 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, input, signal } from "@angular/core";
+import { Component, computed, inject, input, signal } from "@angular/core";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp, faClone, faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Event } from "@models/event";
+import { DropDownSelectComponent } from "@components/drop-down-select.component/drop-down-select.component";
+import { DropdownMenuItem, DropdownMenu } from "@components/dropdown-menu/dropdown-menu";
+import { TranslocoService } from "@jsverse/transloco";
 
-type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state";
+type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions";
 
 @Component({
   selector: "app-event-table",
-  imports: [CommonModule, FaIconComponent],
+  imports: [CommonModule, FaIconComponent, DropDownSelectComponent, DropdownMenu],
   templateUrl: "./event-table.html",
 })
 export class EventTable {
@@ -16,31 +19,45 @@ export class EventTable {
 
   readonly faCaretDown = faCaretDown;
   readonly faCaretUp = faCaretUp;
-  readonly headers: ReadonlyArray<{ key: EventColumn; label: string }> = [
-    { key: "title", label: "Titre" },
-    { key: "eventStartDate", label: "Début" },
-    { key: "eventEndDate", label: "Fin" },
-    { key: "state", label: "État" },
-  ];
+  readonly faTrashCan = faTrashCan;
+  readonly faPencil = faPencil;
+  readonly faClone = faClone;
+
+  translocoService = inject(TranslocoService);
+
+  headers = computed<{ key: EventColumn; label: string }[]>(() => {
+    return [
+      { key: "title", label: "Titre" },
+      { key: "eventStartDate", label: "Début" },
+      { key: "eventEndDate", label: "Fin" },
+      { key: "state", label: "État" },
+      { key: "actions", label: "Actions" },
+    ];
+  });
 
   readonly orderBy = signal<EventColumn | null>(null);
   readonly orderByDesc = signal(false);
 
-  readonly sortedEvents = computed(() => {
-    const column = this.orderBy();
-    const events = [...this.events()];
-
-    if (!column) {
-      return events;
-    }
-
-    const direction = this.orderByDesc() ? -1 : 1;
-    return events.sort((left, right) => {
-      const leftValue = String(left[column] ?? "");
-      const rightValue = String(right[column] ?? "");
-      return leftValue.localeCompare(rightValue, undefined, { numeric: true }) * direction;
-    });
-  });
+  menuItems: DropdownMenuItem[] = [
+		{
+			id: 1,
+			label: 'post.menu.modify',
+			icon: faPencil,
+			color: '',
+		},
+		{
+			id: 2,
+			label: 'post.menu.duplicate',
+			icon: faClone,
+			color: '',
+		},
+		{
+			id: 3,
+			label: 'post.menu.delete',
+			icon: faTrashCan,
+			color: 'text-error',
+		},
+  ];
 
   onOrderChange(column: EventColumn): void {
     if (this.orderBy() === column) {
@@ -50,5 +67,9 @@ export class EventTable {
 
     this.orderBy.set(column);
     this.orderByDesc.set(false);
+  }
+
+  handleMenuItemSelected(item: DropdownMenuItem): void {
+
   }
 }

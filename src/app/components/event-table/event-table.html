@@ -2,28 +2,28 @@
 	<table class="table rounded-lg my-4 w-full">
 		<thead class="bg-base-300 rounded-t-lg h-17">
 			<tr class="text-base-content text-base font-bold">
-				@for (header of headers; track header.key) {
+				@for (header of headers(); track header.key) {
 					<th>
 						<div
 							class="flex gap-4 items-center cursor-pointer"
-							(click)="onOrderChange(header.key)"
 						>
 							{{ header.label }}
-							<fa-icon
-								[icon]="orderBy() !== header.key || orderByDesc() ? faCaretDown : faCaretUp"
-							></fa-icon>
+							
 						</div>
 					</th>
 				}
 			</tr>
 		</thead>
 		<tbody>
-			@for (event of sortedEvents(); track event.id) {
+			@for (event of events(); track event.id) {
 				<tr class="border-b-2 border-base-300">
 					<td>{{ event.title || "-" }}</td>
 					<td>{{ event.eventStartDate | date: "short" }}</td>
 					<td>{{ event.eventEndDate | date: "short" }}</td>
 					<td>{{ event.state }}</td>
+          <td>
+            <app-dropdown-menu [items]="menuItems" (menuItemSelected)="handleMenuItemSelected($event)" />
+          </td>
 				</tr>
 			}
 		</tbody>
