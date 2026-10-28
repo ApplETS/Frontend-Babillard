@@ -386,7 +386,8 @@
 		"page": "Page",
 		"of": "de",
 		"goToPage": "Aller à la page",
-		"show": "Afficher {{count}}"
+		"show": "Afficher {{count}}",
+		"search": "Rechercher"
 	},
 	"none": "Aucune",
 	"MDXEditor": {

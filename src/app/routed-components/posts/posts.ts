@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal, viewChild } from "@angular/core";
-import { TranslocoDirective } from "@jsverse/transloco";
+import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
 import { DropDownSelectComponent } from "@components/drop-down-select.component/drop-down-select.component";
 import { Modal } from "@components/modal/modal";
 import { PostDetails } from "@components/post-details/post-details";
@@ -15,7 +15,7 @@ import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
 
 @Component({
   selector: "app-posts",
-  imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot],
+  imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot, TranslocoPipe],
   templateUrl: "./posts.html",
 })
 export class Posts implements OnInit {
