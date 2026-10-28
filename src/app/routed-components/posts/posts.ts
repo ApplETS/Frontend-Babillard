@@ -12,17 +12,26 @@ import { Event } from "@models/event";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
+import { toObservable } from "@angular/core/rxjs-interop";
+import { debounce, interval, skip } from "rxjs";
 
 @Component({
   selector: "app-posts",
   imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot, TranslocoPipe],
   templateUrl: "./posts.html",
 })
-export class Posts implements OnInit {
+export class Posts {
   createPost = signal(false);
   modalMode = signal<ModalMode>(null!);
 
   modal = viewChild.required(Modal);
+
+  constructor() {
+    toObservable(this.searchEventForm().value).pipe(debounce(() => interval(300)))
+      .subscribe(() => {
+        this.searchEvents();
+      });
+  }
 
   organizerEventService = inject(OrganizerEventService);
 
@@ -78,10 +87,6 @@ export class Posts implements OnInit {
       this.paginatedEvents.set(await this.organizerEventService.getOrganizerEvents(formValue));
     }
   }});
-
-  async ngOnInit(): Promise<void> {
-    this.searchEvents();
-  }
 
   searchEvents() {
     submit(this.searchEventForm);

@@ -98,6 +98,7 @@
     "no-post": "No post",
     "no-post-found": "No post found",
     "required-fields": "Required fields",
+    "filter": "Filter by status",
     "table": {
       "title": "Title",
       "release-date": "Release date",

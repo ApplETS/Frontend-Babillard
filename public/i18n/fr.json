@@ -98,6 +98,7 @@
 		"no-post": "Aucune publication",
 		"no-post-found": "Aucune publication trouvée",
 		"required-fields": "Champs requis",
+		"filter": "Filtrer par statut",
 		"table": {
 			"title": "Titre",
 			"release-date": "Date de publication",
