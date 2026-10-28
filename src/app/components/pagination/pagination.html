@@ -10,14 +10,14 @@
     </span>
     <div class="flex flex-row items-center">
       <span class="flex items-center gap-1">
-        <div transloco="pagination.goToPage"></div>
+        <span class="w-max" transloco="pagination.goToPage"></span>
         <input [value]="paginationResponse().pageNumber" min="1" [max]="paginationResponse().totalPages" type="number"
           (input)="verifyPageNumber($event.target.valueAsNumber)" class="input input-bordered w-20 input-sm mx-2" />
       </span>
       <select [value]="paginationResponse().pageSize" (change)="onPageSizeChangeEvent($event)"
         class="select select-sm select-bordered">
         @for (size of pageSizes; track size) {
-        <option transloco="pagination.show" [translocoParams]="{ count: size }" [value]="size">a</option>
+          <option transloco="pagination.show" [translocoParams]="{ count: size }" [value]="size">a</option>
         }
       </select>
       <div class="join btn-group btn-sm">
