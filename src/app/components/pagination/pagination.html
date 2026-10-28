@@ -8,16 +8,19 @@
         <span> {{ paginationResponse().totalPages }} </span>
       </strong>
     </span>
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center gap-2">
       <span class="flex items-center gap-1">
         <span class="w-max" transloco="pagination.goToPage"></span>
-        <input [value]="paginationResponse().pageNumber" min="1" [max]="paginationResponse().totalPages" type="number"
+        <input [value]="value().pageNumber" min="1" [max]="paginationResponse().totalPages" type="number"
           (input)="verifyPageNumber($event.target.valueAsNumber)" class="input input-bordered w-20 input-sm mx-2" />
       </span>
-      <select [value]="paginationResponse().pageSize" (change)="onPageSizeChangeEvent($event)"
+      <select [value]="value().pageSize" (change)="onPageSizeChangeEvent($event)"
         class="select select-sm select-bordered">
         @for (size of pageSizes; track size) {
-          <option transloco="pagination.show" [translocoParams]="{ count: size }" [value]="size">a</option>
+          <option transloco="pagination.show" [translocoParams]="{ count: size }" [value]="size" 
+          [selected]="value().pageSize === size"
+          >a
+          </option>
         }
       </select>
       <div class="join btn-group btn-sm">

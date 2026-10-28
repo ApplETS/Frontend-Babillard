@@ -9,7 +9,7 @@ import { FormValueControl } from "@angular/forms/signals";
   templateUrl: "./pagination.html",
 })
 export class Pagination implements FormValueControl<PaginationParameters> {
-  value = model<PaginationParameters>({descending: false, orderBy: "", pageNumber: 1, pageSize: 10});
+  value = model.required<PaginationParameters>();
 
   paginationResponse = input.required<PaginatedResponse<unknown>>();
   change = output<PaginationParameters>();
