@@ -1,5 +1,42 @@
 <nav class="navbar w-full bg-base-300">
-  <div class="flex flex-1 ml-5 gap-3">
+
+<!-- Dropdown pour les écrans plus petit -->
+  <div class="dropdown lg:hidden">
+    <button tabindex="0" role="button" class="btn btn-ghost">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+      </svg>
+    </button>
+    <ul tabindex="-1" class="dropdown-content menu menu-sm mt-3 p-2 shadow bg-base-300 rounded-box w-52 z-50 gap-3">
+      @for (route of routes(); track $index) {
+        <li>
+          <a [routerLink]="route.route" [class.active]="route.activeRoute()" class="btn">
+            {{ route.label | transloco }}
+          </a>
+        </li>
+      }
+      <app-lang-switcher />
+      <app-theme-switcher />
+      @if(!authService.isAuthenticated()){
+        <button type="button" class="btn btn-ghost" (click)="authService.login()">
+          <div class="text-base mr-1">{{ "dashboard.login" | transloco }}</div>
+          <div class="avatar rounded-full bg-base-100">
+            <fa-icon [icon]="signIn" size="xl" />
+          </div>
+        </button>
+      }
+      @else{
+        <button type="button" class="btn btn-ghost" (click)="authService.logout()">
+          <div class="text-base mr-1">{{ "navbar.logout" | transloco }}</div>
+          <div class="avatar rounded-full bg-base-100">
+            <fa-icon [icon]="signOut" class="xl" />
+          </div>
+        </button>
+      }
+    </ul>
+  </div>
+
+  <div class="hidden lg:flex flex-1 ml-5 gap-3 ">
     @for (route of routes(); track $index) {
       <a
         [routerLink]="route.route"
@@ -11,7 +48,7 @@
       </a>
     }
   </div>
-  <div class="flex-none gap-2 inline-flex items-center">
+  <div class="hidden flex-none gap-2 lg:inline-flex items-center">
     <app-lang-switcher />
     <app-theme-switcher />
     <div class="divider divider-horizontal before:bg-base-content after:bg-base-content my-2"></div>
