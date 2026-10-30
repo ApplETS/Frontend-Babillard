@@ -1,0 +1,4 @@
+<select class="select select-secondary font-semibold" [value]="value()">
+  <option [value]="true" [selected]="value()">{{ trueLabel() }}</option>
+  <option [value]="false" [selected]="!value()">{{ falseLabel() }}</option>
+</select>

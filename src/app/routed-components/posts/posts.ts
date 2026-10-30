@@ -14,10 +14,11 @@ import { EventState } from "@models/event-state";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { debounce, interval, skip } from "rxjs";
+import { BooleanSelect } from "@components/boolean-select/boolean-select";
 
 @Component({
   selector: "app-posts",
-  imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot, TranslocoPipe],
+  imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot, TranslocoPipe, BooleanSelect],
   templateUrl: "./posts.html",
 })
 export class Posts {
