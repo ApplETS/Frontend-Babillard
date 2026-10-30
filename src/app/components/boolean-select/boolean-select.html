@@ -1,4 +1,4 @@
-<select class="select select-secondary font-semibold" [value]="value()">
+<select class="select select-secondary font-semibold" [value]="value()" (change)="setValue($event)">
   <option [value]="true" [selected]="value()">{{ trueLabel() }}</option>
   <option [value]="false" [selected]="!value()">{{ falseLabel() }}</option>
 </select>

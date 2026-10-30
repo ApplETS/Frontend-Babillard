@@ -15,8 +15,8 @@
     <input type="text" transloco="post.search" class="border-2 flex-2" [formField]="searchEventForm.title" />
     <div class="flex flex-row flex-2 gap-4 justify-evenly">
       <label>
-        <span transloco="post.desc">a</span>
-        <app-boolean-select [trueLabel]="'post.asc' | transloco" [falseLabel]="'post.desc' | transloco" [formField]="searchEventForm.pagination.descending" />
+        <span transloco="pagination.orderBy">a</span>
+        <app-boolean-select [trueLabel]="'pagination.order-asc' | transloco" [falseLabel]="'pagination.order-desc' | transloco" [formField]="searchEventForm.pagination.descending" />
       </label>
     </div>
     <app-drop-down-select [title]="'post.filter' | transloco" class="flex justify-end" [options]="[]" />

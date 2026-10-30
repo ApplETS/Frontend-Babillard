@@ -388,7 +388,10 @@
 		"of": "de",
 		"goToPage": "Aller à la page",
 		"show": "Afficher {{count}}",
-		"search": "Rechercher"
+		"search": "Rechercher",
+		"orderBy": "Trier par",
+		"order-asc": "Ordre croissant",
+		"order-desc": "Ordre décroissant"
 	},
 	"none": "Aucune",
 	"MDXEditor": {

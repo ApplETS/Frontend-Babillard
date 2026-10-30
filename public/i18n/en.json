@@ -388,7 +388,10 @@
     "of": "of",
     "goToPage": "Go to page",
     "show": "Show {{count}}",
-    "search": "Search"
+    "search": "Search",
+    "orderBy": "Order by",
+    "order-asc": "Ascending order",
+    "order-desc": "Descending order"
   },
   "none": "None",
   "mdxEditor": {
