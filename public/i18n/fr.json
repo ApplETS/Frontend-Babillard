@@ -390,6 +390,7 @@
 		"show": "Afficher {{count}}",
 		"search": "Rechercher",
 		"orderBy": "Trier par",
+		"order-type": "Tri en",
 		"order-asc": "Ordre croissant",
 		"order-desc": "Ordre décroissant"
 	},

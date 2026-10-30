@@ -16,7 +16,17 @@
     <div class="flex flex-row flex-2 gap-4 justify-evenly">
       <label>
         <span transloco="pagination.orderBy">a</span>
-        <app-boolean-select [trueLabel]="'pagination.order-asc' | transloco" [falseLabel]="'pagination.order-desc' | transloco" [formField]="searchEventForm.pagination.descending" />
+        <select class="select select-secondary font-semibold" [formField]="searchEventForm.pagination.orderBy">
+          @for (keyOption of eventKeys; track keyOption.key) {
+            <option [value]="keyOption.key" [selected]="searchEventForm().value().pagination.orderBy === keyOption.key">
+              {{ keyOption.label | transloco }}
+            </option>
+          }
+        </select>
+      </label>
+      <label>
+        <span transloco="pagination.order-type">a</span>
+        <app-boolean-select [trueLabel]="'pagination.order-desc' | transloco" [falseLabel]="'pagination.order-asc' | transloco" [formField]="searchEventForm.pagination.descending" />
       </label>
     </div>
     <app-drop-down-select [title]="'post.filter' | transloco" class="flex justify-end" [options]="[]" />

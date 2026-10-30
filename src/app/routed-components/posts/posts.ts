@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, viewChild } from "@angular/core";
+import { Component, computed, inject, OnInit, signal, viewChild } from "@angular/core";
 import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
 import { DropDownSelectComponent } from "@components/drop-down-select.component/drop-down-select.component";
 import { Modal } from "@components/modal/modal";
@@ -8,7 +8,7 @@ import { EventTable } from "@components/event-table/event-table";
 import { Pagination } from "@components/pagination/pagination";
 import { form, FormField, submit, FormRoot } from "@angular/forms/signals";
 import { PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
-import { Event } from "@models/event";
+import { Event as ModelEvent } from "@models/event";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
@@ -27,6 +27,12 @@ export class Posts {
 
   modal = viewChild.required(Modal);
 
+  readonly eventKeys = [
+    { label: "post.table.title", key: "Publication.Title" },
+    { label: "post.table.release-date", key: "Publication.PublicationDate"},
+    { label: "post.table.event-date", key: "EventStartDate"},
+    { label: "post.table.status", key: "Publication.State"},
+    ] as const;
   constructor() {
     toObservable(this.searchEventForm().value).pipe(debounce(() => interval(300)))
       .subscribe(() => {
@@ -48,7 +54,7 @@ export class Posts {
     this.modal().dismissModal();
   }
 
-  paginatedEvents = signal<PaginatedResponse<Event>>({
+  paginatedEvents = signal<PaginatedResponse<ModelEvent>>({
     data: [],
     totalPages: 0,
     totalRecords: 0,
@@ -67,7 +73,7 @@ export class Posts {
     pagination: {
       pageNumber: 1,
       pageSize: 10,
-      orderBy: "",
+      orderBy: "EventStartDate",
       descending: false,
     },
   }), {submission: {

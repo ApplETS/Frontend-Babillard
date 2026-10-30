@@ -389,6 +389,7 @@
     "goToPage": "Go to page",
     "show": "Show {{count}}",
     "search": "Search",
+    "order-type": "Ordering type",
     "orderBy": "Order by",
     "order-asc": "Ascending order",
     "order-desc": "Descending order"
