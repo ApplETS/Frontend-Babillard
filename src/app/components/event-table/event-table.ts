@@ -5,13 +5,14 @@ import { faCaretDown, faCaretUp, faClone, faPencil, faTrashCan } from "@fortawes
 import { Event } from "@models/event";
 import { DropDownSelectComponent } from "@components/drop-down-select.component/drop-down-select.component";
 import { DropdownMenuItem, DropdownMenu } from "@components/dropdown-menu/dropdown-menu";
-import { TranslocoService } from "@jsverse/transloco";
+import { TranslocoService, TranslocoDirective } from "@jsverse/transloco";
+import { Constants } from "@models/constants";
 
 type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions";
 
 @Component({
   selector: "app-event-table",
-  imports: [CommonModule, FaIconComponent, DropDownSelectComponent, DropdownMenu],
+  imports: [CommonModule, FaIconComponent, DropDownSelectComponent, DropdownMenu, TranslocoDirective],
   templateUrl: "./event-table.html",
 })
 export class EventTable {
@@ -22,6 +23,7 @@ export class EventTable {
   readonly faTrashCan = faTrashCan;
   readonly faPencil = faPencil;
   readonly faClone = faClone;
+  protected readonly newsStatuses = Constants.newsStatuses;
 
   translocoService = inject(TranslocoService);
 

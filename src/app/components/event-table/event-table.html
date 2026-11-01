@@ -16,11 +16,14 @@
 		</thead>
 		<tbody>
 			@for (event of events(); track event.id) {
+        @let eventState = newsStatuses[event.state];
 				<tr class="border-b-2 border-base-300">
 					<td>{{ event.title || "-" }}</td>
 					<td>{{ event.eventStartDate | date: "short" }}</td>
 					<td>{{ event.eventEndDate | date: "short" }}</td>
-					<td>{{ event.state }}</td>
+					<td>
+            <div class="py-4 px-4 badge text-black" [class]="eventState.color" transloco="post.filters.{{eventState.label}}"></div>
+          </td>
           <td>
             <app-dropdown-menu [items]="menuItems" (menuItemSelected)="handleMenuItemSelected($event)" />
           </td>
