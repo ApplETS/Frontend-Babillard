@@ -1,7 +1,7 @@
-import { Component, signal, effect, Input, model, computed, viewChild } from "@angular/core";
+import { Component, signal, effect, model, computed, viewChild, input } from "@angular/core";
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from "@fullcalendar/angular";
-import { CalendarOptions, EventInput, EventSourceInput } from "@fullcalendar/core/index.js";
+import { CalendarOptions, EventSourceInput } from "@fullcalendar/core/index.js";
 import frLocale from "@fullcalendar/core/locales/fr";
 import enLocale from "@fullcalendar/core/locales/en-gb";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -53,55 +53,11 @@ export class Calendar {
     dayMaxEvents: this.eventTreshold,
   });
   selectedCalendarDate = moment(Date.now());
-  private _events: PaginatedResponse<Event> | null = null;
-  @Input({ required: true })
-  set events(value: PaginatedResponse<Event> | null) {
-    this._events = value;
-    this.updateShownEvents();
-  }
 
-  get events(): PaginatedResponse<Event> | null {
-    return this._events;
-  }
+  events = input.required<PaginatedResponse<Event>>();
 
-  shownEvents = signal<EventSourceInput>([]);
-  selectedCardId = model<string | null>(null);
-
-  constructor() {
-    effect(() => {
-      const currentView = this.view();
-      if (this.calendarComponent()) {
-        const calendarApi = this.calendarComponent()?.getApi();
-        calendarApi?.changeView(currentView);
-      }
-
-      this.updateShownEvents();
-    });
-  }
-
-  calendarChange(action: CalendarAction): void {
-    const calendarApi = this.calendarComponent()?.getApi();
-    if (!calendarApi) {
-      return;
-    }
-
-    switch (action) {
-      case CalendarAction.previous:
-        calendarApi.prev();
-        break;
-      case CalendarAction.next:
-        calendarApi.next();
-        break;
-      case CalendarAction.today:
-        calendarApi.today();
-        break;
-    }
-    this.selectedCalendarDate = moment(calendarApi.getDate());
-  }
-
-  private get calendarEvents(): EventInput[] {
-    return (
-      this.events?.data.flatMap((event) => {
+  shownEvents = computed<EventSourceInput>(() => 
+      this.events().data.flatMap((event) => {
         const start = moment(event.eventStartDate);
         const end = moment(event.eventEndDate);
 
@@ -150,12 +106,38 @@ export class Calendar {
         }
 
         return daySegments;
-      }) ?? []
-    );
+      })
+  );
+  selectedCardId = model<string | null>(null);
+
+  constructor() {
+    effect(() => {
+      const currentView = this.view();
+      if (this.calendarComponent()) {
+        const calendarApi = this.calendarComponent()?.getApi();
+        calendarApi?.changeView(currentView);
+      }
+    });
   }
 
-  private updateShownEvents(): void {
-    this.shownEvents.set(this.calendarEvents);
+  calendarChange(action: CalendarAction): void {
+    const calendarApi = this.calendarComponent()?.getApi();
+    if (!calendarApi) {
+      return;
+    }
+
+    switch (action) {
+      case CalendarAction.previous:
+        calendarApi.prev();
+        break;
+      case CalendarAction.next:
+        calendarApi.next();
+        break;
+      case CalendarAction.today:
+        calendarApi.today();
+        break;
+    }
+    this.selectedCalendarDate = moment(calendarApi.getDate());
   }
 
   selectEvent(arg: EventContainer): void {

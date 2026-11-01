@@ -12,10 +12,11 @@ type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "acti
 
 @Component({
   selector: "app-event-table",
-  imports: [CommonModule, FaIconComponent, DropDownSelectComponent, DropdownMenu, TranslocoDirective],
+  imports: [CommonModule, DropdownMenu, TranslocoDirective],
   templateUrl: "./event-table.html",
 })
 export class EventTable {
+  // TODO: Remplacer le DatePipe de Angular par le TranslocoDatePipe
   events = input.required<Event[]>();
 
   readonly faCaretDown = faCaretDown;
