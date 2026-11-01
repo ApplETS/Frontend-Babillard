@@ -99,6 +99,17 @@ export interface PaginatedResponse<T> {
   error: string | null;
 }
 
+export function emptyPaginatedResponse<T>(): PaginatedResponse<T> {
+  return {
+    data: [],
+    pageNumber: 0,
+    pageSize: 0,
+    totalRecords: 0,
+    totalPages: 0,
+    error: null,
+  }
+}
+
 export interface PaginationParameters {
   pageNumber: number;
   pageSize: number;

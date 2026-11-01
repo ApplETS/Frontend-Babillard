@@ -8,7 +8,7 @@ import {
   ActivityAreaDisplay,
   ActivityAreaService,
 } from "@services/activityAreaService/activity-area.service";
-import { PaginatedResponse } from "@services/apiService/api.service";
+import { emptyPaginatedResponse, PaginatedResponse } from "@services/apiService/api.service";
 import { Event } from "@models/event";
 import { toObservable } from "@angular/core/rxjs-interop";
 
@@ -21,7 +21,7 @@ export class DashboardNews implements OnInit {
   eventService = inject(EventsService);
   activityAreaService = inject(ActivityAreaService);
 
-  events = signal<PaginatedResponse<Event> | null>(null);
+  events = signal<PaginatedResponse<Event>>(emptyPaginatedResponse<Event>());
   activityAreas = signal<ActivityAreaDisplay[] | null>(null);
   selectedCardId = signal<string | null>(null);
   reloading = signal(false);
@@ -42,14 +42,7 @@ export class DashboardNews implements OnInit {
       if (selectedAreas.length > 0) {
         this.events.set(await this.eventService.getEvents(selectedAreas));
       } else {
-        this.events.set({
-          data: [],
-          error: null,
-          pageSize: 0,
-          totalRecords: 0,
-          totalPages: 0,
-          pageNumber: 0,
-        });
+        this.events.set(emptyPaginatedResponse<Event>());
       }
 
       this.reloading.set(false);
