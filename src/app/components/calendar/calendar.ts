@@ -57,57 +57,57 @@ export class Calendar {
 
   events = input.required<PaginatedResponse<Event>>();
 
-  shownEvents = computed<EventSourceInput>(() => 
-      this.events().data.flatMap((event) => {
-        const start = moment(event.eventStartDate);
-        const end = moment(event.eventEndDate);
+  shownEvents = computed<EventSourceInput>(() =>
+    this.events().data.flatMap((event) => {
+      const start = moment(event.eventStartDate);
+      const end = moment(event.eventEndDate);
 
-        // If dates are invalid (or end precedes start), keep a single fallback event.
-        if (!start.isValid() || !end.isValid() || end.isBefore(start)) {
-          return [
-            {
-              id: event.id,
-              title: event.title,
-              start: event.eventStartDate,
-              end: event.eventEndDate,
-              extendedProps: {
-                eventId: event.id,
-              },
-            },
-          ];
-        }
-
-        const daySegments = [];
-        const currentDay = start.clone().startOf("day");
-        const lastDay = end.clone().startOf("day");
-
-        while (currentDay.isSameOrBefore(lastDay, "day")) {
-          const isFirstDay = currentDay.isSame(start, "day");
-          const isLastDay = currentDay.isSame(end, "day");
-          const segmentStart = isFirstDay ? start.clone() : currentDay.clone();
-          const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf("day");
-
-          daySegments.push({
-            id: `${currentDay.format("YYYY-MM-DD")}-${event.id}`,
+      // If dates are invalid (or end precedes start), keep a single fallback event.
+      if (!start.isValid() || !end.isValid() || end.isBefore(start)) {
+        return [
+          {
+            id: event.id,
             title: event.title,
-            start: segmentStart.toISOString(),
-            end: segmentEnd.toISOString(),
+            start: event.eventStartDate,
+            end: event.eventEndDate,
             extendedProps: {
               eventId: event.id,
             },
-            color:
-              this.colors[
-                this.activityAreas()?.findIndex(
-                  (activityArea) => activityArea.id == event.organizer?.activityArea?.id,
-                )
-              ],
-          });
+          },
+        ];
+      }
 
-          currentDay.add(1, "day");
-        }
+      const daySegments = [];
+      const currentDay = start.clone().startOf("day");
+      const lastDay = end.clone().startOf("day");
 
-        return daySegments;
-      })
+      while (currentDay.isSameOrBefore(lastDay, "day")) {
+        const isFirstDay = currentDay.isSame(start, "day");
+        const isLastDay = currentDay.isSame(end, "day");
+        const segmentStart = isFirstDay ? start.clone() : currentDay.clone();
+        const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf("day");
+
+        daySegments.push({
+          id: `${currentDay.format("YYYY-MM-DD")}-${event.id}`,
+          title: event.title,
+          start: segmentStart.toISOString(),
+          end: segmentEnd.toISOString(),
+          extendedProps: {
+            eventId: event.id,
+          },
+          color:
+            this.colors[
+              this.activityAreas()?.findIndex(
+                (activityArea) => activityArea.id == event.organizer?.activityArea?.id,
+              )
+            ],
+        });
+
+        currentDay.add(1, "day");
+      }
+
+      return daySegments;
+    }),
   );
   selectedCardId = model<string | null>(null);
 

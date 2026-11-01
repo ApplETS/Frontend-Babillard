@@ -107,7 +107,7 @@ export function emptyPaginatedResponse<T>(): PaginatedResponse<T> {
     totalRecords: 0,
     totalPages: 0,
     error: null,
-  }
+  };
 }
 
 export interface PaginationParameters {

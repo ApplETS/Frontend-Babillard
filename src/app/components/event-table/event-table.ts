@@ -1,9 +1,13 @@
 import { CommonModule } from "@angular/common";
 import { Component, computed, inject, input, signal } from "@angular/core";
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faCaretDown, faCaretUp, faClone, faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCaretUp,
+  faClone,
+  faPencil,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { Event } from "@models/event";
-import { DropDownSelectComponent } from "@components/drop-down-select.component/drop-down-select.component";
 import { DropdownMenuItem, DropdownMenu } from "@components/dropdown-menu/dropdown-menu";
 import { TranslocoService, TranslocoDirective } from "@jsverse/transloco";
 import { Constants } from "@models/constants";
@@ -42,24 +46,24 @@ export class EventTable {
   readonly orderByDesc = signal(false);
 
   menuItems: DropdownMenuItem[] = [
-		{
-			id: 1,
-			label: 'post.menu.modify',
-			icon: faPencil,
-			color: '',
-		},
-		{
-			id: 2,
-			label: 'post.menu.duplicate',
-			icon: faClone,
-			color: '',
-		},
-		{
-			id: 3,
-			label: 'post.menu.delete',
-			icon: faTrashCan,
-			color: 'text-error',
-		},
+    {
+      id: 1,
+      label: "post.menu.modify",
+      icon: faPencil,
+      color: "",
+    },
+    {
+      id: 2,
+      label: "post.menu.duplicate",
+      icon: faClone,
+      color: "",
+    },
+    {
+      id: 3,
+      label: "post.menu.delete",
+      icon: faTrashCan,
+      color: "text-error",
+    },
   ];
 
   onOrderChange(column: EventColumn): void {
@@ -73,6 +77,6 @@ export class EventTable {
   }
 
   handleMenuItemSelected(item: DropdownMenuItem): void {
-
+    console.log(item);
   }
 }

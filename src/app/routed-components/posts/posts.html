@@ -14,14 +14,24 @@
   <form class="flex flex-row gap-4 bg-base-200 py-2 px-4" [formRoot]="searchEventForm">
     <label>
       <span transloco="post.search"></span>
-      <app-search class="flex-1" [formField]="searchEventForm.title" [placeholder]="'post.search-placeholder' | transloco" />
+      <app-search
+        class="flex-1"
+        [formField]="searchEventForm.title"
+        [placeholder]="'post.search-placeholder' | transloco"
+      />
     </label>
     <div class="flex flex-row flex-2 gap-4 justify-evenly">
       <label>
         <span transloco="pagination.orderBy">a</span>
-        <select class="select select-secondary font-semibold" [formField]="searchEventForm.pagination.orderBy">
+        <select
+          class="select select-secondary font-semibold"
+          [formField]="searchEventForm.pagination.orderBy"
+        >
           @for (keyOption of eventKeys; track keyOption.key) {
-            <option [value]="keyOption.key" [selected]="searchEventForm().value().pagination.orderBy === keyOption.key">
+            <option
+              [value]="keyOption.key"
+              [selected]="searchEventForm().value().pagination.orderBy === keyOption.key"
+            >
               {{ keyOption.label | transloco }}
             </option>
           }
@@ -29,27 +39,34 @@
       </label>
       <label>
         <span transloco="pagination.order-type">a</span>
-        <app-boolean-select [trueLabel]="'pagination.order-desc' | transloco" [falseLabel]="'pagination.order-asc' | transloco" [formField]="searchEventForm.pagination.descending" />
+        <app-boolean-select
+          [trueLabel]="'pagination.order-desc' | transloco"
+          [falseLabel]="'pagination.order-asc' | transloco"
+          [formField]="searchEventForm.pagination.descending"
+        />
       </label>
     </div>
     <label>
       <span transloco="post.filter"></span>
       <select [formField]="searchEventForm.state" class="select select-secondary font-semibold">
         @for (item of statuses; track $index) {
-          <option transloco="post.filters.{{item.label}}" [value]="item.value"></option>
+          <option transloco="post.filters.{{ item.label }}" [value]="item.value"></option>
         }
       </select>
     </label>
   </form>
-  
+
   @if (searchEventForm().submitting()) {
     <app-loading-spinner />
   } @else {
     <app-event-table [events]="paginatedEvents().data" />
-    <app-pagination class="bg-base-200 px-4" [paginationResponse]="paginatedEvents()" [formField]="searchEventForm.pagination" />
+    <app-pagination
+      class="bg-base-200 px-4"
+      [paginationResponse]="paginatedEvents()"
+      [formField]="searchEventForm.pagination"
+    />
   }
 </div>
-
 
 <app-modal (closed)="resetModal()">
   @if (createPost()) {

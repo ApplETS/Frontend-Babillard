@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { Calendar } from "@components/calendar/calendar";
 import { Publications } from "@components/publications/publications";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";

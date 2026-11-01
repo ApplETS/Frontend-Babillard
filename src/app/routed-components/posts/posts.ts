@@ -1,6 +1,5 @@
-import { Component, computed, inject, OnInit, signal, viewChild } from "@angular/core";
+import { Component, inject, signal, viewChild } from "@angular/core";
 import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
-import { DropDownSelectComponent } from "@components/drop-down-select.component/drop-down-select.component";
 import { Modal } from "@components/modal/modal";
 import { PostDetails } from "@components/post-details/post-details";
 import { ModalMode } from "@models/modal-mode";
@@ -13,14 +12,26 @@ import { OrganizerEventService } from "@services/organizerEventService/organizer
 import { EventState } from "@models/event-state";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
 import { toObservable } from "@angular/core/rxjs-interop";
-import { debounce, interval, skip } from "rxjs";
+import { debounce, interval } from "rxjs";
 import { BooleanSelect } from "@components/boolean-select/boolean-select";
 import { Search } from "@components/search/search";
 import { Constants } from "@models/constants";
 
 @Component({
   selector: "app-posts",
-  imports: [TranslocoDirective, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot, TranslocoPipe, BooleanSelect, Search],
+  imports: [
+    TranslocoDirective,
+    Modal,
+    PostDetails,
+    EventTable,
+    Pagination,
+    FormField,
+    LoadingSpinner,
+    FormRoot,
+    TranslocoPipe,
+    BooleanSelect,
+    Search,
+  ],
   templateUrl: "./posts.html",
 })
 export class Posts {
@@ -41,12 +52,13 @@ export class Posts {
 
   readonly eventKeys = [
     { label: "post.table.title", key: "Publication.Title" },
-    { label: "post.table.release-date", key: "Publication.PublicationDate"},
-    { label: "post.table.event-date", key: "EventStartDate"},
-    { label: "post.table.status", key: "Publication.State"},
-    ] as const;
+    { label: "post.table.release-date", key: "Publication.PublicationDate" },
+    { label: "post.table.event-date", key: "EventStartDate" },
+    { label: "post.table.status", key: "Publication.State" },
+  ] as const;
   constructor() {
-    toObservable(this.searchEventForm().value).pipe(debounce(() => interval(300)))
+    toObservable(this.searchEventForm().value)
+      .pipe(debounce(() => interval(300)))
       .subscribe(() => {
         this.searchEvents();
       });
@@ -75,37 +87,42 @@ export class Posts {
     error: null,
   });
 
-  searchEventForm = form(signal<SearchEventForm>({
-    title: "",
-    startDate: "",
-    endDate: "",
-    activityAreas: [],
-    tags: [],
-    state: EventState.All,
-    pagination: {
-      pageNumber: 1,
-      pageSize: 10,
-      orderBy: "EventStartDate",
-      descending: false,
-    },
-  }), {submission: {
-    action: async (field) => {
-      const formValue = {
-        title: field.title().value(),
-        startDate: field.startDate().value(),
-        endDate: field.endDate().value(),
-        activityAreas: field.activityAreas().value(),
-        tags: field.tags().value(),
-        state: field.state().value(),
-        pageNumber: field.pagination().value().pageNumber,
-        pageSize: field.pagination().value().pageSize,
-        orderBy: field.pagination().value().orderBy,
-        descending: field.pagination().value().descending,
-      };
+  searchEventForm = form(
+    signal<SearchEventForm>({
+      title: "",
+      startDate: "",
+      endDate: "",
+      activityAreas: [],
+      tags: [],
+      state: EventState.All,
+      pagination: {
+        pageNumber: 1,
+        pageSize: 10,
+        orderBy: "EventStartDate",
+        descending: false,
+      },
+    }),
+    {
+      submission: {
+        action: async (field) => {
+          const formValue = {
+            title: field.title().value(),
+            startDate: field.startDate().value(),
+            endDate: field.endDate().value(),
+            activityAreas: field.activityAreas().value(),
+            tags: field.tags().value(),
+            state: field.state().value(),
+            pageNumber: field.pagination().value().pageNumber,
+            pageSize: field.pagination().value().pageSize,
+            orderBy: field.pagination().value().orderBy,
+            descending: field.pagination().value().descending,
+          };
 
-      this.paginatedEvents.set(await this.organizerEventService.getOrganizerEvents(formValue));
-    }
-  }});
+          this.paginatedEvents.set(await this.organizerEventService.getOrganizerEvents(formValue));
+        },
+      },
+    },
+  );
 
   searchEvents() {
     submit(this.searchEventForm);

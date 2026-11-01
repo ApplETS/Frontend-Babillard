@@ -1,7 +1,8 @@
 import { Component, input, output, signal } from "@angular/core";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import { TranslocoPipe, TranslocoDirective } from "@jsverse/transloco";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: "app-dropdown-menu",
@@ -24,6 +25,6 @@ export class DropdownMenu {
 export interface DropdownMenuItem {
   id: number;
   label: string;
-  icon: any;
+  icon: IconProp;
   color: string;
 }

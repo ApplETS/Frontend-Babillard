@@ -5,7 +5,6 @@ import {
   HostListener,
   inject,
   input,
-  Input,
   model,
   Signal,
   signal,
@@ -45,8 +44,7 @@ export class DropDownSelectComponent implements FormValueControl<string[]> {
       const option = toggledOptions.includes(id);
       if (!option) {
         return toggledOptions.concat(id);
-      }
-      else {
+      } else {
         return toggledOptions.filter((optionId) => optionId !== id);
       }
     });

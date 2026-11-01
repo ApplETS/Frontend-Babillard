@@ -4,7 +4,11 @@ import { PostDetailsForm } from "@components/post-details/post-details";
 import { Event } from "@models/event";
 import { EventState } from "@models/event-state";
 import { Response } from "@models/response";
-import { ApiService, PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
+import {
+  ApiService,
+  PaginatedResponse,
+  PaginationParameters,
+} from "@services/apiService/api.service";
 
 @Injectable({
   providedIn: "root",
@@ -12,12 +16,18 @@ import { ApiService, PaginatedResponse, PaginationParameters } from "@services/a
 export class OrganizerEventService extends ApiService {
   protected override apiController = "organizer-events";
 
-  async getOrganizerEvents(parameters: PaginatedOrganizerEventsParameters): Promise<PaginatedResponse<Event>> {
-    const response = await this.get<PaginatedResponse<Event>>(this.getActionUrl(""), [], new HttpParams({
-      fromObject: {
-        ...parameters
-      }
-    }));
+  async getOrganizerEvents(
+    parameters: PaginatedOrganizerEventsParameters,
+  ): Promise<PaginatedResponse<Event>> {
+    const response = await this.get<PaginatedResponse<Event>>(
+      this.getActionUrl(""),
+      [],
+      new HttpParams({
+        fromObject: {
+          ...parameters,
+        },
+      }),
+    );
     return response;
   }
 

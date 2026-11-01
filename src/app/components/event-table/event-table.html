@@ -1,34 +1,38 @@
 <div class="overflow-auto h-full">
-	<table class="table rounded-lg my-4 w-full">
-		<thead class="bg-base-300 rounded-t-lg h-17">
-			<tr class="text-base-content text-base font-bold">
-				@for (header of headers(); track header.key) {
-					<th>
-						<div
-							class="flex gap-4 items-center cursor-pointer"
-						>
-							{{ header.label }}
-							
-						</div>
-					</th>
-				}
-			</tr>
-		</thead>
-		<tbody>
-			@for (event of events(); track event.id) {
+  <table class="table rounded-lg my-4 w-full">
+    <thead class="bg-base-300 rounded-t-lg h-17">
+      <tr class="text-base-content text-base font-bold">
+        @for (header of headers(); track header.key) {
+          <th>
+            <div class="flex gap-4 items-center cursor-pointer">
+              {{ header.label }}
+            </div>
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (event of events(); track event.id) {
         @let eventState = newsStatuses[event.state];
-				<tr class="border-b-2 border-base-300">
-					<td>{{ event.title || "-" }}</td>
-					<td>{{ event.eventStartDate | date: "short" }}</td>
-					<td>{{ event.eventEndDate | date: "short" }}</td>
-					<td>
-            <div class="py-4 px-4 badge text-black" [class]="eventState.color" transloco="post.filters.{{eventState.label}}"></div>
+        <tr class="border-b-2 border-base-300">
+          <td>{{ event.title || "-" }}</td>
+          <td>{{ event.eventStartDate | date: "short" }}</td>
+          <td>{{ event.eventEndDate | date: "short" }}</td>
+          <td>
+            <div
+              class="py-4 px-4 badge text-black"
+              [class]="eventState.color"
+              transloco="post.filters.{{ eventState.label }}"
+            ></div>
           </td>
           <td>
-            <app-dropdown-menu [items]="menuItems" (menuItemSelected)="handleMenuItemSelected($event)" />
+            <app-dropdown-menu
+              [items]="menuItems"
+              (menuItemSelected)="handleMenuItemSelected($event)"
+            />
           </td>
-				</tr>
-			}
-		</tbody>
-	</table>
+        </tr>
+      }
+    </tbody>
+  </table>
 </div>
