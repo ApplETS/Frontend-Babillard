@@ -42,6 +42,8 @@ export class DashboardNews implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.activityAreas.set(await this.activityAreaService.getActivityAreas());
+    const areas = await this.activityAreaService.getActivityAreas();
+    this.selectedAreas.set(areas.map((area) => area.id));
+    this.activityAreas.set(areas);
   }
 }
