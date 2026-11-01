@@ -33,7 +33,7 @@ export class EventTable {
       { key: "title", label: "Titre" },
       { key: "eventStartDate", label: "Début" },
       { key: "eventEndDate", label: "Fin" },
-      { key: "state", label: "État" },
+      { key: "state", label: "Statut" },
       { key: "actions", label: "Actions" },
     ];
   });

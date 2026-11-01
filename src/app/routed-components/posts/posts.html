@@ -32,7 +32,14 @@
         <app-boolean-select [trueLabel]="'pagination.order-desc' | transloco" [falseLabel]="'pagination.order-asc' | transloco" [formField]="searchEventForm.pagination.descending" />
       </label>
     </div>
-    <app-drop-down-select [formField]="searchEventForm.activityAreas" [title]="'post.filter' | transloco" class="flex justify-end" [options]="[]" />
+    <label>
+      <span transloco="post.filter"></span>
+      <select [formField]="searchEventForm.state" class="select select-secondary font-semibold">
+        @for (item of statuses; track $index) {
+          <option transloco="post.filters.{{item.label}}" [value]="item.value"></option>
+        }
+      </select>
+    </label>
   </form>
   
   @if (searchEventForm().submitting()) {

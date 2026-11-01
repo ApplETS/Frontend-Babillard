@@ -16,13 +16,24 @@ import { toObservable } from "@angular/core/rxjs-interop";
 import { debounce, interval, skip } from "rxjs";
 import { BooleanSelect } from "@components/boolean-select/boolean-select";
 import { Search } from "@components/search/search";
+import { Constants } from "@models/constants";
 
 @Component({
   selector: "app-posts",
-  imports: [TranslocoDirective, DropDownSelectComponent, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot, TranslocoPipe, BooleanSelect, Search],
+  imports: [TranslocoDirective, Modal, PostDetails, EventTable, Pagination, FormField, LoadingSpinner, FormRoot, TranslocoPipe, BooleanSelect, Search],
   templateUrl: "./posts.html",
 })
 export class Posts {
+  protected readonly statuses = [
+    Constants.newsStatuses.All,
+    Constants.newsStatuses.Draft,
+    Constants.newsStatuses.Deleted,
+    Constants.newsStatuses.Denied,
+    Constants.newsStatuses.Draft,
+    Constants.newsStatuses.OnHold,
+    Constants.newsStatuses.Published,
+  ];
+
   createPost = signal(false);
   modalMode = signal<ModalMode>(null!);
 
