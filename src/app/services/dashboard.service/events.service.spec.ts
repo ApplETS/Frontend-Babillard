@@ -50,6 +50,7 @@ describe("EventService", () => {
       pageSize: 1000,
       totalRecords: 1,
       totalPages: 1,
+      pageNumber: 1,
       error: null,
     };
 
@@ -87,6 +88,7 @@ describe("EventService", () => {
       pageSize: 1000,
       totalRecords: 1,
       totalPages: 1,
+      pageNumber: 1,
     };
 
     request.flush(mockResponse);
@@ -123,6 +125,7 @@ describe("EventService", () => {
       pageSize: 1000,
       totalRecords: 1,
       totalPages: 1,
+      pageNumber: 1,
     };
 
     request.flush(mockResponse);
