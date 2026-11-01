@@ -93,7 +93,8 @@
   },
   "post": {
     "title": "Posts",
-    "search": "Search",
+    "search": "Search an event title",
+    "search-placeholder": "Pub 100 Génies",
     "create-new-post": "Create a post",
     "no-post": "No post",
     "no-post-found": "No post found",

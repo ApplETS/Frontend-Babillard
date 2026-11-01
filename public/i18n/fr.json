@@ -93,7 +93,8 @@
 	},
 	"post": {
 		"title": "Publications",
-		"search": "Rechercher",
+		"search": "Rechercher un titre d'événement",
+		"search-placeholder": "Pub 100 Génies",
 		"create-new-post": "Créer une publication",
 		"no-post": "Aucune publication",
 		"no-post-found": "Aucune publication trouvée",
