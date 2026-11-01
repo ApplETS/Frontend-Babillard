@@ -403,5 +403,8 @@
   "combobox": {
     "no-result": "No result found",
     "search": "Search"
+  },
+  "search": {
+    "action-empty": "Clear search" 
   }
 }

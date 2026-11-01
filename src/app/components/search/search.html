@@ -3,10 +3,10 @@
     class="input input-ghost w-full border-base-content" (input)="value.set($event.target.value)" />
   <div class="absolute inset-y-0 right-0 flex items-center pr-3 gap-0.25">
     @if (value().length > 0) {
-      <button (click)="value.set('')" class="cursor-pointer">
+      <button [aria-label]="'search.action-empty' | transloco" (click)="value.set('')" class="cursor-pointer">
         <fa-icon [icon]="faCancel" class="w-5" />
       </button>
     }
-    <fa-icon [icon]="faSearch" class="w-5 pointer-events-none" />
+    <fa-icon aria-hidden="true" [icon]="faSearch" class="w-5 pointer-events-none" />
   </div>
 </div>
