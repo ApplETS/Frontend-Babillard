@@ -32,7 +32,7 @@
         <app-boolean-select [trueLabel]="'pagination.order-desc' | transloco" [falseLabel]="'pagination.order-asc' | transloco" [formField]="searchEventForm.pagination.descending" />
       </label>
     </div>
-    <app-drop-down-select [title]="'post.filter' | transloco" class="flex justify-end" [options]="[]" />
+    <app-drop-down-select [formField]="searchEventForm.activityAreas" [title]="'post.filter' | transloco" class="flex justify-end" [options]="[]" />
   </form>
   
   @if (searchEventForm().submitting()) {

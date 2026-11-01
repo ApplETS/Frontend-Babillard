@@ -37,18 +37,16 @@ export class ActivityAreaService extends ApiService {
 
 export class ActivityAreaDisplay {
   id: string;
-  selected: boolean;
   nameFr: string;
   nameEn: string;
 
   constructor(
-    acitivityAreaResponseDTO: ActivityAreaResponseDTO,
+    activityAreaResponseDTO: ActivityAreaResponseDTO,
     private translationService: TranslocoService,
   ) {
-    this.id = acitivityAreaResponseDTO.id!;
-    this.selected = true;
-    this.nameFr = acitivityAreaResponseDTO.nameFr!;
-    this.nameEn = acitivityAreaResponseDTO.nameEn!;
+    this.id = activityAreaResponseDTO.id!;
+    this.nameFr = activityAreaResponseDTO.nameFr!;
+    this.nameEn = activityAreaResponseDTO.nameEn!;
   }
 
   name = computed(() => {

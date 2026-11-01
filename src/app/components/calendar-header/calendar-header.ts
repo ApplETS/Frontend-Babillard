@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  input,
   Input,
   model,
   Output,
@@ -36,7 +37,8 @@ export class CalendarHeader {
 
   @Input({ required: true }) viewType!: WritableSignal<TimeGridType>;
   @Input({ required: true }) currentDate!: moment.Moment;
-  activityAreas = model<ActivityAreaDisplay[] | null>(null);
+  activityAreas = input.required<ActivityAreaDisplay[]>();
+  selectedAreas = model.required<string[]>();
   @Output() calendarChanged = new EventEmitter<CalendarAction>();
   translateService = inject(TranslocoService);
 

@@ -24,9 +24,10 @@ export class Calendar {
   private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
   readonly colors = ["#E7A455", "#EA7CB7", "#06B6D4", "#64C788", "#EA7CB7", "#848BDB"];
 
-  activityAreas = model.required<ActivityAreaDisplay[]>();
+  activityAreas = input.required<ActivityAreaDisplay[]>();
+  selectedAreas = model.required<string[]>();
 
-  availableAreas = computed(() => this.activityAreas() ?? []);
+  // availableAreas = computed(() => this.activityAreas() ?? []);
 
   calendarComponent = viewChild(FullCalendarComponent);
 
@@ -96,7 +97,7 @@ export class Calendar {
             },
             color:
               this.colors[
-                this.availableAreas()?.findIndex(
+                this.activityAreas()?.findIndex(
                   (activityArea) => activityArea.id == event.organizer?.activityArea?.id,
                 )
               ],

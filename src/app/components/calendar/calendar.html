@@ -3,7 +3,8 @@
     [viewType]="view"
     [currentDate]="selectedCalendarDate"
     (calendarChanged)="calendarChange($event)"
-    [(activityAreas)]="activityAreas"
+    [activityAreas]="activityAreas()"
+    [(selectedAreas)]="selectedAreas"
   />
   <full-calendar [options]="options()" [events]="shownEvents()">
     <ng-template #eventContent let-arg>

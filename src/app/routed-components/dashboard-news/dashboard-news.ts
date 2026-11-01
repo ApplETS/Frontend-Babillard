@@ -26,12 +26,7 @@ export class DashboardNews implements OnInit {
   selectedCardId = signal<string | null>(null);
 
   loading = signal(true);
-  selectedAreas = computed(
-    () =>
-      this.activityAreas()
-        ?.filter((area) => area.selected)
-        .map((a) => a.id) ?? [],
-  );
+  selectedAreas = signal<string[]>([]);
 
   constructor() {
     toObservable(this.selectedAreas).subscribe(async (selectedAreas: string[]) => {
