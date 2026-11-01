@@ -24,7 +24,7 @@ export class Calendar {
   private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
   readonly colors = ["#E7A455", "#EA7CB7", "#06B6D4", "#64C788", "#EA7CB7", "#848BDB"];
 
-  activityAreas = model<ActivityAreaDisplay[] | null>(null);
+  activityAreas = model.required<ActivityAreaDisplay[]>();
 
   availableAreas = computed(() => this.activityAreas() ?? []);
 

@@ -22,13 +22,10 @@ export class DashboardNews implements OnInit {
   activityAreaService = inject(ActivityAreaService);
 
   events = signal<PaginatedResponse<Event>>(emptyPaginatedResponse<Event>());
-  activityAreas = signal<ActivityAreaDisplay[] | null>(null);
+  activityAreas = signal<ActivityAreaDisplay[]>([]);
   selectedCardId = signal<string | null>(null);
-  reloading = signal(false);
 
-  loading = computed(
-    () => this.reloading() || this.activityAreas() === null || this.events() === null,
-  );
+  loading = signal(true);
   selectedAreas = computed(
     () =>
       this.activityAreas()
@@ -38,14 +35,14 @@ export class DashboardNews implements OnInit {
 
   constructor() {
     toObservable(this.selectedAreas).subscribe(async (selectedAreas: string[]) => {
-      this.reloading.set(true);
+      this.loading.set(true);
       if (selectedAreas.length > 0) {
         this.events.set(await this.eventService.getEvents(selectedAreas));
       } else {
         this.events.set(emptyPaginatedResponse<Event>());
       }
 
-      this.reloading.set(false);
+      this.loading.set(false);
     });
   }
 
