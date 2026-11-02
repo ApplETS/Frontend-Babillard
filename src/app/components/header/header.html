@@ -26,6 +26,10 @@
         </button>
       }
       @else{
+          <a type="button" class="btn btn-ghost" [routerLink]="['/', 'fr', 'dashboard', 'settings', 'profile']">
+            {{ "navbar.settings" | transloco }}
+            <fa-icon [icon]="gear" class="pr-2" />
+          </a>
         <button type="button" class="btn btn-ghost" (click)="authService.logout()">
           <div class="text-base mr-1">{{ "navbar.logout" | transloco }}</div>
           <div class="avatar rounded-full bg-base-100">
