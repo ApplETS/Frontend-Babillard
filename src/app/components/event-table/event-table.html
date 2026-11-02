@@ -4,9 +4,7 @@
       <tr class="text-base-content text-base font-bold">
         @for (header of headers(); track header.key) {
           <th>
-            <div class="flex gap-4 items-center cursor-pointer">
-              {{ header.label }}
-            </div>
+            <div class="flex gap-4 items-center" [transloco]="header.label"></div>
           </th>
         }
       </tr>
@@ -15,7 +13,7 @@
       @for (event of events(); track event.id) {
         @let eventState = newsStatuses[event.state];
         <tr class="border-b-2 border-base-300">
-          <td>{{ event.title || "-" }}</td>
+          <td>{{ event.title ?? "-" }}</td>
           <td>{{ event.organizer?.profileDescription }}</td>
           <td>{{ event.eventStartDate | date: "short" }}</td>
           <td>{{ event.eventEndDate | date: "short" }}</td>

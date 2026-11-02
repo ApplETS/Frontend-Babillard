@@ -102,6 +102,9 @@
     "filter": "Filter by status",
     "table": {
       "title": "Title",
+      "author": "Author",
+      "begin-date": "Begin date",
+      "end-date": "End date",
       "release-date": "Release date",
       "event-date": "Event date",
       "status": "Status",

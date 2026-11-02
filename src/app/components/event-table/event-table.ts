@@ -34,12 +34,12 @@ export class EventTable {
 
   headers = computed<{ key: EventColumn; label: string }[]>(() => {
     return [
-      { key: "title", label: "Titre" },
-      { key: "author", label: "Auteur" },
-      { key: "eventStartDate", label: "Début" },
-      { key: "eventEndDate", label: "Fin" },
-      { key: "state", label: "Statut" },
-      { key: "actions", label: "Actions" },
+      { key: "title", label: "post.table.title" },
+      { key: "author", label: "post.table.author" },
+      { key: "eventStartDate", label: "post.table.begin-date" },
+      { key: "eventEndDate", label: "post.table.end-date" },
+      { key: "state", label: "post.table.status" },
+      { key: "actions", label: "" },
     ];
   });
 
