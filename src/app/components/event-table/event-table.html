@@ -16,6 +16,7 @@
         @let eventState = newsStatuses[event.state];
         <tr class="border-b-2 border-base-300">
           <td>{{ event.title || "-" }}</td>
+          <td>{{ event.organizer?.profileDescription }}</td>
           <td>{{ event.eventStartDate | date: "short" }}</td>
           <td>{{ event.eventEndDate | date: "short" }}</td>
           <td>

@@ -12,7 +12,7 @@ import { DropdownMenuItem, DropdownMenu } from "@components/dropdown-menu/dropdo
 import { TranslocoService, TranslocoDirective } from "@jsverse/transloco";
 import { Constants } from "@models/constants";
 
-type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions";
+type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions" | "author";
 
 @Component({
   selector: "app-event-table",
@@ -35,6 +35,7 @@ export class EventTable {
   headers = computed<{ key: EventColumn; label: string }[]>(() => {
     return [
       { key: "title", label: "Titre" },
+      { key: "author", label: "Auteur" },
       { key: "eventStartDate", label: "Début" },
       { key: "eventEndDate", label: "Fin" },
       { key: "state", label: "Statut" },
