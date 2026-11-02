@@ -2,15 +2,15 @@
   @if (loading()) {
     <app-loading-spinner class="z-1000" />
   }
-  <div class="flex flex-row h-full">
+  <div class="flex flex-col min-h-screen md:h-full md:flex-row">
     <app-calendar
       [events]="events()"
-      class="basis-[70%] h-[90vh]"
+      class="w-full h-auto min-h-125 md:basis-[70%] md:h-[90vh] shrink-0"
       [(selectedCardId)]="selectedCardId"
       [(activityAreas)]="activityAreas"
     />
     <app-publications
-      class="basis-[30%] h-screen"
+      class=" w-full h-auto md:basis-[30%] md:h-screen"
       [events]="events()"
       [(selectedCardId)]="selectedCardId"
     />

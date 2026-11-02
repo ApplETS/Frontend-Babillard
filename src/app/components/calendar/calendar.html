@@ -1,11 +1,11 @@
-<div class="flex flex-col flex-grow h-full">
+<div class="flex flex-col grow w-full min-h-125 md:min-h-0 md:h-full">
   <app-calendar-header
     [viewType]="view"
     [currentDate]="selectedCalendarDate"
     (calendarChanged)="calendarChange($event)"
     [(activityAreas)]="activityAreas"
   />
-  <full-calendar [options]="options()" [events]="shownEvents()">
+  <full-calendar [options]="options()" [events]="shownEvents() " class="grow w-full min-h-0">
     <ng-template #eventContent let-arg>
       <app-event-container
         [isMonthView]="view() === TimeGridType.month"
