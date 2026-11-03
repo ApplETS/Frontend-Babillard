@@ -93,13 +93,18 @@
   },
   "post": {
     "title": "Posts",
-    "search": "Search",
+    "search": "Search an event title",
+    "search-placeholder": "Pub 100 Génies",
     "create-new-post": "Create a post",
     "no-post": "No post",
     "no-post-found": "No post found",
     "required-fields": "Required fields",
+    "filter": "Filter by status",
     "table": {
       "title": "Title",
+      "author": "Author",
+      "begin-date": "Begin date",
+      "end-date": "End date",
       "release-date": "Release date",
       "event-date": "Event date",
       "status": "Status",
@@ -119,7 +124,7 @@
       "duplicate": "Duplicate",
       "delete": "Delete",
       "open": "Open",
-      "modify": "Modifier"
+      "modify": "Edit"
     },
     "modal": {
       "create-page-title": "Create a news",
@@ -386,7 +391,12 @@
     "page": "Page",
     "of": "of",
     "goToPage": "Go to page",
-    "show": "Show {count}"
+    "show": "Show {{count}}",
+    "search": "Search",
+    "order-type": "Ordering type",
+    "orderBy": "Order by",
+    "order-asc": "Ascending order",
+    "order-desc": "Descending order"
   },
   "none": "None",
   "mdxEditor": {
@@ -396,5 +406,8 @@
   "combobox": {
     "no-result": "No result found",
     "search": "Search"
+  },
+  "search": {
+    "action-empty": "Clear search" 
   }
 }

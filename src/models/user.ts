@@ -2,7 +2,6 @@ import { ActivityArea } from "./activity-area";
 
 export interface User {
   id: string;
-  name: string | null;
   email: string | null;
   type: string | null;
   organization: string | null;

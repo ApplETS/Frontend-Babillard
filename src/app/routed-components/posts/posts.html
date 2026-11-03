@@ -1,75 +1,72 @@
-<div class="p-7">
-  <h2 transloco="post.title">a</h2>
+<div class="p-7 flex flex-col gap-3">
   <div class="flex flex-row gap-4">
-    <input type="text" transloco="post.search" class="border-2 flex-2" />
-    <app-drop-down-select [title]="'post.filter'" class="flex-1" [options]="[]" />
+    <h2 transloco="post.title" class="content-center text-xl">a</h2>
     <span class="flex-1"></span>
     <button
       transloco="post.create-new-post"
-      class="flex-1 btn btn-primary"
+      class="btn btn-primary"
       command="show-dialog"
       (click)="createNewPost()"
     >
       a
     </button>
   </div>
+  <form class="flex flex-row gap-4 bg-base-200 py-2 px-4" [formRoot]="searchEventForm">
+    <label>
+      <span transloco="post.search"></span>
+      <app-search
+        class="flex-1"
+        [formField]="searchEventForm.title"
+        [placeholder]="'post.search-placeholder' | transloco"
+      />
+    </label>
+    <div class="flex flex-row flex-2 gap-4 justify-evenly">
+      <label>
+        <span transloco="pagination.orderBy">a</span>
+        <select
+          class="select select-secondary font-semibold"
+          [formField]="searchEventForm.pagination.orderBy"
+        >
+          @for (keyOption of eventKeys; track keyOption.key) {
+            <option
+              [value]="keyOption.key"
+              [selected]="searchEventForm().value().pagination.orderBy === keyOption.key"
+            >
+              {{ keyOption.label | transloco }}
+            </option>
+          }
+        </select>
+      </label>
+      <label>
+        <span transloco="pagination.order-type">a</span>
+        <app-boolean-select
+          [trueLabel]="'pagination.order-desc' | transloco"
+          [falseLabel]="'pagination.order-asc' | transloco"
+          [formField]="searchEventForm.pagination.descending"
+        />
+      </label>
+    </div>
+    <label>
+      <span transloco="post.filter"></span>
+      <select [formField]="searchEventForm.state" class="select select-secondary font-semibold">
+        @for (item of statuses; track $index) {
+          <option transloco="post.filters.{{ item.label }}" [value]="item.value"></option>
+        }
+      </select>
+    </label>
+  </form>
+
+  @if (searchEventForm().submitting()) {
+    <app-loading-spinner />
+  } @else {
+    <app-event-table [events]="paginatedEvents().data" />
+    <app-pagination
+      class="bg-base-200 px-4"
+      [paginationResponse]="paginatedEvents()"
+      [formField]="searchEventForm.pagination"
+    />
+  }
 </div>
-<!-- <div class="overflow-auto h-full">
-			<table class="table rounded-lg my-4 w-full">
-				<thead class="bg-base-300 rounded-t-lg h-17">
-					<tr class="text-base-content text-base font-bold">
-						{headers.map((header) => {
-							const direction = header.column.columnDef.id === orderBy ? orderByDesc : null;
-							let icon = header.column.columnDef.meta ? faCaretDown : null;
-
-							if (direction != null) {
-								icon = direction ? faCaretDown : faCaretUp;
-							}
-
-							return (
-								<th key={header.id}>
-									{header.isPlaceholder ? null : onOrderChange && orderBy && orderByDesc ? (
-										<div
-											onClick={() => {
-												if (header.column.columnDef.meta) {
-													onOrderChange(header.column.columnDef.id);
-												}
-											}}
-											class={`${header.column.columnDef.meta && 'cursor-pointer'} flex gap-4 items-center ${
-												direction != null ? 'text-base-content' : 'text-base-content/50'
-											}`}
-										>
-											{flexRender(header.column.columnDef.header, header.getContext())}
-											{icon && <FontAwesomeIcon icon={icon} />}
-										</div>
-									) : (
-										<div class={`flex gap-4 items-center`}>
-											{flexRender(header.column.columnDef.header, header.getContext())}
-										</div>
-									)}
-								</th>
-							);
-						})}
-					</tr>
-				</thead>
-				<tbody>
-						<tr key={row.id} class="border-b-2 border-base-300">
-							{row.getVisibleCells().map((cell) => {
-								return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>;
-							})}
-						</tr>
-					
-				</tbody>
-			</table>
-			<!-- <Pagination
-				currentPage={currentPage}
-				pageSize={pageSize}
-				totalItems={totalItems}
-				onPageChange={onPageChange}
-				onPageSizeChange={onPageSizeChange}
-				table={table}
-			/>
-		</div> -->
 
 <app-modal (closed)="resetModal()">
   @if (createPost()) {

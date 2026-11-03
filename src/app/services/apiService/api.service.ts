@@ -92,8 +92,27 @@ export abstract class ApiService {
  */
 export interface PaginatedResponse<T> {
   data: T[];
+  pageNumber: number;
   pageSize: number;
   totalRecords: number;
   totalPages: number;
   error: string | null;
+}
+
+export function emptyPaginatedResponse<T>(): PaginatedResponse<T> {
+  return {
+    data: [],
+    pageNumber: 0,
+    pageSize: 0,
+    totalRecords: 0,
+    totalPages: 0,
+    error: null,
+  };
+}
+
+export interface PaginationParameters {
+  pageNumber: number;
+  pageSize: number;
+  orderBy: string;
+  descending: boolean;
 }

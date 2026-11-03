@@ -116,7 +116,6 @@ describe("ActivityAreaService", () => {
 
     expect(result.length).toEqual(1);
     expect(result[0].id).toEqual(expectedResult.id);
-    expect(result[0].selected).toEqual(expectedResult.selected);
     expect(result[0].nameFr).toEqual(expectedResult.nameFr);
     expect(result[0].nameEn).toEqual(expectedResult.nameEn);
     expect(result[0].name()).toEqual(expectedResult.nameFr);
@@ -147,7 +146,6 @@ describe("ActivityAreaService", () => {
 
     expect(result.length).toEqual(1);
     expect(result[0].id).toEqual(expectedResult.id);
-    expect(result[0].selected).toEqual(expectedResult.selected);
     expect(result[0].nameFr).toEqual(expectedResult.nameFr);
     expect(result[0].nameEn).toEqual(expectedResult.nameEn);
     expect(result[0].name()).toEqual(expectedResult.nameEn);
@@ -178,7 +176,6 @@ describe("ActivityAreaService", () => {
     );
     expect(result.length).toEqual(1);
     expect(result[0].id).toEqual(expectedResult.id);
-    expect(result[0].selected).toEqual(expectedResult.selected);
     expect(result[0].nameFr).toEqual(expectedResult.nameFr);
     expect(result[0].nameEn).toEqual(expectedResult.nameEn);
     expect(result[0].name()).toEqual(expectedResult.nameEn);

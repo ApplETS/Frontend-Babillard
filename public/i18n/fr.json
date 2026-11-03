@@ -93,14 +93,19 @@
 	},
 	"post": {
 		"title": "Publications",
-		"search": "Rechercher",
+		"search": "Rechercher un titre d'événement",
+		"search-placeholder": "Pub 100 Génies",
 		"create-new-post": "Créer une publication",
 		"no-post": "Aucune publication",
 		"no-post-found": "Aucune publication trouvée",
 		"required-fields": "Champs requis",
+		"filter": "Filtrer par statut",
 		"table": {
 			"title": "Titre",
 			"release-date": "Date de publication",
+			"author": "Auteur",
+      "begin-date": "Date de début",
+      "end-date": "Date de fin",
 			"event-date": "Date de l'événement",
 			"status": "Statut",
 			"open": "Ouvrir",
@@ -386,7 +391,12 @@
 		"page": "Page",
 		"of": "de",
 		"goToPage": "Aller à la page",
-		"show": "Afficher {count}"
+		"show": "Afficher {{count}}",
+		"search": "Rechercher",
+		"orderBy": "Trier par",
+		"order-type": "Tri en",
+		"order-asc": "Ordre croissant",
+		"order-desc": "Ordre décroissant"
 	},
 	"none": "Aucune",
 	"MDXEditor": {
@@ -396,5 +406,8 @@
 	"combobox": {
 		"no-result": "Aucun résultat trouvé",
 		"search": "Rechercher"
+	},
+	"search": {
+		"action-empty": "Effacer la recherche"
 	}
 }
