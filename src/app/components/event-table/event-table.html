@@ -15,8 +15,8 @@
         <tr class="border-b-2 border-base-300">
           <td>{{ event.title ?? "-" }}</td>
           <td>{{ event.organizer?.profileDescription }}</td>
-          <td>{{ event.eventStartDate | date: "short" }}</td>
-          <td>{{ event.eventEndDate | date: "short" }}</td>
+          <td>{{ event.eventStartDate | translocoDate: { timeStyle: "short", dateStyle: "long"} }}</td>
+          <td>{{ event.eventEndDate | translocoDate: { timeStyle: "short", dateStyle: "long"} }}</td>
           <td>
             <div
               class="py-4 px-4 badge text-black"

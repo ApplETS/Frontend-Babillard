@@ -11,12 +11,13 @@ import { Event } from "@models/event";
 import { DropdownMenuItem, DropdownMenu } from "@components/dropdown-menu/dropdown-menu";
 import { TranslocoService, TranslocoDirective } from "@jsverse/transloco";
 import { Constants } from "@models/constants";
+import { TranslocoDatePipe } from "@jsverse/transloco-locale";
 
 type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions" | "author";
 
 @Component({
   selector: "app-event-table",
-  imports: [CommonModule, DropdownMenu, TranslocoDirective],
+  imports: [DropdownMenu, TranslocoDirective, TranslocoDatePipe],
   templateUrl: "./event-table.html",
 })
 export class EventTable {
