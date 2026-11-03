@@ -5,7 +5,7 @@
     (calendarChanged)="calendarChange($event)"
     [(activityAreas)]="activityAreas"
   />
-  <full-calendar [options]="options()" [events]="shownEvents() " class="grow w-full min-h-0">
+  <full-calendar [options]="options()" [events]="shownEvents()" class="grow w-full min-h-0">
     <ng-template #eventContent let-arg>
       <app-event-container
         [isMonthView]="view() === TimeGridType.month"

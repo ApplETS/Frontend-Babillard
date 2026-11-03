@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal, Signal } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
 import { faSignIn, faGear, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
@@ -9,16 +9,20 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 import { AuthService } from "@services/authService/auth.service";
 import { UserType } from "@models/user-types";
 import { Avatar } from "@components/avatar/avatar";
-
-interface RouteInfo {
-  route: string;
-  label: string;
-  activeRoute: Signal<boolean>;
-}
+import { HeaderMobile } from "@components/header-mobile/header-mobile";
+import { RouteInfo } from "@models/routeInfo.interface";
 
 @Component({
   selector: "app-header",
-  imports: [ThemeSwitcher, FaIconComponent, LangSwitcher, TranslocoPipe, RouterLink, Avatar],
+  imports: [
+    ThemeSwitcher,
+    FaIconComponent,
+    LangSwitcher,
+    TranslocoPipe,
+    RouterLink,
+    Avatar,
+    HeaderMobile,
+  ],
   templateUrl: "./header.html",
 })
 export class HeaderComponent implements OnInit {
