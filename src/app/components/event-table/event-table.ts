@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component, computed, inject, input, signal } from "@angular/core";
 import {
   faCaretDown,
@@ -21,7 +20,6 @@ type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "acti
   templateUrl: "./event-table.html",
 })
 export class EventTable {
-  // TODO: Remplacer le DatePipe de Angular par le TranslocoDatePipe
   events = input.required<Event[]>();
 
   readonly faCaretDown = faCaretDown;
