@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
-import { faSignIn, faGear, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { faSignIn, faGear, faSignOut, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { LangSwitcher } from "@components/lang-switcher/lang-switcher";
 import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
@@ -9,8 +9,8 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 import { AuthService } from "@services/authService/auth.service";
 import { UserType } from "@models/user-types";
 import { Avatar } from "@components/avatar/avatar";
-import { HeaderMobile } from "@components/header-mobile/header-mobile";
 import { RouteInfo } from "@models/routeInfo.interface";
+import { NgTemplateOutlet } from "@angular/common";
 
 @Component({
   selector: "app-header",
@@ -21,7 +21,7 @@ import { RouteInfo } from "@models/routeInfo.interface";
     TranslocoPipe,
     RouterLink,
     Avatar,
-    HeaderMobile,
+    NgTemplateOutlet,
   ],
   templateUrl: "./header.html",
 })
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   signIn = faSignIn;
   readonly gear = faGear;
   readonly signOut = faSignOut;
-
+  readonly faBars = faBars;
   router = inject(Router);
   securityService = inject(OidcSecurityService);
   authService = inject(AuthService);
