@@ -31,6 +31,7 @@ describe("Publications", () => {
       pageSize: 0,
       totalRecords: 0,
       totalPages: 0,
+      pageNumber: 0,
       error: null,
     };
     await fixture.whenStable();

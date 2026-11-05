@@ -1,0 +1,140 @@
+import { Component, inject, signal, viewChild } from "@angular/core";
+import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
+import { Modal } from "@components/modal/modal";
+import { PostDetails } from "@components/post-details/post-details";
+import { ModalMode } from "@models/modal-mode";
+import { EventTable } from "@components/event-table/event-table";
+import { Pagination } from "@components/pagination/pagination";
+import { form, FormField, submit, FormRoot } from "@angular/forms/signals";
+import { PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
+import { Event as ModelEvent } from "@models/event";
+import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
+import { EventState } from "@models/event-state";
+import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
+import { toObservable } from "@angular/core/rxjs-interop";
+import { debounce, interval } from "rxjs";
+import { BooleanSelect } from "@components/boolean-select/boolean-select";
+import { Search } from "@components/search/search";
+import { Constants } from "@models/constants";
+
+@Component({
+  selector: "app-posts",
+  imports: [
+    TranslocoDirective,
+    Modal,
+    PostDetails,
+    EventTable,
+    Pagination,
+    FormField,
+    LoadingSpinner,
+    FormRoot,
+    TranslocoPipe,
+    BooleanSelect,
+    Search,
+  ],
+  templateUrl: "./posts.html",
+})
+export class Posts {
+  protected readonly statuses = [
+    Constants.newsStatuses.All,
+    Constants.newsStatuses.Draft,
+    Constants.newsStatuses.Deleted,
+    Constants.newsStatuses.Denied,
+    Constants.newsStatuses.Draft,
+    Constants.newsStatuses.OnHold,
+    Constants.newsStatuses.Published,
+  ];
+
+  createPost = signal(false);
+  modalMode = signal<ModalMode>(null!);
+
+  modal = viewChild.required(Modal);
+
+  readonly eventKeys = [
+    { label: "post.table.title", key: "Publication.Title" },
+    { label: "post.table.release-date", key: "Publication.PublicationDate" },
+    { label: "post.table.event-date", key: "EventStartDate" },
+    { label: "post.table.status", key: "Publication.State" },
+  ] as const;
+  constructor() {
+    toObservable(this.searchEventForm().value)
+      .pipe(debounce(() => interval(300)))
+      .subscribe(() => {
+        this.searchEvents();
+      });
+  }
+
+  organizerEventService = inject(OrganizerEventService);
+
+  createNewPost() {
+    this.modalMode.set(ModalMode.create);
+    this.createPost.set(true);
+    this.modal().showModal();
+  }
+
+  resetModal() {
+    this.createPost.set(false);
+    this.modalMode.set(null!);
+    this.modal().dismissModal();
+  }
+
+  paginatedEvents = signal<PaginatedResponse<ModelEvent>>({
+    data: [],
+    totalPages: 0,
+    totalRecords: 0,
+    pageNumber: 1,
+    pageSize: 10,
+    error: null,
+  });
+
+  searchEventForm = form(
+    signal<SearchEventForm>({
+      title: "",
+      startDate: "",
+      endDate: "",
+      activityAreas: [],
+      tags: [],
+      state: EventState.All,
+      pagination: {
+        pageNumber: 1,
+        pageSize: 10,
+        orderBy: "EventStartDate",
+        descending: false,
+      },
+    }),
+    {
+      submission: {
+        action: async (field) => {
+          const formValue = {
+            title: field.title().value(),
+            startDate: field.startDate().value(),
+            endDate: field.endDate().value(),
+            activityAreas: field.activityAreas().value(),
+            tags: field.tags().value(),
+            state: field.state().value(),
+            pageNumber: field.pagination().value().pageNumber,
+            pageSize: field.pagination().value().pageSize,
+            orderBy: field.pagination().value().orderBy,
+            descending: field.pagination().value().descending,
+          };
+
+          this.paginatedEvents.set(await this.organizerEventService.getOrganizerEvents(formValue));
+        },
+      },
+    },
+  );
+
+  searchEvents() {
+    submit(this.searchEventForm);
+  }
+}
+
+interface SearchEventForm {
+  title: string;
+  startDate: string;
+  endDate: string;
+  activityAreas: string[];
+  tags: string[];
+  state: EventState;
+  pagination: PaginationParameters;
+}

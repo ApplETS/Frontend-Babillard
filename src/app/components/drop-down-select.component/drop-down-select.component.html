@@ -1,8 +1,12 @@
 <div class="flex items-center space-x-4">
   <div class="inline-block relative">
-    <button class="m-1 btn flex items-center btn-outline btn-accent" (click)="toggleDropdown()">
+    <button
+      class="m-1 btn flex items-center btn-outline btn-accent"
+      type="button"
+      (click)="toggleDropdown()"
+    >
       <fa-icon [icon]="filter" />
-      {{ title }}
+      {{ title() }}
       <fa-icon [icon]="isDropdownOpen() ? chevronUp : chevronDown" class="w-5 ml-2" />
     </button>
     @if (isDropdownOpen()) {
@@ -13,7 +17,11 @@
               class="flex items-center justify-start space-x-2"
               (click)="toggleOption(item.id)"
             >
-              <input type="checkbox" class="checkbox w-5 h-5" [checked]="item.selected" />
+              <input
+                type="checkbox"
+                class="checkbox w-5 h-5"
+                [checked]="value().includes(item.id)"
+              />
               <span>{{ item.name() }}</span>
             </button>
           </li>

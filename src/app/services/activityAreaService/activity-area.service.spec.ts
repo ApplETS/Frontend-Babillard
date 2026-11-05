@@ -11,25 +11,15 @@ import { TranslocoService } from "@jsverse/transloco";
 describe("ActivityAreaService", () => {
   let service: ActivityAreaService;
   let httpClientSpy: HttpTestingController;
-  let oidcSpy: any;
   let translocoSpy: any;
 
   beforeEach(() => {
-    oidcSpy = {
-      checkAuth: vi.fn().mockReturnValue(of({ isAuthenticated: true, accessToken: "mock-token" })),
-      authenticated: vi.fn().mockReturnValue({ isAuthenticated: true, accessToken: "mock-token" }),
-      getAccessToken: vi.fn().mockReturnValue(of("mock-token")),
-      authorize: vi.fn(),
-      logoff: vi.fn().mockReturnValue(of({})),
-      userData$: of({ name: "Test User" }),
-    };
     translocoSpy = {
       getActiveLang: vi.fn(),
     };
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: OidcSecurityService, useValue: oidcSpy },
         { provide: TranslocoService, useValue: translocoSpy },
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -126,7 +116,6 @@ describe("ActivityAreaService", () => {
 
     expect(result.length).toEqual(1);
     expect(result[0].id).toEqual(expectedResult.id);
-    expect(result[0].selected).toEqual(expectedResult.selected);
     expect(result[0].nameFr).toEqual(expectedResult.nameFr);
     expect(result[0].nameEn).toEqual(expectedResult.nameEn);
     expect(result[0].name()).toEqual(expectedResult.nameFr);
@@ -157,7 +146,6 @@ describe("ActivityAreaService", () => {
 
     expect(result.length).toEqual(1);
     expect(result[0].id).toEqual(expectedResult.id);
-    expect(result[0].selected).toEqual(expectedResult.selected);
     expect(result[0].nameFr).toEqual(expectedResult.nameFr);
     expect(result[0].nameEn).toEqual(expectedResult.nameEn);
     expect(result[0].name()).toEqual(expectedResult.nameEn);
@@ -188,7 +176,6 @@ describe("ActivityAreaService", () => {
     );
     expect(result.length).toEqual(1);
     expect(result[0].id).toEqual(expectedResult.id);
-    expect(result[0].selected).toEqual(expectedResult.selected);
     expect(result[0].nameFr).toEqual(expectedResult.nameFr);
     expect(result[0].nameEn).toEqual(expectedResult.nameEn);
     expect(result[0].name()).toEqual(expectedResult.nameEn);

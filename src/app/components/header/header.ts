@@ -57,13 +57,18 @@ export class HeaderComponent implements OnInit {
           activeRoute: isActive("/dashboard/news", this.router),
           icon: faNewspaper,
         },
-        {
+      ];
+
+      if (this.authService.userInfo()?.type?.match(UserType.ORGANIZER)) {
+        routesPart.push({
           route: "/posts",
-          label: "navbar.publication",
+          label: "navbar.post",
           activeRoute: isActive("/posts", this.router),
           icon: faPenToSquare,
         },
       ];
+        });
+      }
 
       if (this.authService.userInfo()?.type?.match(UserType.MODERATOR)) {
         routesPart.push({

@@ -1,7 +1,7 @@
-import { Component, signal, effect, Input, model, computed, viewChild } from "@angular/core";
+import { Component, signal, effect, model, computed, viewChild, input } from "@angular/core";
 import { CalendarHeader } from "@components/calendar-header/calendar-header";
 import { FullCalendarModule, FullCalendarComponent } from "@fullcalendar/angular";
-import { CalendarOptions, EventInput, EventSourceInput } from "@fullcalendar/core/index.js";
+import { CalendarOptions, EventSourceInput } from "@fullcalendar/core/index.js";
 import frLocale from "@fullcalendar/core/locales/fr";
 import enLocale from "@fullcalendar/core/locales/en-gb";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -24,9 +24,10 @@ export class Calendar {
   private readonly eventTreshold = 2; // Number of events to show before "Show more" appears
   readonly colors = ["#E7A455", "#EA7CB7", "#06B6D4", "#64C788", "#EA7CB7", "#848BDB"];
 
-  activityAreas = model<ActivityAreaDisplay[] | null>(null);
+  activityAreas = input.required<ActivityAreaDisplay[]>();
+  selectedAreas = model.required<string[]>();
 
-  availableAreas = computed(() => this.activityAreas() ?? []);
+  // availableAreas = computed(() => this.activityAreas() ?? []);
 
   calendarComponent = viewChild(FullCalendarComponent);
 
@@ -55,18 +56,61 @@ export class Calendar {
     dayMaxEvents: this.eventTreshold,
   });
   selectedCalendarDate = moment(Date.now());
-  private _events: PaginatedResponse<Event> | null = null;
-  @Input({ required: true })
-  set events(value: PaginatedResponse<Event> | null) {
-    this._events = value;
-    this.updateShownEvents();
-  }
 
-  get events(): PaginatedResponse<Event> | null {
-    return this._events;
-  }
+  events = input.required<PaginatedResponse<Event>>();
 
-  shownEvents = signal<EventSourceInput>([]);
+  shownEvents = computed<EventSourceInput>(() =>
+    this.events().data.flatMap((event) => {
+      const start = moment(event.eventStartDate);
+      const end = moment(event.eventEndDate);
+
+      // If dates are invalid (or end precedes start), keep a single fallback event.
+      if (!start.isValid() || !end.isValid() || end.isBefore(start)) {
+        return [
+          {
+            id: event.id,
+            title: event.title,
+            start: event.eventStartDate,
+            end: event.eventEndDate,
+            extendedProps: {
+              eventId: event.id,
+            },
+          },
+        ];
+      }
+
+      const daySegments = [];
+      const currentDay = start.clone().startOf("day");
+      const lastDay = end.clone().startOf("day");
+
+      while (currentDay.isSameOrBefore(lastDay, "day")) {
+        const isFirstDay = currentDay.isSame(start, "day");
+        const isLastDay = currentDay.isSame(end, "day");
+        const segmentStart = isFirstDay ? start.clone() : currentDay.clone();
+        const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf("day");
+
+        daySegments.push({
+          id: `${currentDay.format("YYYY-MM-DD")}-${event.id}`,
+          title: event.title,
+          start: segmentStart.toISOString(),
+          end: segmentEnd.toISOString(),
+          extendedProps: {
+            eventId: event.id,
+          },
+          color:
+            this.colors[
+              this.activityAreas()?.findIndex(
+                (activityArea) => activityArea.id == event.organizer?.activityArea?.id,
+              )
+            ],
+        });
+
+        currentDay.add(1, "day");
+      }
+
+      return daySegments;
+    }),
+  );
   selectedCardId = model<string | null>(null);
 
   constructor() {
@@ -76,8 +120,6 @@ export class Calendar {
         const calendarApi = this.calendarComponent()?.getApi();
         calendarApi?.changeView(currentView);
       }
-
-      this.updateShownEvents();
     });
   }
 
@@ -99,65 +141,6 @@ export class Calendar {
         break;
     }
     this.selectedCalendarDate = moment(calendarApi.getDate());
-  }
-
-  private get calendarEvents(): EventInput[] {
-    return (
-      this.events?.data.flatMap((event) => {
-        const start = moment(event.eventStartDate);
-        const end = moment(event.eventEndDate);
-
-        // If dates are invalid (or end precedes start), keep a single fallback event.
-        if (!start.isValid() || !end.isValid() || end.isBefore(start)) {
-          return [
-            {
-              id: event.id,
-              title: event.title,
-              start: event.eventStartDate,
-              end: event.eventEndDate,
-              extendedProps: {
-                eventId: event.id,
-              },
-            },
-          ];
-        }
-
-        const daySegments = [];
-        const currentDay = start.clone().startOf("day");
-        const lastDay = end.clone().startOf("day");
-
-        while (currentDay.isSameOrBefore(lastDay, "day")) {
-          const isFirstDay = currentDay.isSame(start, "day");
-          const isLastDay = currentDay.isSame(end, "day");
-          const segmentStart = isFirstDay ? start.clone() : currentDay.clone();
-          const segmentEnd = isLastDay ? end.clone() : currentDay.clone().endOf("day");
-
-          daySegments.push({
-            id: `${currentDay.format("YYYY-MM-DD")}-${event.id}`,
-            title: event.title,
-            start: segmentStart.toISOString(),
-            end: segmentEnd.toISOString(),
-            extendedProps: {
-              eventId: event.id,
-            },
-            color:
-              this.colors[
-                this.availableAreas()?.findIndex(
-                  (activityArea) => activityArea.id == event.organizer?.activityArea?.id,
-                )
-              ],
-          });
-
-          currentDay.add(1, "day");
-        }
-
-        return daySegments;
-      }) ?? []
-    );
-  }
-
-  private updateShownEvents(): void {
-    this.shownEvents.set(this.calendarEvents);
   }
 
   selectEvent(arg: EventContainer): void {

@@ -15,5 +15,6 @@ export const authConfig: PassedInitialConfig = {
     logLevel: LogLevel.Debug,
     disableIdTokenValidation: false,
     autoUserInfo: false,
+    secureRoutes: [environment.API_URL],
   },
 };

@@ -19,7 +19,8 @@
       "@environments/*": ["./src/environments/*"],
       "@models/*": ["./src/models/*"],
       "@components/*": ["./src/app/components/*"],
-      "@routed-components/*": ["./src/app/routed-components/*"]
+      "@routed-components/*": ["./src/app/routed-components/*"],
+      "@guards/*": ["./src/app/guards/*"]
     }
   },
   "angularCompilerOptions": {

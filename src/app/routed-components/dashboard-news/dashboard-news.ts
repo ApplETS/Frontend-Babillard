@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { Calendar } from "@components/calendar/calendar";
 import { Publications } from "@components/publications/publications";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
@@ -8,7 +8,7 @@ import {
   ActivityAreaDisplay,
   ActivityAreaService,
 } from "@services/activityAreaService/activity-area.service";
-import { PaginatedResponse } from "@services/apiService/api.service";
+import { emptyPaginatedResponse, PaginatedResponse } from "@services/apiService/api.service";
 import { Event } from "@models/event";
 import { toObservable } from "@angular/core/rxjs-interop";
 
@@ -21,41 +21,29 @@ export class DashboardNews implements OnInit {
   eventService = inject(EventsService);
   activityAreaService = inject(ActivityAreaService);
 
-  events = signal<PaginatedResponse<Event> | null>(null);
-  activityAreas = signal<ActivityAreaDisplay[] | null>(null);
+  events = signal<PaginatedResponse<Event>>(emptyPaginatedResponse<Event>());
+  activityAreas = signal<ActivityAreaDisplay[]>([]);
   selectedCardId = signal<string | null>(null);
-  reloading = signal(false);
 
-  loading = computed(
-    () => this.reloading() || this.activityAreas() === null || this.events() === null,
-  );
-  selectedAreas = computed(
-    () =>
-      this.activityAreas()
-        ?.filter((area) => area.selected)
-        .map((a) => a.id) ?? [],
-  );
+  loading = signal(true);
+  selectedAreas = signal<string[]>([]);
 
   constructor() {
     toObservable(this.selectedAreas).subscribe(async (selectedAreas: string[]) => {
-      this.reloading.set(true);
+      this.loading.set(true);
       if (selectedAreas.length > 0) {
         this.events.set(await this.eventService.getEvents(selectedAreas));
       } else {
-        this.events.set({
-          data: [],
-          error: null,
-          pageSize: 0,
-          totalRecords: 0,
-          totalPages: 0,
-        });
+        this.events.set(emptyPaginatedResponse<Event>());
       }
 
-      this.reloading.set(false);
+      this.loading.set(false);
     });
   }
 
   async ngOnInit(): Promise<void> {
-    this.activityAreas.set(await this.activityAreaService.getActivityAreas());
+    const areas = await this.activityAreaService.getActivityAreas();
+    this.selectedAreas.set(areas.map((area) => area.id));
+    this.activityAreas.set(areas);
   }
 }
