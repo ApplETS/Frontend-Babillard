@@ -1,6 +1,14 @@
 import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
-import { faSignIn, faGear, faSignOut, faBars } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSignIn,
+  faGear,
+  faSignOut,
+  faBars,
+  faNewspaper,
+  faPenToSquare,
+  faListCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { LangSwitcher } from "@components/lang-switcher/lang-switcher";
 import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
@@ -38,18 +46,22 @@ export class HeaderComponent implements OnInit {
 
   routes = computed<RouteInfo[]>(() => {
     if (!this.authService.isAuthenticated()) {
-      return [{ route: "/", label: "Babillard", activeRoute: computed(() => false) }];
+      return [
+        { route: "/", label: "Babillard", activeRoute: computed(() => false), icon: faNewspaper },
+      ];
     } else {
       const routesPart = [
         {
           route: "/",
           label: "dashboard.news",
           activeRoute: isActive("/dashboard/news", this.router),
+          icon: faNewspaper,
         },
         {
           route: "/posts",
           label: "navbar.publication",
           activeRoute: isActive("/posts", this.router),
+          icon: faPenToSquare,
         },
       ];
 
@@ -58,6 +70,7 @@ export class HeaderComponent implements OnInit {
           route: "/approval",
           label: "navbar.approval",
           activeRoute: isActive("/approval", this.router),
+          icon: faListCheck,
         });
       }
       return routesPart;

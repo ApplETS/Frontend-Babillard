@@ -7,6 +7,7 @@
         [class.btn-ghost]="!route.activeRoute()"
         [class.btn-primary]="route.activeRoute()"
       >
+        <fa-icon [icon]="route.icon" size="xl" class="mr-2" />
         {{ route.label | transloco }}
       </a>
     </li>
@@ -21,7 +22,7 @@
 <ng-template #loginBtn>
   <button type="button" class="btn btn-ghost" (click)="authService.login()">
     <div class="text-base mr-1">{{ "dashboard.login" | transloco }}</div>
-    <div class="avatar rounded-full bg-base-100">
+    <div class="avatar rounded-full bg-base-100 p-1">
       <fa-icon [icon]="signIn" size="xl" />
     </div>
   </button>
@@ -33,6 +34,9 @@
     <button tabindex="0" role="button" class="btn btn-ghost">
       <fa-icon [icon]="faBars" size="xl" />
     </button>
+    <div
+      class="dropdown-content fixed inset-0 bg-black/50 z-40 w-screen h-screen cursor-default"
+    ></div>
     <ul
       tabindex="-1"
       class="dropdown-content menu menu-sm mt-3 p-2 shadow bg-base-300 rounded-box w-52 z-50 gap-3"
@@ -61,7 +65,7 @@
   </div>
 
   <ul class="hidden lg:flex flex-1 ml-5 gap-3">
-    <ng-container *ngTemplateOutlet="navLinks" />>
+    <ng-container *ngTemplateOutlet="navLinks" />
   </ul>
   <div class="hidden flex-none gap-2 lg:inline-flex items-center">
     <ng-container *ngTemplateOutlet="switchers" />
