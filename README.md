@@ -1,69 +1,74 @@
 # Frontend-Babillard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.5.
+## Serveur de développement
 
-## Development server
-
-To start a local development server, run:
+Pour démarrer un serveur de développement local, exécuter la commande
 
 ```bash
 ng s --port 8080 --ssl
 ```
 
-Once the server is running, open your browser and navigate to `https://localhost:8080/`. The application will automatically reload whenever you modify any of the source files.
+ou
+```bash
+npm run start
+```
 
-## Production server
+Une fois que le serveur est actif, ouvrez votre navigateur Web et allez à l'adresse `https://localhost:8080`. Le site se rechargera automatiquement à chaque modification effectuée.
 
-To start a local production server, run:
+## Serveur de production
+
+Pour démarer un serveur local en contexte de production, exécuter la commande
 
 ```bash
 docker compose --env-file ./.env up
 ```
 
-The production server will be available at `http://localhost:8080`. More details will follow later about production environment.
+Le serveur sera disponible à l'adresse `http://localhost:8080`. Plus de détails seront donnés ultérieurement concernant la configuration de production.
 
-## Code scaffolding
+## Structure du projet
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+Les principaux répertoires sont 
 ```bash
-ng generate component component-name
+|_public
+|      |_____assets
+|      |_____i18n
+|             
+|_src
+    |_app
+    |   |_components
+    |   |_guards
+    |   |_routed-components
+    |   |_services
+    |_environments
+    |_models
+    |_services
+
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Répertoires et leur utilité:
+- `src/app/components`: Pour tous les composants réutilisables qui n'ont pas pour but d'être directement routés
+- `src/app/guards`: Pour la gestion d'accès. Certaines fonctionnalités sont limitées à certains types d'utilisateur
+- `src/app/routed-components`: Pour tous les composants qui ont pour but d'être routés directement.
+- `src/app/services`: Pour tous les services devant communiquer avec les API du serveur ou du gestionnaire d'identité
 
+Afin de générer des components/guards/services à l'aide du CLI Angular, s'assurer d'être à la racine du dépôt, puis entrer la commande
 ```bash
-ng generate --help
+ng generate <type> <sous-répertoire>/<nom> [...paramètres]
 ```
 
-## Building
+## Exécuter les tests unitaires
 
-To build the project run:
+Exécuter les tests unitaires se fait à l'aide de la commande `npm run test` ou `ng test`. Les tests seront réexécutés automatiquement en cas de modification.
 
-```bash
-ng build
-```
+## Variables d'environnement
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Le fichier `.env` est toujours ignoré. Il vous faut donc le recréer à partir de `.env.exemple`. Voici donc les différentes variables d'environnement et leur utilité:
+- `NODE_ENV`: Le chemin de NodeJS sur la machine du serveur. Facultatif
+- `NG_APP_REDIRECT_URL`: Le chemin de redirection une fois que l'authentification a été faite auprès du fournisseur d'identité. Essenstiel afin de faire fonctionner l'authentification
+- `NG_APP_OPENID_CLIENT_ID`: L'identifiant de client OpenID du projet. Essentiel afin de faire fonctionner l'authentification.
+- `NG_APP_OPENID_BASE_URL`: L'adresse servant à communiquer avec les points d'entrée API du fournisseur d'identité. Essentiel afin de faire fonctionner l'authentification
+- `NG_APP_OPENID_ISSUER`: L'adresse du fournisseur d'identité. Essentiel afin de faire fonctionner l'authentification
+- `NG_APP_OPENID_WELLKOWN`: L'adresse permettant d'accéder au fichier `.well-known` de la configuration OpenID. Essentiel afin de faire fonctionner l'authentification.
+- `NG_APP_API_URL_DEV`: L'adresse du serveur de développement de l'API. Essentiel afin d'interagir avec le site en développement
+- `NG_APP_API_URL_PROD`: L'adresse du serveur de production de l'API. Essentiel afin d'interagir avec le site en production
+- `NG_APP_POST_LOGOUT_REDIRECT_URL`: L'adresse de retour après une déconnexion auprès du fournisseur d'identité. Essentiel afin de faire fonctionner l'authentification.
