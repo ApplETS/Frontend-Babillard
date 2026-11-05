@@ -1,6 +1,6 @@
-<nav class="navbar w-full bg-base-300">
-  <div class="flex flex-1 ml-5 gap-3">
-    @for (route of routes(); track $index) {
+<ng-template #navLinks>
+  @for (route of routes(); track $index) {
+    <li>
       <a
         [routerLink]="route.route"
         class="btn"
@@ -8,25 +8,73 @@
         [class.btn-primary]="route.activeRoute()"
       >
         {{ route.label | transloco }}
+        <fa-icon [icon]="route.icon" size="xl" class="mr-2" />
       </a>
-    }
-  </div>
-  <div class="flex-none gap-2 inline-flex items-center">
-    <app-lang-switcher />
-    <app-theme-switcher />
-    <div class="divider divider-horizontal before:bg-base-content after:bg-base-content my-2"></div>
-    @if (!authService.isAuthenticated()) {
-      <div class="mr-5">
-        <button type="button" class="btn btn-ghost" (click)="authService.login()">
-          <div class="text-base mr-1">{{ "dashboard.login" | transloco }}</div>
+    </li>
+  }
+</ng-template>
+
+<ng-template #switchers>
+  <app-lang-switcher />
+  <app-theme-switcher />
+</ng-template>
+
+<ng-template #loginBtn>
+  <button type="button" class="btn btn-ghost" (click)="authService.login()">
+    <div class="text-base mr-1">{{ "dashboard.login" | transloco }}</div>
+    <div class="avatar rounded-full bg-base-100 p-1">
+      <fa-icon [icon]="signIn" size="xl" />
+    </div>
+  </button>
+</ng-template>
+
+<nav class="navbar w-full bg-base-300">
+  <!-- Dropdown pour les écrans plus petit -->
+  <div class="dropdown lg:hidden">
+    <button tabindex="0" role="button" class="btn btn-ghost">
+      <fa-icon [icon]="faBars" size="xl" />
+    </button>
+    <div
+      class="dropdown-content fixed inset-0 bg-black/50 z-40 w-screen h-screen cursor-default"
+    ></div>
+    <ul
+      tabindex="-1"
+      class="dropdown-content menu menu-sm mt-3 p-2 shadow bg-base-300 rounded-box w-52 fixed z-50 gap-3 left-0"
+    >
+      <ng-container *ngTemplateOutlet="navLinks" />
+      <ng-container *ngTemplateOutlet="switchers" />
+      @if (!authService.isAuthenticated()) {
+        <ng-container *ngTemplateOutlet="loginBtn" />
+      } @else {
+        <a
+          type="button"
+          class="btn btn-ghost"
+          [routerLink]="['/', 'fr', 'dashboard', 'settings', 'profile']"
+        >
+          {{ "navbar.settings" | transloco }}
+          <fa-icon [icon]="gear" class="pr-2" />
+        </a>
+        <button type="button" class="btn btn-ghost" (click)="authService.logout()">
+          <div class="text-base mr-1">{{ "navbar.logout" | transloco }}</div>
           <div class="avatar rounded-full bg-base-100">
-            <fa-icon [icon]="signIn" size="xl" />
+            <fa-icon [icon]="signOut" size="xl" />
           </div>
         </button>
-      </div>
+      }
+    </ul>
+  </div>
+
+  <ul class="hidden lg:flex flex-1 ml-5 gap-3">
+    <ng-container *ngTemplateOutlet="navLinks" />
+  </ul>
+  <div class="hidden flex-none gap-2 lg:inline-flex items-center">
+    <ng-container *ngTemplateOutlet="switchers" />
+    <div class="divider divider-horizontal before:bg-base-content after:bg-base-content my-2"></div>
+    @if (!authService.isAuthenticated()) {
+      <ng-container *ngTemplateOutlet="loginBtn" />
     } @else {
       <div class="dropdown dropdown-end mr-5">
-        <button tabindex="0" role="button" class="btn btn-ghost">
+        <button tabindex="0" role="button" class="btn-ghost">
           <div class="text-base mr-1">{{ organization() }}</div>
           <app-avatar [user]="authService.userInfo()!" />
         </button>

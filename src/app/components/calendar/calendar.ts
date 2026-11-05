@@ -37,6 +37,8 @@ export class Calendar {
     locales: [frLocale, enLocale],
     locale: "fr",
     height: "100%",
+    handleWindowResize: true,
+    expandRows: true,
     headerToolbar: false,
     initialView: this.view(),
     viewClassNames: () => {

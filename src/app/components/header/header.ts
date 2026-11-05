@@ -1,6 +1,14 @@
-import { Component, computed, inject, OnInit, signal, Signal } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
-import { faSignIn, faGear, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSignIn,
+  faGear,
+  faSignOut,
+  faBars,
+  faNewspaper,
+  faPenToSquare,
+  faListCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { LangSwitcher } from "@components/lang-switcher/lang-switcher";
 import { TranslocoPipe, TranslocoService } from "@jsverse/transloco";
@@ -9,23 +17,27 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 import { AuthService } from "@services/authService/auth.service";
 import { UserType } from "@models/user-types";
 import { Avatar } from "@components/avatar/avatar";
-
-interface RouteInfo {
-  route: string;
-  label: string;
-  activeRoute: Signal<boolean>;
-}
+import { RouteInfo } from "@models/routeInfo.interface";
+import { NgTemplateOutlet } from "@angular/common";
 
 @Component({
   selector: "app-header",
-  imports: [ThemeSwitcher, FaIconComponent, LangSwitcher, TranslocoPipe, RouterLink, Avatar],
+  imports: [
+    ThemeSwitcher,
+    FaIconComponent,
+    LangSwitcher,
+    TranslocoPipe,
+    RouterLink,
+    Avatar,
+    NgTemplateOutlet,
+  ],
   templateUrl: "./header.html",
 })
 export class HeaderComponent implements OnInit {
   signIn = faSignIn;
   readonly gear = faGear;
   readonly signOut = faSignOut;
-
+  readonly faBars = faBars;
   router = inject(Router);
   securityService = inject(OidcSecurityService);
   authService = inject(AuthService);
@@ -34,13 +46,16 @@ export class HeaderComponent implements OnInit {
 
   routes = computed<RouteInfo[]>(() => {
     if (!this.authService.isAuthenticated()) {
-      return [{ route: "/", label: "Babillard", activeRoute: computed(() => false) }];
+      return [
+        { route: "/", label: "Babillard", activeRoute: computed(() => false), icon: faNewspaper },
+      ];
     } else {
       const routesPart = [
         {
           route: "/",
           label: "dashboard.news",
           activeRoute: isActive("/dashboard/news", this.router),
+          icon: faNewspaper,
         },
       ];
 
@@ -49,6 +64,7 @@ export class HeaderComponent implements OnInit {
           route: "/posts",
           label: "navbar.post",
           activeRoute: isActive("/posts", this.router),
+          icon: faPenToSquare,
         });
       }
 
@@ -57,6 +73,7 @@ export class HeaderComponent implements OnInit {
           route: "/approval",
           label: "navbar.approval",
           activeRoute: isActive("/approval", this.router),
+          icon: faListCheck,
         });
       }
       return routesPart;

@@ -12,9 +12,10 @@
     </button>
   </div>
   <form class="flex flex-row gap-4 bg-base-200 py-2 px-4" [formRoot]="searchEventForm">
-    <label>
+    <label for="search-title">
       <span transloco="post.search"></span>
       <app-search
+        inputId="search-title"
         class="flex-1"
         [formField]="searchEventForm.title"
         [placeholder]="'post.search-placeholder' | transloco"
@@ -37,9 +38,10 @@
           }
         </select>
       </label>
-      <label>
+      <label for="order-select">
         <span transloco="pagination.order-type">a</span>
         <app-boolean-select
+          inputId="order-select"
           [trueLabel]="'pagination.order-desc' | transloco"
           [falseLabel]="'pagination.order-asc' | transloco"
           [formField]="searchEventForm.pagination.descending"
