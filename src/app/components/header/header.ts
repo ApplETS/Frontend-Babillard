@@ -65,8 +65,6 @@ export class HeaderComponent implements OnInit {
           label: "navbar.post",
           activeRoute: isActive("/posts", this.router),
           icon: faPenToSquare,
-        },
-      ];
         });
       }
 
