@@ -1,5 +1,18 @@
 # Frontend-Babillard
 
+## Outils de développement
+
+Le projet nécessite :
+- NodeJS 26
+- Angular CLI v21
+- Un navigateur Web (Safari, Firefox, navigateur Chromium)
+
+Le projet se fait mieux avec :
+- Visual Studio Code
+- Visual Studio 2026 (pour déboguer l'API du serveur)
+
+Pour tester le serveur de production, il faut installer Docker. Si vous utilisez Windows, assurez-vous d'installer préalablement WSL 2
+
 ## Serveur de développement
 
 Pour démarrer un serveur de développement local, exécuter la commande
