@@ -7,8 +7,8 @@
         [class.btn-ghost]="!route.activeRoute()"
         [class.btn-primary]="route.activeRoute()"
       >
-        <fa-icon [icon]="route.icon" size="xl" class="mr-2" />
         {{ route.label | transloco }}
+        <fa-icon [icon]="route.icon" size="xl" class="mr-2" />
       </a>
     </li>
   }
@@ -39,7 +39,7 @@
     ></div>
     <ul
       tabindex="-1"
-      class="dropdown-content menu menu-sm mt-3 p-2 shadow bg-base-300 rounded-box w-52 z-50 gap-3"
+      class="dropdown-content menu menu-sm mt-3 p-2 shadow bg-base-300 rounded-box w-52 fixed z-50 gap-3 left-0"
     >
       <ng-container *ngTemplateOutlet="navLinks" />
       <ng-container *ngTemplateOutlet="switchers" />
@@ -57,7 +57,7 @@
         <button type="button" class="btn btn-ghost" (click)="authService.logout()">
           <div class="text-base mr-1">{{ "navbar.logout" | transloco }}</div>
           <div class="avatar rounded-full bg-base-100">
-            <fa-icon [icon]="signOut" class="xl" />
+            <fa-icon [icon]="signOut" size="xl" />
           </div>
         </button>
       }
