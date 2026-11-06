@@ -13,7 +13,6 @@ export class Search implements FormValueControl<string> {
   value = model.required<string>();
   placeholder = input<string>("");
   inputElement = viewChild.required<ElementRef<HTMLInputElement>>("input");
-  inputId = input<string>();
 
   focus(options?: FocusOptions): void {
     this.inputElement().nativeElement.focus(options);
