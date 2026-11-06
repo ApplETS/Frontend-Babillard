@@ -42,9 +42,6 @@ export class EventTable {
     ];
   });
 
-  readonly orderBy = signal<EventColumn | null>(null);
-  readonly orderByDesc = signal(false);
-
   menuItems: DropdownMenuItem[] = [
     {
       id: 1,
@@ -66,15 +63,7 @@ export class EventTable {
     },
   ];
 
-  onOrderChange(column: EventColumn): void {
-    if (this.orderBy() === column) {
-      this.orderByDesc.update((value) => !value);
-      return;
-    }
-
-    this.orderBy.set(column);
-    this.orderByDesc.set(false);
-  }
+  handleMenuItemSelected(item: DropdownMenuItem, event: Event): void {
 
   handleMenuItemSelected(item: DropdownMenuItem): void {
     console.log(item);
