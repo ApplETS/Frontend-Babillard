@@ -7,10 +7,11 @@ import { TranslocoTestingModule } from "@jsverse/transloco";
 import { FieldTree, FormField } from "@angular/forms/signals";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { ModalMode } from "@models/modal-mode";
-import { signal, twoWayBinding } from "@angular/core";
+import { inputBinding, signal, twoWayBinding } from "@angular/core";
 import { Combobox } from "@components/combobox/combobox";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
+import { Event as ModelEvent } from "@models/event";
 
 describe("PreviewDetails", () => {
   let component: PostDetails;
@@ -26,6 +27,7 @@ describe("PreviewDetails", () => {
   };
 
   const closedCount = signal(0);
+  const event = signal<ModelEvent | null>(null);
   let postForm: FieldTree<PostDetailsForm>;
 
   beforeEach(async () => {
@@ -53,7 +55,7 @@ describe("PreviewDetails", () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(PostDetails, {
-      bindings: [twoWayBinding("modalMode", signal(ModalMode.create))],
+      bindings: [twoWayBinding("modalMode", signal(ModalMode.create)), inputBinding("event", event)],
     });
     component = fixture.componentInstance;
     tagService.getAllTags.mockReturnValue(new Promise<Tag[]>((resolve) => resolve([])));
@@ -101,9 +103,9 @@ describe("PreviewDetails", () => {
     expect(closedCount(), "closed event should have been called").toBe(1);
   });
 
-  it("should call OrganizerEventService.updateDraft() when form is valid and publication is not null", async () => {
+  it("should call OrganizerEventService.updateDraft() when form is valid and event is not null", async () => {
     organizerEventService.updateDraft.mockReturnValue(Promise.resolve({ id: "1" }));
-    component.publication.set({
+    event.set({
       id: "1",
       eventEndDate: "",
       eventStartDate: "",
@@ -142,11 +144,11 @@ describe("PreviewDetails", () => {
     );
   });
 
-  it("should call OrganizerEventService.updateDraft() and handle generic error when form is valid and publication is not null", async () => {
+  it("should call OrganizerEventService.updateDraft() and handle generic error when form is valid and event is not null", async () => {
     organizerEventService.updateDraft.mockReturnValue(
       Promise.reject(new Error("Some error occurred")),
     );
-    component.publication.set({
+    event.set({
       id: "1",
       eventEndDate: "",
       eventStartDate: "",

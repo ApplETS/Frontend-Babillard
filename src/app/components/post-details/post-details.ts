@@ -163,12 +163,21 @@ export class PostDetails implements OnInit {
       .filter((tag) => !this.postForm.tags().value().includes(tag.id))
       .map((tag) => ({ id: tag.id, name: tag.name })),
   );
-  publication = signal<ModelEvent | null>(null);
 
   async ngOnInit(): Promise<void> {
     this.tags.set(await this.tagService.getAllTags());
 		if (this.event() !== null && this.modalMode() !== ModalMode.create) {
-
+			this.postForm().value.update(() => ({
+				content: this.event()?.content ?? "",
+				eventStartDate: this.event()?.eventStartDate ?? null,
+				eventEndDate: this.event()?.eventEndDate ?? null,
+				imageUrl: this.event()?.imageUrl ?? "",
+				imageAltText: this.event()?.imageAltText ?? "",
+				publicationDate: this.event()?.eventStartDate ?? null,
+				tags: this.event()?.tags.map(t => t.id) ?? [],
+				title: this.event()?.title ?? "",
+				image: null,
+			}));
 		}
   }
 
@@ -219,8 +228,8 @@ export class PostDetails implements OnInit {
         value.tags = null!;
       }
 
-      if (this.publication() !== null) {
-        await this.organizerEventService.updateDraft(value, this.publication()!.id);
+      if (this.event() !== null) {
+        await this.organizerEventService.updateDraft(value, this.event()!.id);
       } else {
         await this.organizerEventService.postDraft(value);
       }

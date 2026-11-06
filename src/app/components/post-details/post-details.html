@@ -222,11 +222,11 @@
       >
         @if (
           modalMode() !== ModalMode.moderator &&
-          (modalMode() !== ModalMode.modify || publication()?.state === EventState.Draft)
+          (modalMode() !== ModalMode.modify || event()?.state === EventState.Draft)
         ) {
           <button
             class="btn btn-info px-8 font-normal"
-            [disabled]="publication()?.state === EventState.Approved"
+            [disabled]="event()?.state === EventState.Approved"
             (click)="handleDraft()"
             type="button"
             transloco="approbations.modal.draft"
