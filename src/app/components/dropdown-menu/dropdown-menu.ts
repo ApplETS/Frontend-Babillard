@@ -23,8 +23,14 @@ export class DropdownMenu {
 }
 
 export interface DropdownMenuItem {
-  id: number;
+  id: DropdownMenuItemAction;
   label: string;
   icon: IconProp;
   color: string;
+}
+
+export enum DropdownMenuItemAction {
+  modify = 1,
+  duplicate = 2,
+  delete = 3,
 }

@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from "@angular/core";
+import { Component, computed, inject, input, output, signal } from "@angular/core";
 import {
   faCaretDown,
   faCaretUp,
@@ -7,12 +7,17 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { Event } from "@models/event";
-import { DropdownMenuItem, DropdownMenu } from "@components/dropdown-menu/dropdown-menu";
+import { DropdownMenuItem, DropdownMenu, DropdownMenuItemAction } from "@components/dropdown-menu/dropdown-menu";
 import { TranslocoService, TranslocoDirective } from "@jsverse/transloco";
 import { Constants } from "@models/constants";
 import { TranslocoDatePipe } from "@jsverse/transloco-locale";
 
 type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions" | "author";
+
+export interface EventSelectedEvent {
+  eventId: string;
+  action: DropdownMenuItemAction;
+}
 
 @Component({
   selector: "app-event-table",
@@ -21,6 +26,8 @@ type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "acti
 })
 export class EventTable {
   events = input.required<Event[]>();
+
+  eventSelected = output<EventSelectedEvent>();
 
   readonly faCaretDown = faCaretDown;
   readonly faCaretUp = faCaretUp;
@@ -44,19 +51,19 @@ export class EventTable {
 
   menuItems: DropdownMenuItem[] = [
     {
-      id: 1,
+      id: DropdownMenuItemAction.modify,
       label: "post.menu.modify",
       icon: faPencil,
       color: "",
     },
     {
-      id: 2,
+      id: DropdownMenuItemAction.duplicate,
       label: "post.menu.duplicate",
       icon: faClone,
       color: "",
     },
     {
-      id: 3,
+      id: DropdownMenuItemAction.delete,
       label: "post.menu.delete",
       icon: faTrashCan,
       color: "text-error",
@@ -64,8 +71,6 @@ export class EventTable {
   ];
 
   handleMenuItemSelected(item: DropdownMenuItem, event: Event): void {
-
-  handleMenuItemSelected(item: DropdownMenuItem): void {
-    console.log(item);
+    this.eventSelected.emit({ eventId: event.id, action: item.id });
   }
 }
