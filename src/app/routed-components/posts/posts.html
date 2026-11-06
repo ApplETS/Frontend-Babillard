@@ -72,6 +72,6 @@
 
 <app-modal (closed)="resetModal()">
   @if (modalMode() !== ModalMode.default) {
-    <app-post-details class="w-full"  [(modalMode)]="modalMode" (closed)="resetModal()" [eventId]="selectedEventId()" />
+    <app-post-details class="w-full"  [(modalMode)]="modalMode" (closed)="resetModal()" [event]="selectedEvent()" />
   }
 </app-modal>

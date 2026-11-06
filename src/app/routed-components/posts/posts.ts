@@ -48,7 +48,7 @@ export class Posts {
 
   createPost = signal(false);
   modalMode = signal<ModalMode>(ModalMode.default);
-  selectedEventId = signal<string | null>(null);
+  selectedEvent = signal<ModelEvent | null>(null);
 
   protected readonly ModalMode = ModalMode;
 
@@ -148,7 +148,7 @@ export class Posts {
         this.modalMode.set(null!);
     }
 
-    this.selectedEventId.set(e.eventId);
+    this.selectedEvent.set(e.event);
     this.modal().showModal();
   }
 }

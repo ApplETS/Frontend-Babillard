@@ -15,7 +15,7 @@ import { TranslocoDatePipe } from "@jsverse/transloco-locale";
 type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions" | "author";
 
 export interface EventSelectedEvent {
-  eventId: string;
+  event: Event;
   action: DropdownMenuItemAction;
 }
 
@@ -71,6 +71,6 @@ export class EventTable {
   ];
 
   handleMenuItemSelected(item: DropdownMenuItem, event: Event): void {
-    this.eventSelected.emit({ eventId: event.id, action: item.id });
+    this.eventSelected.emit({ event: event, action: item.id });
   }
 }
