@@ -3,7 +3,7 @@ import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
 import { Modal } from "@components/modal/modal";
 import { PostDetails } from "@components/post-details/post-details";
 import { ModalMode } from "@models/modal-mode";
-import { EventTable } from "@components/event-table/event-table";
+import { EventSelectedEvent, EventTable } from "@components/event-table/event-table";
 import { Pagination } from "@components/pagination/pagination";
 import { form, FormField, submit, FormRoot } from "@angular/forms/signals";
 import { PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
@@ -16,6 +16,7 @@ import { debounce, interval } from "rxjs";
 import { BooleanSelect } from "@components/boolean-select/boolean-select";
 import { Search } from "@components/search/search";
 import { Constants } from "@models/constants";
+import { DropdownMenuItemAction } from "@components/dropdown-menu/dropdown-menu";
 
 @Component({
   selector: "app-posts",
@@ -46,7 +47,10 @@ export class Posts {
   ];
 
   createPost = signal(false);
-  modalMode = signal<ModalMode>(null!);
+  modalMode = signal<ModalMode>(ModalMode.default);
+  selectedEventId = signal<string | null>(null);
+
+  protected readonly ModalMode = ModalMode;
 
   modal = viewChild.required(Modal);
 
@@ -56,6 +60,7 @@ export class Posts {
     { label: "post.table.event-date", key: "EventStartDate" },
     { label: "post.table.status", key: "Publication.State" },
   ] as const;
+
   constructor() {
     toObservable(this.searchEventForm().value)
       .pipe(debounce(() => interval(300)))
@@ -74,7 +79,7 @@ export class Posts {
 
   resetModal() {
     this.createPost.set(false);
-    this.modalMode.set(null!);
+    this.modalMode.set(ModalMode.default);
     this.modal().dismissModal();
   }
 
@@ -126,6 +131,25 @@ export class Posts {
 
   searchEvents() {
     submit(this.searchEventForm);
+  }
+
+  selectEvent(e: EventSelectedEvent) {
+    switch (e.action) {
+      case DropdownMenuItemAction.delete:
+        this.modalMode.set(ModalMode.delete);
+        break;
+      case DropdownMenuItemAction.modify:
+        this.modalMode.set(ModalMode.modify);
+        break;
+      case DropdownMenuItemAction.duplicate:
+        this.modalMode.set(ModalMode.duplicate);
+        break;
+      default:
+        this.modalMode.set(null!);
+    }
+
+    this.selectedEventId.set(e.eventId);
+    this.modal().showModal();
   }
 }
 

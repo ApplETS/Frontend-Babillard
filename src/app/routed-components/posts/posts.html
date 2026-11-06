@@ -61,7 +61,7 @@
   @if (searchEventForm().submitting()) {
     <app-loading-spinner />
   } @else {
-    <app-event-table [events]="paginatedEvents().data" />
+    <app-event-table [events]="paginatedEvents().data" (eventSelected)="selectEvent($event)" />
     <app-pagination
       class="bg-base-200 px-4"
       [paginationResponse]="paginatedEvents()"
@@ -71,7 +71,7 @@
 </div>
 
 <app-modal (closed)="resetModal()">
-  @if (createPost()) {
-    <app-post-details class="w-full" [(modalMode)]="modalMode" (closed)="resetModal()" />
+  @if (modalMode() !== ModalMode.default) {
+    <app-post-details class="w-full"  [(modalMode)]="modalMode" (closed)="resetModal()" [eventId]="selectedEventId()" />
   }
 </app-modal>

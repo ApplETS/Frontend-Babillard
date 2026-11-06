@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   inject,
+  input,
   model,
   OnInit,
   output,
@@ -54,6 +55,7 @@ import { MarkdownComponent } from "ngx-markdown";
 })
 export class PostDetails implements OnInit {
   modalMode = model.required<ModalMode>();
+	eventId = input<string | null>(null);
 
   showPreview = signal(false);
   tags = signal<Tag[]>([]);
@@ -165,6 +167,9 @@ export class PostDetails implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.tags.set(await this.tagService.getAllTags());
+		if (this.eventId() !== null && this.modalMode() !== ModalMode.create) {
+			
+		}
   }
 
   removeTag(tagId: string) {
