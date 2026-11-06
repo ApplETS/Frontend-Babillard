@@ -27,8 +27,10 @@ describe("Posts", () => {
           translocoConfig: {},
         }),
         Modal,
-        { provide: OrganizerEventService, useValue: organizerEventService },
       ],
+      providers: [
+        { provide: OrganizerEventService, useValue: organizerEventService },
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Posts);
