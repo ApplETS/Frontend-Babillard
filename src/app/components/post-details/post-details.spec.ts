@@ -67,6 +67,7 @@ describe("PreviewDetails", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    event.set(null);
   });
 
   function setValidForm() {
@@ -117,6 +118,7 @@ describe("PreviewDetails", () => {
       title: "",
       organizer: null,
     });
+    await fixture.whenStable();
 
     setValidForm();
 
@@ -145,9 +147,6 @@ describe("PreviewDetails", () => {
   });
 
   it("should call OrganizerEventService.updateDraft() and handle generic error when form is valid and event is not null", async () => {
-    organizerEventService.updateDraft.mockReturnValue(
-      Promise.reject(new Error("Some error occurred")),
-    );
     event.set({
       id: "1",
       eventEndDate: "",
@@ -161,10 +160,15 @@ describe("PreviewDetails", () => {
       organizer: null,
     });
     setValidForm();
+    await fixture.whenStable();
+    organizerEventService.updateDraft.mockReturnValue(
+      Promise.reject(new Error("Some error occurred")),
+    );
 
     await component.handleDraft();
     expect(organizerEventService.postDraft).not.toHaveBeenCalled();
     expect(organizerEventService.updateDraft).toHaveBeenCalled();
+    expect(organizerEventService.updateDraft).toHaveBeenCalledTimes(1);
     expect(closedCount(), "closed event should not have been called").toBe(0);
     expect(postForm().errors(), "form should have errors").length(1);
     const error = postForm().errors()![0];
