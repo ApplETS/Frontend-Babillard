@@ -30,7 +30,7 @@ import { Event as ModelEvent } from "@models/event";
 import { EventState } from "@models/event-state";
 import { ModalMode } from "@models/modal-mode";
 import { Tag } from "@models/tag";
-import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
+import { OrganizerEventService, PostDetailsDTO } from "@services/organizerEventService/organizer-event.service";
 import { TagService } from "@services/tagService/tag-service";
 import { MarkdownComponent } from "ngx-markdown";
 
@@ -167,17 +167,17 @@ export class PostDetails implements OnInit {
   async ngOnInit(): Promise<void> {
     this.tags.set(await this.tagService.getAllTags());
 		if (this.event() !== null && this.modalMode() !== ModalMode.create) {
-			this.postForm().value.update(() => ({
+			this.postForm().value.set({
 				content: this.event()?.content ?? "",
-				eventStartDate: this.event()?.eventStartDate ?? null,
-				eventEndDate: this.event()?.eventEndDate ?? null,
+				eventStartDate: this.event()?.eventStartDate == null ? null : Date.parse(this.event()!.eventStartDate),
+				eventEndDate: this.event()?.eventEndDate == null ? null : Date.parse(this.event()!.eventEndDate),
 				imageUrl: this.event()?.imageUrl ?? "",
 				imageAltText: this.event()?.imageAltText ?? "",
-				publicationDate: this.event()?.eventStartDate ?? null,
+				publicationDate: this.event()?.publicationDate == null ? null : Date.parse(this.event()!.publicationDate!),
 				tags: this.event()?.tags.map(t => t.id) ?? [],
 				title: this.event()?.title ?? "",
 				image: null,
-			}));
+			});
 		}
   }
 
@@ -216,22 +216,28 @@ export class PostDetails implements OnInit {
 
   private async submitForm(form: FieldTree<PostDetailsForm>): Promise<TreeValidationResult> {
     try {
-      const value = form().value();
-      value.eventEndDate = value.eventEndDate ? new Date(value.eventEndDate).toISOString() : null;
-      value.eventStartDate = value.eventStartDate
+			const value = form().value();
+      const dto: PostDetailsDTO = {
+				...value,
+				publicationDate: null,
+				eventEndDate: null,
+				eventStartDate: null,	
+			};
+      dto.eventEndDate = value.eventEndDate ? new Date(value.eventEndDate).toISOString() : null;
+      dto.eventStartDate = value.eventStartDate
         ? new Date(value.eventStartDate).toISOString()
         : null;
-      value.publicationDate = value.publicationDate
+      dto.publicationDate = value.publicationDate
         ? new Date(value.publicationDate).toISOString()
         : null;
-      if (value.tags.length === 0) {
-        value.tags = null!;
+      if (dto.tags.length === 0) {
+        dto.tags = null!;
       }
 
       if (this.event() !== null) {
-        await this.organizerEventService.updateDraft(value, this.event()!.id);
+        await this.organizerEventService.updateDraft(dto, this.event()!.id);
       } else {
-        await this.organizerEventService.postDraft(value);
+        await this.organizerEventService.postDraft(dto);
       }
     } catch (e: unknown) {
       if (e instanceof Error && Constants.badParameterPattern.test(e.message)) {
@@ -271,9 +277,9 @@ export interface PostDetailsForm {
   imageUrl: string;
   title: string;
   content: string;
-  publicationDate: string | null;
-  eventStartDate: string | null;
-  eventEndDate: string | null;
+  publicationDate: number | null;
+  eventStartDate: number | null;
+  eventEndDate: number | null;
   tags: string[];
   imageAltText: string;
 }

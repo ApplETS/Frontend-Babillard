@@ -1,6 +1,5 @@
 import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { PostDetailsForm } from "@components/post-details/post-details";
 import { Event } from "@models/event";
 import { EventState } from "@models/event-state";
 import { Response } from "@models/response";
@@ -31,7 +30,7 @@ export class OrganizerEventService extends ApiService {
     return response;
   }
 
-  async postDraft(form: PostDetailsForm): Promise<Event> {
+  async postDraft(form: PostDetailsDTO): Promise<Event> {
     const response = await this.postMultipartForm<Response<Event, string>>(
       this.getActionUrl(""),
       form,
@@ -43,11 +42,23 @@ export class OrganizerEventService extends ApiService {
     }
   }
 
-  async updateDraft(form: PostDetailsForm, id: string) {
+  async updateDraft(form: PostDetailsDTO, id: string) {
     console.log(id);
     console.log(form);
     return false;
   }
+}
+
+export interface PostDetailsDTO {
+  image: Blob | null;
+  imageUrl: string;
+  title: string;
+  content: string;
+  publicationDate: string | null;
+  eventStartDate: string | null;
+  eventEndDate: string | null;
+  tags: string[];
+  imageAltText: string;
 }
 
 export interface PaginatedOrganizerEventsParameters extends PaginationParameters {

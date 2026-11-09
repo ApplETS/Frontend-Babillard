@@ -75,8 +75,8 @@ describe("PreviewDetails", () => {
     postForm.content().value.update(() => "Test Content");
     postForm.imageUrl().value.update(() => "https://example.com/image.jpg");
     postForm.image().value.update(() => new File([""], "image.jpg", { type: "image/jpeg" }));
-    postForm.eventStartDate().value.update(() => new Date().toISOString());
-    postForm.eventEndDate().value.update(() => new Date().toISOString());
+    postForm.eventStartDate().value.update(() => Date.now());
+    postForm.eventEndDate().value.update(() => Date.now());
     postForm.imageAltText().value.update(() => "Test Image Alt Text");
     postForm.tags().value.update(() => ["tag1", "tag2"]);
   }
@@ -96,6 +96,7 @@ describe("PreviewDetails", () => {
       imageAltText: "Test Image Alt Text",
       eventStartDate: new Date().toISOString(),
       eventEndDate: new Date().toISOString(),
+      publicationDate: new Date().toISOString(),
       organizer: null,
       tags: [{ id: "tag1", name: "Tag 1", createdAt: "", updatedAt: "" }],
       state: EventState.Draft,
@@ -110,8 +111,9 @@ describe("PreviewDetails", () => {
     expect(postForm.content().value()).toBe(eventValue.content);
     expect(postForm.imageUrl().value()).toBe(eventValue.imageUrl);
     expect(postForm.imageAltText().value()).toBe(eventValue.imageAltText);
-    expect(postForm.eventStartDate().value()).toBe(eventValue.eventStartDate);
-    expect(postForm.eventEndDate().value()).toBe(eventValue.eventEndDate);
+    expect(postForm.eventStartDate().value()).toBe(Date.parse(eventValue.eventStartDate));
+    expect(postForm.eventEndDate().value()).toBe(Date.parse(eventValue.eventEndDate));
+    expect(postForm.publicationDate().value()).toBe(Date.parse(eventValue.publicationDate!));
     expect(postForm.tags().value()).toEqual(eventValue.tags.map((tag) => tag.id));
   });
 
@@ -139,6 +141,7 @@ describe("PreviewDetails", () => {
       id: "1",
       eventEndDate: "",
       eventStartDate: "",
+      publicationDate: null,
       content: "",
       imageAltText: "",
       imageUrl: "",
@@ -183,6 +186,7 @@ describe("PreviewDetails", () => {
       content: "",
       imageAltText: "",
       imageUrl: "",
+      publicationDate: null,
       state: EventState.OnHold,
       tags: [],
       title: "",
