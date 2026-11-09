@@ -83,6 +83,32 @@ export abstract class ApiService {
       this.httpService.post<T>(action, formBody, { params: queryParameters }),
     );
   }
+
+  protected async patchMultipartForm<T>(
+    action: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body: any,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+    }
+
+    const formBody = new FormData();
+
+    for (const key of Object.keys(body)) {
+      formBody.append(key, body[key]);
+    }
+
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+
+    return await lastValueFrom(
+      this.httpService.patch<T>(action, formBody, { params: queryParameters }),
+    );
+  }
 }
 
 /**

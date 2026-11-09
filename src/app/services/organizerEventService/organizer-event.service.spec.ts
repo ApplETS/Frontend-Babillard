@@ -53,4 +53,18 @@ describe("OrganizerEventService", () => {
 
     await expect(response).rejects.toThrow("Some error occurred");
   });
+
+  it("should resolve to void when updateDraft is called", async () => {
+    const response = service.updateDraft({} as any, "1");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/1/`);
+    expect(expected.request.method).toBe("PATCH");
+    expect(expected.request.body).toBeDefined();
+    expect(expected.request.body).instanceOf(FormData);
+
+    expected.flush(null);
+
+    await expect(response).resolves.toBeUndefined();
+  });
 });

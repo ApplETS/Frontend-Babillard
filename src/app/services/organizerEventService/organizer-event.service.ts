@@ -42,10 +42,9 @@ export class OrganizerEventService extends ApiService {
     }
   }
 
-  async updateDraft(form: PostDetailsDTO, id: string) {
+  async updateDraft(form: PostDetailsDTO, id: string): Promise<void> {
     console.log(id);
     console.log(form);
-    return false;
   }
 }
 
