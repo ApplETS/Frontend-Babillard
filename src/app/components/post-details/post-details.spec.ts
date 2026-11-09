@@ -86,6 +86,35 @@ describe("PreviewDetails", () => {
     expect(tagService.getAllTags).toHaveBeenCalled();
   });
 
+  it("should set form value from event when event is not null and modalMode is not create", async () => {
+    tagService.getAllTags.mockReturnValue(Promise.resolve([{ id: "tag1", name: "Tag 1", createdAt: "", updatedAt: "" }]));
+    const eventValue: ModelEvent = {
+      id: "1",
+      title: "Test Event",
+      content: "Test Content",
+      imageUrl: "https://example.com/image.jpg",
+      imageAltText: "Test Image Alt Text",
+      eventStartDate: new Date().toISOString(),
+      eventEndDate: new Date().toISOString(),
+      organizer: null,
+      tags: [{ id: "tag1", name: "Tag 1", createdAt: "", updatedAt: "" }],
+      state: EventState.Draft,
+    };
+    event.set(eventValue);
+    component.modalMode.set(ModalMode.modify);
+    await fixture.whenStable();
+
+    await component.ngOnInit();
+
+    expect(postForm.title().value()).toBe(eventValue.title);
+    expect(postForm.content().value()).toBe(eventValue.content);
+    expect(postForm.imageUrl().value()).toBe(eventValue.imageUrl);
+    expect(postForm.imageAltText().value()).toBe(eventValue.imageAltText);
+    expect(postForm.eventStartDate().value()).toBe(eventValue.eventStartDate);
+    expect(postForm.eventEndDate().value()).toBe(eventValue.eventEndDate);
+    expect(postForm.tags().value()).toEqual(eventValue.tags.map((tag) => tag.id));
+  });
+
   it("should not call OrganizerEventService when form is invalid", async () => {
     await component.handleDraft();
     expect(organizerEventService.postDraft).not.toHaveBeenCalled();
