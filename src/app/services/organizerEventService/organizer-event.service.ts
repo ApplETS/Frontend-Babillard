@@ -1,4 +1,4 @@
-import { HttpParams } from "@angular/common/http";
+import { HttpErrorResponse, HttpParams, HttpStatusCode } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Event } from "@models/event";
 import { EventState } from "@models/event-state";
@@ -8,6 +8,8 @@ import {
   PaginatedResponse,
   PaginationParameters,
 } from "@services/apiService/api.service";
+
+export const unauthrorizedKey = "Unauthorized";
 
 @Injectable({
   providedIn: "root",
@@ -31,20 +33,36 @@ export class OrganizerEventService extends ApiService {
   }
 
   async postDraft(form: PostDetailsDTO): Promise<Event> {
-    const response = await this.postMultipartForm<Response<Event, string>>(
-      this.getActionUrl(""),
-      form,
-    );
-    if (response.error) {
-      throw new Error(response.error);
-    } else {
-      return response.data!;
+    try {
+      const response = await this.postMultipartForm<Event>(
+        this.getActionUrl(""),
+        form,
+      );
+      return response;
+    } catch (e: unknown) {
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === HttpStatusCode.BadRequest) {
+          throw new Error(e.error);
+        } else if (e.status === HttpStatusCode.Unauthorized) {
+          throw new Error(unauthrorizedKey);
+        }
+      }
+      throw new Error("An unexpected error occurred.");
     }
   }
 
   async updateDraft(form: PostDetailsDTO, id: string): Promise<void> {
-    console.log(id);
-    console.log(form);
+    try {
+      await this.patchMultipartForm(this.getActionUrl(id), form);
+    } catch (e: unknown) {
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === HttpStatusCode.BadRequest) {
+          throw new Error(e.error);
+        } else if (e.status === HttpStatusCode.Unauthorized) {
+          throw new Error(unauthrorizedKey);
+        }
+      }
+    }
   }
 }
 
