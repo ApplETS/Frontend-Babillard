@@ -46,7 +46,6 @@ export class Posts {
     Constants.newsStatuses.Published,
   ];
 
-  createPost = signal(false);
   modalMode = signal<ModalMode>(ModalMode.default);
   selectedEvent = signal<ModelEvent | null>(null);
 
@@ -73,14 +72,14 @@ export class Posts {
 
   createNewPost() {
     this.modalMode.set(ModalMode.create);
-    this.createPost.set(true);
     this.modal().showModal();
+    this.selectedEvent.set(null);
   }
 
   resetModal() {
-    this.createPost.set(false);
     this.modalMode.set(ModalMode.default);
     this.modal().dismissModal();
+    this.selectedEvent.set(null);
   }
 
   paginatedEvents = signal<PaginatedResponse<ModelEvent>>({
