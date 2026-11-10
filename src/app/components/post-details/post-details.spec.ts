@@ -4,7 +4,7 @@ import { PostDetails, PostDetailsForm } from "./post-details";
 import { TagService } from "@services/tagService/tag-service";
 import { Tag } from "@models/tag";
 import { TranslocoTestingModule } from "@jsverse/transloco";
-import { FieldTree, FormField } from "@angular/forms/signals";
+import { FieldTree, form, FormField } from "@angular/forms/signals";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { ModalMode } from "@models/modal-mode";
 import { inputBinding, signal, twoWayBinding } from "@angular/core";
@@ -12,6 +12,7 @@ import { Combobox } from "@components/combobox/combobox";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
 import { Event as ModelEvent } from "@models/event";
+import { Constants } from "@models/constants";
 
 describe("PreviewDetails", () => {
   let component: PostDetails;
@@ -250,17 +251,33 @@ describe("PreviewDetails", () => {
     );
   });
 
-  // it("should call OrganizerEventService.updateDraft() and handle specific error when form is valid and publication is not null", async () => {
-  //   organizerEventService.updateDraft.mockReturnValue(new Promise((resolve, reject) => reject({ kind: "specificError", message: "Specific error occurred" })));
-  //   setValidForm();
-
-  //   await component.handleDraft();
-  //   expect(organizerEventService.postDraft).not.toHaveBeenCalled();
-  //   expect(organizerEventService.updateDraft).toHaveBeenCalled();
-  //   expect(closedCount(), "closed event should not have been called").toBe(0);
-  //   expect(postForm().errors(), "form should have errors").length(0);
-  //   const error = postForm().errors()![0];
-  //   expect(error.kind, "error kind should be 'specificError'").toBe("specificError");
-  //   expect(error.message, "error message should be 'Specific error occurred'").toBe("Specific error occurred");
-  // });
+  it("should call OrganizerEventService.updateDraft() and handle specific error when form is valid and publication is not null", async () => {
+    event.set({
+      id: "1",
+      eventEndDate: "",
+      eventStartDate: "",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      state: EventState.OnHold,
+      tags: [],
+      title: "",
+      organizer: null,
+    });
+    setValidForm();
+    await fixture.whenStable();
+    organizerEventService.updateDraft.mockReturnValue(Promise.reject(new Error("BAD_PARAM_EVENT_image")));
+    
+    await component.handleDraft();
+    
+    expect(organizerEventService.postDraft).not.toHaveBeenCalled();
+    expect(organizerEventService.updateDraft).toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+    expect(postForm().errors(), "form should not have error").length(0);
+    expect(postForm.image().errors(), "image field should have errors").length(1);
+    const error = postForm.image().errors()[0];
+    expect(error.kind, "error kind should be 'required'").toBe("required");
+    expect(error.message, "error message should be 'post.modal.image-required-error'").toBe("post.modal.image-required-error");
+  });
 });

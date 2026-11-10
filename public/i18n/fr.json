@@ -150,6 +150,8 @@
 			"published-date-tool-tip-text": "Il s'agit de la date que l'annonce sera publiée",
 			"start-date-tool-tip-text": "Il s'agit de la date de début de l'événement",
 			"end-date-tool-tip-text": "Il s'agit de la date de fin de l'événement",
+			"error-unauthorized-create": "Vous ne pouvez pas créer de publication",
+			"error-unauthorized-edit": "Vous ne pouvez pas modifier cette publication",
 			"error-toast-message": "Veuillez remplir ces champs",
 			"date-error-toast-message": "La date de fin de l'événement doit être postérieure à la date de début",
 			"image-format-error-toast-message": "Le format de l'image n'est pas supporté",

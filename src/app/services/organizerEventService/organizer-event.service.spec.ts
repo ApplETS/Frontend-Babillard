@@ -109,7 +109,7 @@ describe("OrganizerEventService", () => {
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
-    expected.flush("Some error occurred", { status: 400, statusText: "Bad Request" });
+    expected.flush("Some error occurred", { status: HttpStatusCode.BadRequest, statusText: "Bad Request" });
 
     await expect(response).rejects.toThrow("Some error occurred");
   });
@@ -123,7 +123,7 @@ describe("OrganizerEventService", () => {
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
-    expected.flush("UNAUTHORIZED", { status: 401, statusText: "Unauthorized" });
+    expected.flush("UNAUTHORIZED", { status: HttpStatusCode.Unauthorized, statusText: "Unauthorized" });
 
     await expect(response).rejects.toThrow(unauthrorizedKey);
   });

@@ -30,7 +30,7 @@ import { Event as ModelEvent } from "@models/event";
 import { EventState } from "@models/event-state";
 import { ModalMode } from "@models/modal-mode";
 import { Tag } from "@models/tag";
-import { OrganizerEventService, PostDetailsDTO } from "@services/organizerEventService/organizer-event.service";
+import { OrganizerEventService, PostDetailsDTO, unauthrorizedKey } from "@services/organizerEventService/organizer-event.service";
 import { TagService } from "@services/tagService/tag-service";
 import { MarkdownComponent } from "ngx-markdown";
 
@@ -240,7 +240,11 @@ export class PostDetails implements OnInit {
         await this.organizerEventService.postDraft(dto);
       }
     } catch (e: unknown) {
-      if (e instanceof Error && Constants.badParameterPattern.test(e.message)) {
+			if (!(e instanceof Error)) {
+				return { kind: "serverError", message: "post.modal.post-error-toast-message" };
+			}
+
+      if (Constants.badParameterPattern.test(e.message)) {
         const field = e.message.substring(e.message.lastIndexOf("_") + 1).toLowerCase();
         switch (field) {
           case "tags":
@@ -265,9 +269,11 @@ export class PostDetails implements OnInit {
           default:
             return { kind: "serverError", message: "post.modal.post-error-toast-message" };
         }
+      } else if (e.message === unauthrorizedKey) {
+        return { kind: "serverError", message: this.event() !== null ? "post.modal.error-unauthorized-edit" : "post.modal.error-unauthorized-create" };
       } else {
-        return { kind: "serverError", message: "post.modal.post-error-toast-message" };
-      }
+				return { kind: "serverError", message: "post.modal.post-error-toast-message" };
+			}
     }
   }
 }
