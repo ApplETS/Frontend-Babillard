@@ -29,6 +29,7 @@ describe("PreviewDetails", () => {
 
   const closedCount = signal(0);
   const event = signal<ModelEvent | null>(null);
+  const modalMode = signal(ModalMode.create);
   let postForm: FieldTree<PostDetailsForm>;
 
   beforeEach(async () => {
@@ -57,7 +58,7 @@ describe("PreviewDetails", () => {
 
     fixture = TestBed.createComponent(PostDetails, {
       bindings: [
-        twoWayBinding("modalMode", signal(ModalMode.create)),
+        twoWayBinding("modalMode", modalMode),
         inputBinding("event", event),
       ],
     });
@@ -256,7 +257,8 @@ describe("PreviewDetails", () => {
     );
   });
 
-  it("should call OrganizerEventService.updateDraft() and handle specific error when form is valid and publication is not null", async () => {
+  it("should call OrganizerEventService.updateDraft() and handle specific error when form is valid, publication is not null and modalMode is edit", async () => {
+    modalMode.set(ModalMode.modify);
     event.set({
       id: "1",
       eventEndDate: "",

@@ -124,7 +124,8 @@
       "duplicate": "Create from this event",
       "delete": "Delete",
       "open": "Open",
-      "modify": "Edit"
+      "modify": "Edit",
+      "view": "View"
     },
     "modal": {
       "create-page-title": "Create a post",

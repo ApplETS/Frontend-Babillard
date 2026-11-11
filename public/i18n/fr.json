@@ -124,7 +124,8 @@
 			"duplicate": "Créer depuis cet événement",
 			"delete": "Supprimer",
 			"open": "Ouvrir",
-			"modify": "Modifier"
+			"modify": "Modifier",
+			"view": "Consulter"
 		},
 		"modal": {
 			"create-page-title": "Créer une publication",

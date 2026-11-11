@@ -220,23 +220,8 @@
         [class.justify-between]="modalMode() === ModalMode.moderator"
         [class.justify-start]="modalMode() !== ModalMode.moderator"
       >
-        @if (
-          modalMode() !== ModalMode.moderator &&
-          (modalMode() !== ModalMode.modify ||
-            event()?.state === EventState.Draft ||
-            event()?.state === EventState.OnHold)
-        ) {
-          <button
-            class="btn btn-info px-8 font-normal"
-            [disabled]="event()?.state === EventState.Approved"
-            (click)="handleDraft()"
-            type="button"
-            transloco="approbations.modal.draft"
-          >
-            a
-          </button>
-        }
-
+      @switch (modalMode()) {
+        @case (ModalMode.moderator) {
         <!-- {modalMode === Constants.publicationModalStatus.moderator && (
 				<>
 					{publication?.state !== NewsStates.PUBLISHED ? (
@@ -295,6 +280,25 @@
 							)}
 						</div>
 			</div> -->
+
+        }
+        @case (ModalMode.create) 
+        @case (ModalMode.modify)
+        @case (ModalMode.duplicate) {
+          <button
+            class="btn btn-info px-8 font-normal"
+            [disabled]="event()?.state === EventState.Approved"
+            (click)="handleDraft()"
+            type="button"
+            transloco="approbations.modal.draft"
+          >
+            a
+          </button>
+        }
+        @case (ModalMode.delete) {
+          <button class="btn-danger"></button>
+        }
+      }
       </div>
     </div>
   </form>

@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, output } from "@angular/core";
 import {
+  faArrowsToEye,
   faCaretDown,
   faCaretUp,
   faClone,
@@ -54,6 +55,12 @@ export class EventTable {
   });
 
   menuItems: DropdownMenuItem[] = [
+    {
+      id: DropdownMenuItemAction.view,
+      label: "post.menu.view",
+      icon: faArrowsToEye,
+      color: "",
+    },
     {
       id: DropdownMenuItemAction.modify,
       label: "post.menu.modify",

@@ -146,6 +146,9 @@ export class Posts {
       case DropdownMenuItemAction.duplicate:
         this.modalMode.set(ModalMode.duplicate);
         break;
+      case DropdownMenuItemAction.view:
+        this.modalMode.set(ModalMode.view);
+        break;
       default:
         this.modalMode.set(null!);
     }

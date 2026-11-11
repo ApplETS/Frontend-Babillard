@@ -85,4 +85,19 @@ describe("Posts", () => {
     expect(component.selectedEvent()).toBe(e.event);
     expect(component.modalMode()).toBe(ModalMode.modify);
   });
+
+  it("should set modalMode to view when selectEvent is called with view action", () => {
+    const e: EventSelectedEvent = {
+      action: DropdownMenuItemAction.view,
+      event: {
+        id: "1",
+        title: "Test Event",
+      } as any,
+    };
+    component.selectEvent(e);
+    expect(modalMock.showModal).toHaveBeenCalled();
+    expect(modalMock.dismissModal).not.toHaveBeenCalled();
+    expect(component.selectedEvent()).toBe(e.event);
+    expect(component.modalMode()).toBe(ModalMode.view);
+  });
 });
