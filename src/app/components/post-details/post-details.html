@@ -290,13 +290,13 @@
             [disabled]="event()?.state === EventState.Approved"
             (click)="handleDraft()"
             type="button"
-            transloco="approbations.modal.draft"
+            [transloco]="submitButtonLabel()"
           >
             a
           </button>
         }
         @case (ModalMode.delete) {
-          <button class="btn-danger"></button>
+          <button class="btn-error btn px-8 font-normal" transloco="post.modal.delete-button" type="button">a</button>
         }
       }
       </div>

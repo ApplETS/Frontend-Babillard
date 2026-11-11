@@ -156,6 +156,18 @@ export class PostDetails implements OnInit {
     }
   });
 
+  submitButtonLabel = computed(() => {
+    switch (this.modalMode()) {
+      case ModalMode.create:
+      case ModalMode.duplicate:
+        return "post.modal.submit-button";
+      case ModalMode.modify:
+        return "post.modal.resubmit-button";
+      default:
+        return "";
+    }
+  })
+
   canAddTag = computed(
     () =>
       !this.postForm.tags().disabled() &&
