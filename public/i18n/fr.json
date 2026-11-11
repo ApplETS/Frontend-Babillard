@@ -121,14 +121,14 @@
 			"deleted": "Desactivée"
 		},
 		"menu": {
-			"duplicate": "Dupliquer",
+			"duplicate": "Créer depuis cet événement",
 			"delete": "Supprimer",
 			"open": "Ouvrir",
 			"modify": "Modifier"
 		},
 		"modal": {
 			"create-page-title": "Créer une publication",
-			"duplicate-page-title": "(Copie)",
+			"duplicate-page-title": "Créer depuis une publication",
 			"modify-page-title": "Modifier une publication",
 			"view-page-title": "Consulter une publication",
 			"title": "Titre",

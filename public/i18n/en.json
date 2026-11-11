@@ -121,16 +121,16 @@
       "deleted": "Deactivated"
     },
     "menu": {
-      "duplicate": "Duplicate",
+      "duplicate": "Create from this event",
       "delete": "Delete",
       "open": "Open",
       "modify": "Edit"
     },
     "modal": {
-      "create-page-title": "Create a news",
-      "duplicate-page-title": "(Duplicate)",
-      "modify-page-title": "Modify a news",
-      "view-page-title": "Consult a news",
+      "create-page-title": "Create a post",
+      "duplicate-page-title": "Create from an post",
+      "modify-page-title": "Modify a post",
+      "view-page-title": "Consult a post",
       "title": "Title",
       "activity-area": "Activity area",
       "alt-text": "Alt text",
