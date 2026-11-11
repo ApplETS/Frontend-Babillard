@@ -246,7 +246,7 @@ export class PostDetails implements OnInit {
         dto.tags = null!;
       }
 
-      if (this.event() !== null) {
+      if (this.modalMode() === ModalMode.modify && this.event() !== null) {
         await this.organizerEventService.updateDraft(dto, this.event()!.id);
       } else {
         await this.organizerEventService.postDraft(dto);
