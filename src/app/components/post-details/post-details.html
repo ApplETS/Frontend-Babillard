@@ -177,7 +177,7 @@
                 <span class="text-red" [transloco]="imageTypeError.message"></span>
               }
 
-              @if (postForm.image().value()) {
+              @if (postForm.imageUrl().value()) {
                 <img
                   [src]="postForm.imageUrl().value()"
                   [alt]="postForm.imageAltText().value()"

@@ -166,7 +166,7 @@ export class PostDetails implements OnInit {
       default:
         return "";
     }
-  })
+  });
 
   canAddTag = computed(
     () =>
