@@ -43,7 +43,12 @@ export class TestApiService extends ApiService {
     return await super.postMultipartForm<T>(action, body, routeParameters, queryParameters);
   }
 
-  public override async patchMultipartForm<T>(action: string, body: any, routeParameters?: unknown[], queryParameters?: HttpParams): Promise<T> {
+  public override async patchMultipartForm<T>(
+    action: string,
+    body: any,
+    routeParameters?: unknown[],
+    queryParameters?: HttpParams,
+  ): Promise<T> {
     return await super.patchMultipartForm<T>(action, body, routeParameters, queryParameters);
   }
 }

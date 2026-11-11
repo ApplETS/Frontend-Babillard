@@ -49,7 +49,7 @@ describe("OrganizerEventService", () => {
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
-    expected.flush( mockError, { status: 0, statusText: "Error" });
+    expected.flush(mockError, { status: 0, statusText: "Error" });
 
     await expect(response).rejects.toThrow("An unexpected error occurred.");
   });
@@ -65,11 +65,11 @@ describe("OrganizerEventService", () => {
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
-    expected.flush( mockError, { status: HttpStatusCode.BadRequest, statusText: "Error" });
+    expected.flush(mockError, { status: HttpStatusCode.BadRequest, statusText: "Error" });
 
     await expect(response).rejects.toThrow(mockError);
   });
-  
+
   it("should throw an error when postDraft is called and throws an Unauthorized", async () => {
     const mockError = "ERROR";
 
@@ -81,7 +81,7 @@ describe("OrganizerEventService", () => {
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
-    expected.flush( mockError, { status: HttpStatusCode.Unauthorized, statusText: "Error" });
+    expected.flush(mockError, { status: HttpStatusCode.Unauthorized, statusText: "Error" });
 
     await expect(response).rejects.toThrow(unauthrorizedKey);
   });
@@ -109,7 +109,10 @@ describe("OrganizerEventService", () => {
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
-    expected.flush("Some error occurred", { status: HttpStatusCode.BadRequest, statusText: "Bad Request" });
+    expected.flush("Some error occurred", {
+      status: HttpStatusCode.BadRequest,
+      statusText: "Bad Request",
+    });
 
     await expect(response).rejects.toThrow("Some error occurred");
   });
@@ -123,7 +126,10 @@ describe("OrganizerEventService", () => {
     expect(expected.request.body).toBeDefined();
     expect(expected.request.body).instanceOf(FormData);
 
-    expected.flush("UNAUTHORIZED", { status: HttpStatusCode.Unauthorized, statusText: "Unauthorized" });
+    expected.flush("UNAUTHORIZED", {
+      status: HttpStatusCode.Unauthorized,
+      statusText: "Unauthorized",
+    });
 
     await expect(response).rejects.toThrow(unauthrorizedKey);
   });

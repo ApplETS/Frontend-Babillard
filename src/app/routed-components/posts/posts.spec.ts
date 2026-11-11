@@ -16,7 +16,7 @@ describe("Posts", () => {
 
   const organizerEventService = {
     getOrganizerEvents: vi.fn(),
-  }
+  };
 
   const modalMock = {
     showModal: vi.fn(),
@@ -35,13 +35,13 @@ describe("Posts", () => {
           translocoConfig: {},
         }),
       ],
-      providers: [
-        { provide: OrganizerEventService, useValue: organizerEventService },
-      ]
+      providers: [{ provide: OrganizerEventService, useValue: organizerEventService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Posts);
-    organizerEventService.getOrganizerEvents.mockReturnValue(Promise.resolve(emptyPaginatedResponse()));
+    organizerEventService.getOrganizerEvents.mockReturnValue(
+      Promise.resolve(emptyPaginatedResponse()),
+    );
     component = fixture.componentInstance;
     component.modal = (() => modalMock) as unknown as Signal<Modal>; // C'est peut-être un peu cursed, mais ça a le mérite d'être relativement simple
     await fixture.whenStable();
@@ -49,7 +49,7 @@ describe("Posts", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-  })
+  });
 
   it("should create", () => {
     expect(component).toBeTruthy();
@@ -72,12 +72,12 @@ describe("Posts", () => {
   });
 
   it("should set event when selectEvent is called", () => {
-    const e: EventSelectedEvent = { 
-      action: DropdownMenuItemAction.modify, 
+    const e: EventSelectedEvent = {
+      action: DropdownMenuItemAction.modify,
       event: {
         id: "1",
-        title: "Test Event"
-      } as any
+        title: "Test Event",
+      } as any,
     };
     component.selectEvent(e);
     expect(modalMock.showModal).toHaveBeenCalled();

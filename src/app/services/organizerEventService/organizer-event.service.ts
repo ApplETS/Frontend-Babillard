@@ -2,7 +2,6 @@ import { HttpErrorResponse, HttpParams, HttpStatusCode } from "@angular/common/h
 import { Injectable } from "@angular/core";
 import { Event } from "@models/event";
 import { EventState } from "@models/event-state";
-import { Response } from "@models/response";
 import {
   ApiService,
   PaginatedResponse,
@@ -34,20 +33,17 @@ export class OrganizerEventService extends ApiService {
 
   async postDraft(form: PostDetailsDTO): Promise<Event> {
     try {
-      const response = await this.postMultipartForm<Event>(
-        this.getActionUrl(""),
-        form,
-      );
+      const response = await this.postMultipartForm<Event>(this.getActionUrl(""), form);
       return response;
     } catch (e: unknown) {
       if (e instanceof HttpErrorResponse) {
         if (e.status === HttpStatusCode.BadRequest) {
-          throw new Error(e.error);
+          throw new Error(e.error, { cause: e });
         } else if (e.status === HttpStatusCode.Unauthorized) {
-          throw new Error(unauthrorizedKey);
+          throw new Error(unauthrorizedKey, { cause: e });
         }
       }
-      throw new Error("An unexpected error occurred.");
+      throw new Error("An unexpected error occurred.", { cause: e });
     }
   }
 
@@ -57,9 +53,9 @@ export class OrganizerEventService extends ApiService {
     } catch (e: unknown) {
       if (e instanceof HttpErrorResponse) {
         if (e.status === HttpStatusCode.BadRequest) {
-          throw new Error(e.error);
+          throw new Error(e.error, { cause: e });
         } else if (e.status === HttpStatusCode.Unauthorized) {
-          throw new Error(unauthrorizedKey);
+          throw new Error(unauthrorizedKey, { cause: e });
         }
       }
     }

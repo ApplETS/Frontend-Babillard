@@ -56,7 +56,10 @@ describe("PreviewDetails", () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(PostDetails, {
-      bindings: [twoWayBinding("modalMode", signal(ModalMode.create)), inputBinding("event", event)],
+      bindings: [
+        twoWayBinding("modalMode", signal(ModalMode.create)),
+        inputBinding("event", event),
+      ],
     });
     component = fixture.componentInstance;
     tagService.getAllTags.mockReturnValue(new Promise<Tag[]>((resolve) => resolve([])));
@@ -88,7 +91,9 @@ describe("PreviewDetails", () => {
   });
 
   it("should set form value from event when event is not null and modalMode is not create", async () => {
-    tagService.getAllTags.mockReturnValue(Promise.resolve([{ id: "tag1", name: "Tag 1", createdAt: "", updatedAt: "" }]));
+    tagService.getAllTags.mockReturnValue(
+      Promise.resolve([{ id: "tag1", name: "Tag 1", createdAt: "", updatedAt: "" }]),
+    );
     const eventValue: ModelEvent = {
       id: "1",
       title: "Test Event",
@@ -267,10 +272,12 @@ describe("PreviewDetails", () => {
     });
     setValidForm();
     await fixture.whenStable();
-    organizerEventService.updateDraft.mockReturnValue(Promise.reject(new Error("BAD_PARAM_EVENT_image")));
-    
+    organizerEventService.updateDraft.mockReturnValue(
+      Promise.reject(new Error("BAD_PARAM_EVENT_image")),
+    );
+
     await component.handleDraft();
-    
+
     expect(organizerEventService.postDraft).not.toHaveBeenCalled();
     expect(organizerEventService.updateDraft).toHaveBeenCalled();
     expect(closedCount(), "closed event should not have been called").toBe(0);
@@ -278,6 +285,8 @@ describe("PreviewDetails", () => {
     expect(postForm.image().errors(), "image field should have errors").length(1);
     const error = postForm.image().errors()[0];
     expect(error.kind, "error kind should be 'required'").toBe("required");
-    expect(error.message, "error message should be 'post.modal.image-required-error'").toBe("post.modal.image-required-error");
+    expect(error.message, "error message should be 'post.modal.image-required-error'").toBe(
+      "post.modal.image-required-error",
+    );
   });
 });

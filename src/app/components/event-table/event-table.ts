@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output, signal } from "@angular/core";
+import { Component, computed, inject, input, output } from "@angular/core";
 import {
   faCaretDown,
   faCaretUp,
@@ -7,7 +7,11 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { Event } from "@models/event";
-import { DropdownMenuItem, DropdownMenu, DropdownMenuItemAction } from "@components/dropdown-menu/dropdown-menu";
+import {
+  DropdownMenuItem,
+  DropdownMenu,
+  DropdownMenuItemAction,
+} from "@components/dropdown-menu/dropdown-menu";
 import { TranslocoService, TranslocoDirective } from "@jsverse/transloco";
 import { Constants } from "@models/constants";
 import { TranslocoDatePipe } from "@jsverse/transloco-locale";

@@ -30,7 +30,11 @@ import { Event as ModelEvent } from "@models/event";
 import { EventState } from "@models/event-state";
 import { ModalMode } from "@models/modal-mode";
 import { Tag } from "@models/tag";
-import { OrganizerEventService, PostDetailsDTO, unauthrorizedKey } from "@services/organizerEventService/organizer-event.service";
+import {
+  OrganizerEventService,
+  PostDetailsDTO,
+  unauthrorizedKey,
+} from "@services/organizerEventService/organizer-event.service";
 import { TagService } from "@services/tagService/tag-service";
 import { MarkdownComponent } from "ngx-markdown";
 
@@ -55,7 +59,7 @@ import { MarkdownComponent } from "ngx-markdown";
 })
 export class PostDetails implements OnInit {
   modalMode = model.required<ModalMode>();
-	event = input<ModelEvent | null>(null);
+  event = input<ModelEvent | null>(null);
 
   showPreview = signal(false);
   tags = signal<Tag[]>([]);
@@ -69,69 +73,66 @@ export class PostDetails implements OnInit {
   organizerEventService = inject(OrganizerEventService);
   protected readonly Constants = Constants;
   private readonly defaultForm: PostDetailsForm = {
-      content: "",
-      eventStartDate: null,
-      eventEndDate: null,
-      imageUrl: "",
-      imageAltText: "",
-      publicationDate: null,
-      tags: [],
-      title: "",
-      image: null,
-    } as const;
+    content: "",
+    eventStartDate: null,
+    eventEndDate: null,
+    imageUrl: "",
+    imageAltText: "",
+    publicationDate: null,
+    tags: [],
+    title: "",
+    image: null,
+  } as const;
 
-  postForm = form<PostDetailsForm>(
-    signal<PostDetailsForm>(this.defaultForm),
-    (schema) => {
-      debounce(schema, 300);
-      required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.image, {
-        when: () => this.modalMode() === ModalMode.create,
-        message: "post.modal.image-required-error",
-      });
-      maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
-      validate(schema.eventStartDate, ({ value, valueOf }) => {
-        const startDate = value();
-        const endDate = valueOf(schema.eventEndDate);
+  postForm = form<PostDetailsForm>(signal<PostDetailsForm>(this.defaultForm), (schema) => {
+    debounce(schema, 300);
+    required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.image, {
+      when: () => this.modalMode() === ModalMode.create,
+      message: "post.modal.image-required-error",
+    });
+    maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
+    validate(schema.eventStartDate, ({ value, valueOf }) => {
+      const startDate = value();
+      const endDate = valueOf(schema.eventEndDate);
 
-        if (startDate && endDate && startDate > endDate) {
-          return {
-            kind: "invalidRange",
-            message: "Event start date cannot be after event end date",
-          };
-        }
+      if (startDate && endDate && startDate > endDate) {
+        return {
+          kind: "invalidRange",
+          message: "Event start date cannot be after event end date",
+        };
+      }
 
+      return null;
+    });
+    validate(schema.image, ({ valueOf }) => {
+      const image = valueOf(schema.image);
+      if (!image) {
         return null;
-      });
-      validate(schema.image, ({ valueOf }) => {
-        const image = valueOf(schema.image);
-        if (!image) {
-          return null;
-        }
+      }
 
-        if (!image.type.startsWith("image/")) {
-          return { kind: "invalidType", message: "post.modal.image-type-error" };
-        }
+      if (!image.type.startsWith("image/")) {
+        return { kind: "invalidType", message: "post.modal.image-type-error" };
+      }
 
-        return null;
-      });
-      disabled(schema, () => {
-        switch (this.modalMode()) {
-          case ModalMode.view:
-          case ModalMode.delete:
-          case ModalMode.moderator:
-            return true;
-          default:
-            return false;
-        }
-      });
-    },
-  );
+      return null;
+    });
+    disabled(schema, () => {
+      switch (this.modalMode()) {
+        case ModalMode.view:
+        case ModalMode.delete:
+        case ModalMode.moderator:
+          return true;
+        default:
+          return false;
+      }
+    });
+  });
 
   combobox = viewChild.required(Combobox);
 
@@ -170,19 +171,22 @@ export class PostDetails implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.tags.set(await this.tagService.getAllTags());
-		if (this.event() !== null && this.modalMode() !== ModalMode.create) {
-			this.postForm().value.set({
-				content: this.event()?.content ?? "",
-				eventStartDate: this.event()?.eventStartDate == null ? null : Date.parse(this.event()!.eventStartDate),
-				eventEndDate: this.event()?.eventEndDate == null ? null : Date.parse(this.event()!.eventEndDate),
-				imageUrl: this.event()?.imageUrl ?? "",
-				imageAltText: this.event()?.imageAltText ?? "",
-				publicationDate: this.event()?.publicationDate == null ? null : Date.parse(this.event()!.publicationDate!),
-				tags: this.event()?.tags.map(t => t.id) ?? [],
-				title: this.event()?.title ?? "",
-				image: null,
-			});
-		}
+    if (this.event() !== null && this.modalMode() !== ModalMode.create) {
+      this.postForm().value.set({
+        content: this.event()?.content ?? "",
+        eventStartDate:
+          this.event()?.eventStartDate == null ? null : Date.parse(this.event()!.eventStartDate),
+        eventEndDate:
+          this.event()?.eventEndDate == null ? null : Date.parse(this.event()!.eventEndDate),
+        imageUrl: this.event()?.imageUrl ?? "",
+        imageAltText: this.event()?.imageAltText ?? "",
+        publicationDate:
+          this.event()?.publicationDate == null ? null : Date.parse(this.event()!.publicationDate!),
+        tags: this.event()?.tags.map((t) => t.id) ?? [],
+        title: this.event()?.title ?? "",
+        image: null,
+      });
+    }
   }
 
   removeTag(tagId: string) {
@@ -224,13 +228,13 @@ export class PostDetails implements OnInit {
 
   private async submitForm(form: FieldTree<PostDetailsForm>): Promise<TreeValidationResult> {
     try {
-			const value = form().value();
+      const value = form().value();
       const dto: PostDetailsDTO = {
-				...value,
-				publicationDate: null,
-				eventEndDate: null,
-				eventStartDate: null,	
-			};
+        ...value,
+        publicationDate: null,
+        eventEndDate: null,
+        eventStartDate: null,
+      };
       dto.eventEndDate = value.eventEndDate ? new Date(value.eventEndDate).toISOString() : null;
       dto.eventStartDate = value.eventStartDate
         ? new Date(value.eventStartDate).toISOString()
@@ -248,9 +252,9 @@ export class PostDetails implements OnInit {
         await this.organizerEventService.postDraft(dto);
       }
     } catch (e: unknown) {
-			if (!(e instanceof Error)) {
-				return { kind: "serverError", message: "post.modal.post-error-toast-message" };
-			}
+      if (!(e instanceof Error)) {
+        return { kind: "serverError", message: "post.modal.post-error-toast-message" };
+      }
 
       if (Constants.badParameterPattern.test(e.message)) {
         const field = e.message.substring(e.message.lastIndexOf("_") + 1).toLowerCase();
@@ -278,10 +282,16 @@ export class PostDetails implements OnInit {
             return { kind: "serverError", message: "post.modal.post-error-toast-message" };
         }
       } else if (e.message === unauthrorizedKey) {
-        return { kind: "serverError", message: this.event() !== null ? "post.modal.error-unauthorized-edit" : "post.modal.error-unauthorized-create" };
+        return {
+          kind: "serverError",
+          message:
+            this.event() !== null
+              ? "post.modal.error-unauthorized-edit"
+              : "post.modal.error-unauthorized-create",
+        };
       } else {
-				return { kind: "serverError", message: "post.modal.post-error-toast-message" };
-			}
+        return { kind: "serverError", message: "post.modal.post-error-toast-message" };
+      }
     }
   }
 }
