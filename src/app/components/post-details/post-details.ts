@@ -68,9 +68,7 @@ export class PostDetails implements OnInit {
   tagService = inject(TagService);
   organizerEventService = inject(OrganizerEventService);
   protected readonly Constants = Constants;
-
-  postForm = form<PostDetailsForm>(
-    signal<PostDetailsForm>({
+  private readonly defaultForm: PostDetailsForm = {
       content: "",
       eventStartDate: null,
       eventEndDate: null,
@@ -80,7 +78,10 @@ export class PostDetails implements OnInit {
       tags: [],
       title: "",
       image: null,
-    }),
+    } as const;
+
+  postForm = form<PostDetailsForm>(
+    signal<PostDetailsForm>(this.defaultForm),
     (schema) => {
       debounce(schema, 300);
       required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
@@ -206,6 +207,10 @@ export class PostDetails implements OnInit {
       this.postForm.imageUrl().value.update(() => e.target?.result as string);
     };
     reader.readAsDataURL(file);
+  }
+
+  resetForm() {
+    this.postForm().reset(this.defaultForm);
   }
 
   async handleDraft() {

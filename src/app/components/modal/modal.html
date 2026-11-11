@@ -1,4 +1,4 @@
-<dialog class="modal" #modal>
+<dialog class="modal" #modal (close)="closed.emit()">
   <div class="modal-box flex justify-center items-center max-w-full">
     <ng-content />
   </div>
