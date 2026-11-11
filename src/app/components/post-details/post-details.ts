@@ -87,7 +87,7 @@ export class PostDetails implements OnInit {
       required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.image, {
-        when: () => this.modalMode() !== ModalMode.moderator,
+        when: () => this.modalMode() === ModalMode.create,
         message: "post.modal.image-required-error",
       });
       maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });

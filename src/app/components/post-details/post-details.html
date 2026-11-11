@@ -222,7 +222,7 @@
       >
         @if (
           modalMode() !== ModalMode.moderator &&
-          (modalMode() !== ModalMode.modify || event()?.state === EventState.Draft)
+          (modalMode() !== ModalMode.modify || event()?.state === EventState.Draft || event()?.state === EventState.OnHold)
         ) {
           <button
             class="btn btn-info px-8 font-normal"
