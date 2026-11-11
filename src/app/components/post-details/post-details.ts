@@ -60,7 +60,10 @@ export class PostDetails implements OnInit {
   showPreview = signal(false);
   tags = signal<Tag[]>([]);
 
-  closed = output();
+  /**
+   * Indicates whether the modal asks for a refresh
+   */
+  closed = output<boolean>();
 
   tagService = inject(TagService);
   organizerEventService = inject(OrganizerEventService);
@@ -211,7 +214,7 @@ export class PostDetails implements OnInit {
     }
 
     const success = await submit(this.postForm, (field) => this.submitForm(field));
-    if (success) this.closed.emit();
+    if (success) this.closed.emit(this.event() !== null);
   }
 
   private async submitForm(form: FieldTree<PostDetailsForm>): Promise<TreeValidationResult> {

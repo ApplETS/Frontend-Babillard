@@ -76,10 +76,13 @@ export class Posts {
     this.selectedEvent.set(null);
   }
 
-  resetModal() {
+  resetModal(refreshList = false) {
     this.modalMode.set(ModalMode.default);
     this.modal().dismissModal();
     this.selectedEvent.set(null);
+    if (refreshList) {
+      this.searchEvents();
+    }
   }
 
   paginatedEvents = signal<PaginatedResponse<ModelEvent>>({
