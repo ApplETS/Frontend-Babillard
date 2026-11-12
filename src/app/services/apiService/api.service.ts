@@ -109,6 +109,24 @@ export abstract class ApiService {
       this.httpService.patch<T>(action, formBody, { params: queryParameters }),
     );
   }
+
+  protected async delete<T>(
+    action: string,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+    }
+
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+
+    return await lastValueFrom(
+      this.httpService.delete<T>(action, { params: queryParameters }),
+    );
+  }
 }
 
 /**

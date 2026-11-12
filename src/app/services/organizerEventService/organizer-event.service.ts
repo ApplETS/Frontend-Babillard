@@ -60,6 +60,19 @@ export class OrganizerEventService extends ApiService {
       }
     }
   }
+
+  async deleteEvent(id: string): Promise<void> {
+    try {
+      await this.delete(this.getActionUrl(id));
+    } catch (e: unknown) {
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === HttpStatusCode.Unauthorized || e.status === HttpStatusCode.NotFound) {
+          throw new Error("Unable", { cause: e });
+        }
+      }
+      throw new Error("An unexpected error occurred.", { cause: e });
+    }
+  }
 }
 
 export interface PostDetailsDTO {

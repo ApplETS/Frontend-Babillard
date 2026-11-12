@@ -133,4 +133,61 @@ describe("OrganizerEventService", () => {
 
     await expect(response).rejects.toThrow(unauthrorizedKey);
   });
+
+  it("should resolve to void when deleteEvent is called", async () => {
+    const response = service.deleteEvent("1");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/1`);
+    expect(expected.request.method).toBe("DELETE");
+
+    expected.flush(null);
+
+    await expect(response).resolves.toBeUndefined();
+  });
+
+  it("should throw an error when deleteEvent is called and an HttpErrorResponse Unauthaurized is thrown", async () => {
+    const response = service.deleteEvent("1");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/1`);
+    expect(expected.request.method).toBe("DELETE");
+
+    expected.flush("UNAUTHORIZED", {
+      status: HttpStatusCode.Unauthorized,
+      statusText: "Unauthorized",
+    });
+
+    await expect(response).rejects.toThrow("Unable");
+  });
+
+  it("should throw an error when deleteEvent is called and an HttpErrorResponse NotFound is thrown", async () => {
+    const response = service.deleteEvent("1");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/1`);
+    expect(expected.request.method).toBe("DELETE");
+
+    expected.flush("NOT FOUND", {
+      status: HttpStatusCode.NotFound,
+      statusText: "Not Found",
+    });
+
+    await expect(response).rejects.toThrow("Unable");
+  });
+
+  it("should throw an error when deleteEvent is called and an HttpErrorResponse other than Unauthaurized or NotFound is thrown", async () => {
+    const response = service.deleteEvent("1");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const expected = httpClientSpy.expectOne(`${environment.API_URL}/api/organizer-events/1`);
+    expect(expected.request.method).toBe("DELETE");
+
+    expected.flush("INTERNAL SERVER ERROR", {
+      status: HttpStatusCode.InternalServerError,
+      statusText: "Internal Server Error",
+    });
+
+    await expect(response).rejects.toThrow("An unexpected error occurred.");
+  });
 });

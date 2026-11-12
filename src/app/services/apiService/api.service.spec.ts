@@ -51,6 +51,14 @@ export class TestApiService extends ApiService {
   ): Promise<T> {
     return await super.patchMultipartForm<T>(action, body, routeParameters, queryParameters);
   }
+
+  public override async delete<T>(
+    action: string,
+    routeParameters: unknown[],
+    queryParameters: HttpParams,
+  ): Promise<T> {
+    return await super.delete<T>(action, routeParameters, queryParameters);
+  }
 }
 
 describe("ApiService", () => {
@@ -195,6 +203,33 @@ describe("ApiService", () => {
         request.body instanceof FormData
       );
     }, "PATCH request");
+
+    req.flush("response");
+
+    await expect(responsePromise).resolves.toBe("response");
+  });
+
+  it("should call httpService.delete with the correct url and query parameters", async () => {
+    const action = "testAction";
+    const routeParameters = ["param1", "param2"];
+    const queryParameters = new HttpParams().set("key", "value");
+    const expectedUrl = `${environment.API_URL}/api/test/${action}/${routeParameters.join("/")}`;
+    const responsePromise = service.delete<string>(
+      service.getActionUrl(action),
+      routeParameters,
+      queryParameters,
+    );
+
+    // delete() is async (it awaits the access token before firing the HTTP call), so let pending microtasks resolve first.
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const req = httpServiceSpy.expectOne((request) => {
+      return (
+        request.method === "DELETE" &&
+        request.url === expectedUrl &&
+        request.params.get("key") === "value"
+      );
+    }, "DELETE request");
 
     req.flush("response");
 
