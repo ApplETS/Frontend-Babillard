@@ -16,6 +16,7 @@ import {
   form,
   FormField,
   maxLength,
+  pattern,
   required,
   submit,
   TreeValidationResult,
@@ -134,6 +135,18 @@ export class PostDetails implements OnInit {
     });
   });
 
+  deleteConfirmationOpened = signal(false);
+  deleteConfirmationForm = form<string>(signal(""), (schema) => {
+    required(schema),
+    validate(schema, ({ value }) => {
+      if (value() !== this.event()?.title) {
+        return { kind: "mismatch" };
+      }
+      return null;
+    })
+    disabled(schema, () => this.modalMode() !== ModalMode.delete);
+  },);
+
   combobox = viewChild.required(Combobox);
 
   protected readonly ModalMode = ModalMode;
@@ -225,8 +238,16 @@ export class PostDetails implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  resetForm() {
-    this.postForm().reset(this.defaultForm);
+  resetDeleteConfirmationForm() {
+    this.deleteConfirmationForm().value.set("");
+    this.deleteConfirmationOpened.set(false);
+  }
+
+  async handleDelete() {
+    if (this.deleteConfirmationForm().invalid()) {
+      return;
+    }
+
   }
 
   async handleDraft() {

@@ -161,7 +161,7 @@
 			"image-type-error": "Le fichier sélectionné n'est pas une image",
 			"image-required-error": "Une image est requise",
 			"preview": "Aperçu",
-			"delete-title": "Êtes-vous sûr de vouloir supprimer cette publication?",
+			"delete-title": "Êtes-vous sûr de vouloir supprimer cette publication? Entrez le titre de la publication pour confirmer.",
 			"delete-button": "Supprimer",
 			"delete-success-toast-message": "Publication supprimée",
 			"delete-error-toast-message": "Une erreur est survenue lors de la suppression de la publication",
