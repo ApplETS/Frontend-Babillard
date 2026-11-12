@@ -166,6 +166,7 @@
                 type="file"
                 class="file-input file-input-bordered file-input-accent w-full"
                 (change)="fileSelected($event)"
+                [disabled]="postForm.image().disabled()"
                 accept="image/*"
               />
               @let imageTypeError =
