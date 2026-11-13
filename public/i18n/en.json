@@ -185,7 +185,8 @@
         "subtitle": "Drag to move the image and adjust the cropping using the mouse wheel.",
         "crop": "Crop",
         "cancel": "Cancel",
-        "zoom-hint": "Use ⌘ + scroll (or ctrl + scroll) to zoom the image"
+        "zoom-hint": "Use ⌘ + scroll (or ctrl + scroll) to zoom the image",
+        "delete-image": "Delete image"
       }
     },
     "error-fetching-events": "An error occured while loading the posts",

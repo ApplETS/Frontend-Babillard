@@ -37,6 +37,7 @@ import {
 } from "@services/organizerEventService/organizer-event.service";
 import { TagService } from "@services/tagService/tag-service";
 import { MarkdownComponent } from "ngx-markdown";
+import { ImageCroppedEvent, ImageCropperComponent } from "ngx-image-cropper";
 
 @Component({
   selector: "app-post-details",
@@ -47,6 +48,7 @@ import { MarkdownComponent } from "ngx-markdown";
     TranslocoPipe,
     Combobox,
     MarkdownComponent,
+    ImageCropperComponent
   ],
   styles: `
     @reference "#styles.css";
@@ -82,22 +84,10 @@ export class PostDetails implements OnInit {
     tags: [],
     title: "",
     image: null,
-    temporyImage: null,
   } as const;
 
   postForm = form<PostDetailsForm>(
-    signal<PostDetailsForm>({
-      content: "",
-      eventStartDate: null,
-      eventEndDate: null,
-      imageUrl: "",
-      imageAltText: "",
-      publicationDate: null,
-      tags: [],
-      title: "",
-      image: null,
-      temporyImage: null,
-    }),
+    signal<PostDetailsForm>(this.defaultForm),
     (schema) => {
       debounce(schema, 300);
       required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
@@ -160,6 +150,9 @@ export class PostDetails implements OnInit {
     disabled(schema, () => this.modalMode() !== ModalMode.delete);
   });
 
+  cropMenuOpened = signal(false);
+  temporaryCroppedImageEvent = signal<ImageCroppedEvent | null>(null);
+
   combobox = viewChild.required(Combobox);
 
   protected readonly ModalMode = ModalMode;
@@ -207,6 +200,9 @@ export class PostDetails implements OnInit {
       .map((tag) => ({ id: tag.id, name: tag.name })),
   );
 
+  imageUrlDefined = computed(() => this.postForm.imageUrl().value() !== "" || this.cropImageForm.imageUrl().value() !== "");
+  imageUrl = computed(() => this.cropImageForm.imageUrl().value() ?? this.postForm.imageUrl().value());
+
   async ngOnInit(): Promise<void> {
     this.tags.set(await this.tagService.getAllTags());
     if (this.event() !== null && this.modalMode() !== ModalMode.create) {
@@ -223,7 +219,6 @@ export class PostDetails implements OnInit {
         tags: this.event()?.tags.map((t) => t.id) ?? [],
         title: this.event()?.title ?? "",
         image: null,
-        temporyImage: null,
       });
     }
   }
@@ -245,11 +240,21 @@ export class PostDetails implements OnInit {
 
     const file = input.files[0];
     const reader = new FileReader();
-    this.postForm.temporyImage().value.update(() => file);
+    this.cropImageForm.image().value.set(file);
     reader.onload = (e) => {
-      this.postForm.imageUrl().value.update(() => e.target?.result as string);
+      this.postForm.imageUrl().value.set(e.target?.result as string);
     };
     reader.readAsDataURL(file);
+    this.postForm.image().value.set(null);
+    this.cropMenuOpened.set(true);
+  }
+
+  cropImageForm = form<CropImageForm>(signal<CropImageForm>({ image: null, croppedImage: null, imageUrl: "" }), (schema) => {});
+
+  cropImage(e: ImageCroppedEvent) {
+    this.postForm.image().value.set(e.blob ?? null);
+    this.postForm.imageUrl().value.set(e.objectUrl ?? "");
+    this.cropMenuOpened.set(false);
   }
 
   resetDeleteConfirmationForm() {
@@ -362,8 +367,13 @@ export class PostDetails implements OnInit {
   }
 }
 
+interface CropImageForm {
+  image: File | null;
+  croppedImage: Blob | null;
+  imageUrl: string | null;
+}
+
 export interface PostDetailsForm {
-  temporyImage: Blob | null;
   image: Blob | null;
   imageUrl: string;
   title: string;

@@ -185,7 +185,8 @@
 				"subtitle": "Glissez pour déplacer l'image et ajuster le recadrage en utilisant la roulette de la souris.",
 				"crop": "Recadrer",
 				"cancel": "Annuler",
-				"zoom-hint": "Utilisez ⌘ + scroll (ou ctrl + scroll) pour zoomer l'image"
+				"zoom-hint": "Utilisez ⌘ + scroll (ou ctrl + scroll) pour zoomer l'image",
+				"delete-image": "Supprimer l'image"
 			}
 		},
 		"error-fetching-events": "Une erreur est survenue lors du chargement des publications",
