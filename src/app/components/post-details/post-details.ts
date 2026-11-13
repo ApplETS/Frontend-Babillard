@@ -83,7 +83,6 @@ export class PostDetails implements OnInit {
     publicationDate: null,
     tags: [],
     title: "",
-    image: null,
   } as const;
 
   postForm = form<PostDetailsForm>(
@@ -96,10 +95,6 @@ export class PostDetails implements OnInit {
       required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.image, {
-        when: () => this.modalMode() !== ModalMode.moderator,
-        message: "post.modal.image-required-error",
-      });
       maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
       validate(schema.eventStartDate, ({ value, valueOf }) => {
         const startDate = value();
@@ -110,18 +105,6 @@ export class PostDetails implements OnInit {
           kind: "invalidRange",
           message: "Event start date cannot be after event end date",
         };
-      }
-
-      return null;
-    });
-    validate(schema.image, ({ valueOf }) => {
-      const image = valueOf(schema.image);
-      if (!image) {
-        return null;
-      }
-
-      if (!image.type.startsWith("image/")) {
-        return { kind: "invalidType", message: "post.modal.image-type-error" };
       }
 
       return null;
@@ -200,8 +183,8 @@ export class PostDetails implements OnInit {
       .map((tag) => ({ id: tag.id, name: tag.name })),
   );
 
-  imageUrlDefined = computed(() => this.postForm.imageUrl().value() !== "" || this.cropImageForm.imageUrl().value() !== "");
   imageUrl = computed(() => this.cropImageForm.imageUrl().value() ?? this.postForm.imageUrl().value());
+  imageUrlDefined = computed(() => this.imageUrl() !== "");
 
   async ngOnInit(): Promise<void> {
     this.tags.set(await this.tagService.getAllTags());
@@ -218,7 +201,6 @@ export class PostDetails implements OnInit {
           this.event()?.publicationDate == null ? null : Date.parse(this.event()!.publicationDate!),
         tags: this.event()?.tags.map((t) => t.id) ?? [],
         title: this.event()?.title ?? "",
-        image: null,
       });
     }
   }
@@ -242,19 +224,41 @@ export class PostDetails implements OnInit {
     const reader = new FileReader();
     this.cropImageForm.image().value.set(file);
     reader.onload = (e) => {
-      this.postForm.imageUrl().value.set(e.target?.result as string);
+      this.cropImageForm.imageUrl().value.set(e.target?.result as string);
     };
     reader.readAsDataURL(file);
-    this.postForm.image().value.set(null);
     this.cropMenuOpened.set(true);
   }
 
-  cropImageForm = form<CropImageForm>(signal<CropImageForm>({ image: null, croppedImage: null, imageUrl: "" }), (schema) => {});
+  cropImageForm = form<CropImageForm>(signal<CropImageForm>({ image: null, croppedImage: null, imageUrl: "" }), (schema) => {
+    required(schema.image, {
+      when: () => this.modalMode() !== ModalMode.moderator,
+      message: "post.modal.image-required-error",
+    });
+    validate(schema.image, ({ valueOf }) => {
+      const image = valueOf(schema.image);
+      if (!image) {
+        return null;
+      }
+
+      if (!image.type.startsWith("image/")) {
+        return { kind: "invalidType", message: "post.modal.image-type-error" };
+      }
+
+      return null;
+    });
+  });
 
   cropImage(e: ImageCroppedEvent) {
-    this.postForm.image().value.set(e.blob ?? null);
-    this.postForm.imageUrl().value.set(e.objectUrl ?? "");
+    this.cropImageForm.croppedImage().value.set(e.blob ?? null);
+    this.cropImageForm.imageUrl().value.set(e.objectUrl ?? "");
     this.cropMenuOpened.set(false);
+  }
+
+  resetCropImageForm() {
+    this.cropImageForm.croppedImage().value.set(null);
+    this.cropImageForm.image().value.set(null);
+    this.cropImageForm.imageUrl().value.set(null);
   }
 
   resetDeleteConfirmationForm() {
@@ -302,6 +306,7 @@ export class PostDetails implements OnInit {
       const value = form().value();
       const dto: PostDetailsDTO = {
         ...value,
+        image: this.cropImageForm.croppedImage().value(),
         publicationDate: null,
         eventEndDate: null,
         eventStartDate: null,
@@ -341,12 +346,12 @@ export class PostDetails implements OnInit {
               {
                 kind: "required",
                 message: "post.modal.image-required-error",
-                fieldTree: form.image,
+                fieldTree: this.cropImageForm.image,
               },
               {
                 kind: "required",
                 message: "post.modal.image-required-error",
-                fieldTree: form.imageUrl,
+                fieldTree: this.cropImageForm.imageUrl,
               },
             ];
           default:
@@ -367,14 +372,13 @@ export class PostDetails implements OnInit {
   }
 }
 
-interface CropImageForm {
+export interface CropImageForm {
   image: File | null;
   croppedImage: Blob | null;
   imageUrl: string | null;
 }
 
 export interface PostDetailsForm {
-  image: Blob | null;
   imageUrl: string;
   title: string;
   content: string;

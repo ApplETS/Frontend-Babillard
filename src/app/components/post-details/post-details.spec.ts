@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { PostDetails, PostDetailsForm } from "./post-details";
+import { CropImageForm, PostDetails, PostDetailsForm } from "./post-details";
 import { TagService } from "@services/tagService/tag-service";
 import { Tag } from "@models/tag";
 import { TranslocoTestingModule } from "@jsverse/transloco";
@@ -12,8 +12,8 @@ import { Combobox } from "@components/combobox/combobox";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
 import { Event as ModelEvent } from "@models/event";
-import { Constants } from "@models/constants";
-import { MarkdownComponent, MarkdownService } from "ngx-markdown";
+import { MarkdownService } from "ngx-markdown";
+import { ImageCroppedEvent } from "ngx-image-cropper";
 
 describe("PreviewDetails", () => {
   let component: PostDetails;
@@ -34,6 +34,7 @@ describe("PreviewDetails", () => {
   const modalMode = signal(ModalMode.create);
   let postForm: FieldTree<PostDetailsForm>;
   let deleteForm: FieldTree<string>;
+  let cropForm: FieldTree<CropImageForm>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -67,6 +68,7 @@ describe("PreviewDetails", () => {
     closedCount.set(0);
     postForm = component.postForm;
     deleteForm = component.deleteConfirmationForm;
+    cropForm = component.cropImageForm;
     component.closed.subscribe(() => closedCount.update((count) => count + 1));
     await fixture.whenStable();
   });
@@ -80,11 +82,17 @@ describe("PreviewDetails", () => {
     postForm.title().value.update(() => "Test Title");
     postForm.content().value.update(() => "Test Content");
     postForm.imageUrl().value.update(() => "https://example.com/image.jpg");
-    postForm.image().value.update(() => new File([""], "image.jpg", { type: "image/jpeg" }));
     postForm.eventStartDate().value.update(() => Date.now());
     postForm.eventEndDate().value.update(() => Date.now());
     postForm.imageAltText().value.update(() => "Test Image Alt Text");
     postForm.tags().value.update(() => ["tag1", "tag2"]);
+    setValidCropForm();
+  }
+
+  function setValidCropForm() {
+    cropForm.image().value.update(() => new File([""], "image.jpg", { type: "image/jpeg" }));
+    cropForm.croppedImage().value.update(() => new Blob());
+    cropForm.imageUrl().value.update(() => "https://example.com/image.jpg");
   }
 
   it("should create and call TagService.getAllTags()", () => {
@@ -249,9 +257,9 @@ describe("PreviewDetails", () => {
     expect(organizerEventService.updateDraft).not.toHaveBeenCalled();
     expect(closedCount(), "closed event should not have been called").toBe(0);
     expect(postForm().errors(), "form should not have error").length(0);
-    expect(postForm.image().errors(), "image field should have errors").length(1);
-    expect(postForm.imageUrl().errors(), "imageUrl field should have errors").length(1);
-    const error = postForm.image().errors()![0];
+    expect(cropForm.image().errors(), "image field should have errors").length(1);
+    expect(cropForm.imageUrl().errors(), "imageUrl field should have errors").length(1);
+    const error = cropForm.image().errors()![0];
     expect(error.kind, "error kind should be 'required'").toBe("required");
     expect(error.message, "error message should be 'post.modal.image-required-error'").toBe(
       "post.modal.image-required-error",
@@ -285,8 +293,8 @@ describe("PreviewDetails", () => {
     expect(organizerEventService.updateDraft).toHaveBeenCalled();
     expect(closedCount(), "closed event should not have been called").toBe(0);
     expect(postForm().errors(), "form should not have error").length(0);
-    expect(postForm.image().errors(), "image field should have errors").length(1);
-    const error = postForm.image().errors()[0];
+    expect(cropForm.image().errors(), "image field should have errors").length(1);
+    const error = cropForm.image().errors()[0];
     expect(error.kind, "error kind should be 'required'").toBe("required");
     expect(error.message, "error message should be 'post.modal.image-required-error'").toBe(
       "post.modal.image-required-error",
@@ -407,5 +415,50 @@ describe("PreviewDetails", () => {
     const error = deleteForm().errors()![0];
     expect(error.kind, "error kind should be 'unable'").toBe("unable");
     expect(error.message, "error message should be undefined").toBeUndefined();
+  });
+
+  it("should display imageUrl as the former imageUrl when cropImageForm.imageUrl is null", async () => {
+    postForm.imageUrl().value.set("http://example.com/former-image.jpg");
+    component.cropImageForm.imageUrl().value.set(null);
+
+    await fixture.whenStable();
+
+    expect(component.imageUrl()).toBe("http://example.com/former-image.jpg");
+    expect(component.imageUrlDefined()).toBe(true);
+  });
+
+  it("should display imageUrl as the cropImageForm.imageUrl when cropImageForm.imageUrl is not null", async () => {
+    postForm.imageUrl().value.set("http://example.com/former-image.jpg");
+    component.cropImageForm.imageUrl().value.set("http://example.com/cropped-image.jpg");
+
+    await fixture.whenStable();
+
+    expect(component.imageUrl()).toBe("http://example.com/cropped-image.jpg");
+    expect(component.imageUrlDefined()).toBe(true);
+  });
+
+  it("should assign cropImageForm when cropImage is called", async () => {
+    event.set(null);
+    component.cropImageForm.image().value.set(new File([""], "image.jpg", { type: "image/jpeg" }));
+    component.cropImageForm.imageUrl().value.set("http://example.com/image.jpg");
+    const formerImageUrl = "http://example.com/former-image.png";
+    postForm.imageUrl().value.set(formerImageUrl);
+
+    const imageCroppedEvent: ImageCroppedEvent = {
+      base64: "base64string",
+      blob: new Blob(["cropped image"], { type: "image/png" }),
+      width: 100,
+      height: 100,
+      cropperPosition: { x1: 0, y1: 0, x2: 100, y2: 100 },
+      imagePosition: { x1: 0, y1: 0, x2: 100, y2: 100 },
+      objectUrl: "http://example.com/cropped-image.png",
+    };
+    await fixture.whenStable();
+
+    component.cropImage(imageCroppedEvent);
+
+    expect(cropForm.croppedImage().value()).toBe(imageCroppedEvent.blob);
+    expect(cropForm.imageUrl().value()).toBe(imageCroppedEvent.objectUrl);
+    expect(postForm.imageUrl().value()).toBe(formerImageUrl);
   });
 });
