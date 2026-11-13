@@ -307,7 +307,7 @@ describe("PreviewDetails", () => {
       state: EventState.OnHold,
       tags: [],
       organizer: null,
-    })
+    });
     deleteForm().value.set("Wrong Title");
 
     await component.handleDelete();
@@ -367,9 +367,7 @@ describe("PreviewDetails", () => {
       organizer: null,
     });
     deleteForm().value.set("Test Title");
-    organizerEventService.deleteEvent.mockRejectedValue(
-      new Error("Some error occurred"),
-    );
+    organizerEventService.deleteEvent.mockRejectedValue(new Error("Some error occurred"));
     await fixture.whenStable();
 
     await component.handleDelete();
@@ -396,7 +394,7 @@ describe("PreviewDetails", () => {
       state: EventState.OnHold,
       tags: [],
       organizer: null,
-    })
+    });
     deleteForm().value.set("Test Title");
     organizerEventService.deleteEvent.mockRejectedValue(new Error("Unable"));
     await fixture.whenStable();
