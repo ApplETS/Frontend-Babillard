@@ -300,7 +300,7 @@ export class PostDetails implements OnInit {
     }
 
     const success = await submit(this.postForm, (field) => this.submitForm(field));
-    if (success) this.closed.emit(this.event() !== null);
+    if (success) this.closed.emit(true);
   }
 
   private async submitForm(form: FieldTree<PostDetailsForm>): Promise<TreeValidationResult> {

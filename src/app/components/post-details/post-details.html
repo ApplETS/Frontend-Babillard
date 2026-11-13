@@ -312,6 +312,9 @@
             >
               a
             </button>
+            @if (postForm().submitting()) {
+              <p>Envoi en cours... <span class="loading loading-spinner loading-lg h-10 w-10"></span></p>
+            }
           }
           @case (ModalMode.delete) {
             @if (!deleteConfirmationOpened()) {
