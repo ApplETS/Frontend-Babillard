@@ -3,7 +3,7 @@ import { TranslocoDirective, TranslocoPipe } from "@jsverse/transloco";
 import { Modal } from "@components/modal/modal";
 import { PostDetails } from "@components/post-details/post-details";
 import { ModalMode } from "@models/modal-mode";
-import { EventTable } from "@components/event-table/event-table";
+import { EventSelectedEvent, EventTable } from "@components/event-table/event-table";
 import { Pagination } from "@components/pagination/pagination";
 import { form, FormField, submit, FormRoot } from "@angular/forms/signals";
 import { PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
@@ -16,6 +16,7 @@ import { debounce, interval } from "rxjs";
 import { BooleanSelect } from "@components/boolean-select/boolean-select";
 import { Search } from "@components/search/search";
 import { Constants } from "@models/constants";
+import { DropdownMenuItemAction } from "@components/dropdown-menu/dropdown-menu";
 
 @Component({
   selector: "app-posts",
@@ -45,8 +46,10 @@ export class Posts {
     Constants.newsStatuses.Published,
   ];
 
-  createPost = signal(false);
-  modalMode = signal<ModalMode>(null!);
+  modalMode = signal<ModalMode>(ModalMode.default);
+  selectedEvent = signal<ModelEvent | null>(null);
+
+  protected readonly ModalMode = ModalMode;
 
   modal = viewChild.required(Modal);
 
@@ -56,6 +59,7 @@ export class Posts {
     { label: "post.table.event-date", key: "EventStartDate" },
     { label: "post.table.status", key: "Publication.State" },
   ] as const;
+
   constructor() {
     toObservable(this.searchEventForm().value)
       .pipe(debounce(() => interval(300)))
@@ -68,14 +72,17 @@ export class Posts {
 
   createNewPost() {
     this.modalMode.set(ModalMode.create);
-    this.createPost.set(true);
     this.modal().showModal();
+    this.selectedEvent.set(null);
   }
 
-  resetModal() {
-    this.createPost.set(false);
-    this.modalMode.set(null!);
+  resetModal(refreshList = false) {
+    this.modalMode.set(ModalMode.default);
     this.modal().dismissModal();
+    this.selectedEvent.set(null);
+    if (refreshList) {
+      this.searchEvents();
+    }
   }
 
   paginatedEvents = signal<PaginatedResponse<ModelEvent>>({
@@ -126,6 +133,28 @@ export class Posts {
 
   searchEvents() {
     submit(this.searchEventForm);
+  }
+
+  selectEvent(e: EventSelectedEvent) {
+    switch (e.action) {
+      case DropdownMenuItemAction.delete:
+        this.modalMode.set(ModalMode.delete);
+        break;
+      case DropdownMenuItemAction.modify:
+        this.modalMode.set(ModalMode.modify);
+        break;
+      case DropdownMenuItemAction.duplicate:
+        this.modalMode.set(ModalMode.duplicate);
+        break;
+      case DropdownMenuItemAction.view:
+        this.modalMode.set(ModalMode.view);
+        break;
+      default:
+        this.modalMode.set(null!);
+    }
+
+    this.selectedEvent.set(e.event);
+    this.modal().showModal();
   }
 }
 

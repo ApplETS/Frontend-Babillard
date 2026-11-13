@@ -1,5 +1,6 @@
-import { Component, computed, inject, input, signal } from "@angular/core";
+import { Component, computed, inject, input, output } from "@angular/core";
 import {
+  faArrowsToEye,
   faCaretDown,
   faCaretUp,
   faClone,
@@ -7,12 +8,21 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { Event } from "@models/event";
-import { DropdownMenuItem, DropdownMenu } from "@components/dropdown-menu/dropdown-menu";
+import {
+  DropdownMenuItem,
+  DropdownMenu,
+  DropdownMenuItemAction,
+} from "@components/dropdown-menu/dropdown-menu";
 import { TranslocoService, TranslocoDirective } from "@jsverse/transloco";
 import { Constants } from "@models/constants";
 import { TranslocoDatePipe } from "@jsverse/transloco-locale";
 
 type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "actions" | "author";
+
+export interface EventSelectedEvent {
+  event: Event;
+  action: DropdownMenuItemAction;
+}
 
 @Component({
   selector: "app-event-table",
@@ -21,6 +31,8 @@ type EventColumn = "title" | "eventStartDate" | "eventEndDate" | "state" | "acti
 })
 export class EventTable {
   events = input.required<Event[]>();
+
+  eventSelected = output<EventSelectedEvent>();
 
   readonly faCaretDown = faCaretDown;
   readonly faCaretUp = faCaretUp;
@@ -42,41 +54,34 @@ export class EventTable {
     ];
   });
 
-  readonly orderBy = signal<EventColumn | null>(null);
-  readonly orderByDesc = signal(false);
-
   menuItems: DropdownMenuItem[] = [
     {
-      id: 1,
+      id: DropdownMenuItemAction.view,
+      label: "post.menu.view",
+      icon: faArrowsToEye,
+      color: "",
+    },
+    {
+      id: DropdownMenuItemAction.modify,
       label: "post.menu.modify",
       icon: faPencil,
       color: "",
     },
     {
-      id: 2,
+      id: DropdownMenuItemAction.duplicate,
       label: "post.menu.duplicate",
       icon: faClone,
       color: "",
     },
     {
-      id: 3,
+      id: DropdownMenuItemAction.delete,
       label: "post.menu.delete",
       icon: faTrashCan,
       color: "text-error",
     },
   ];
 
-  onOrderChange(column: EventColumn): void {
-    if (this.orderBy() === column) {
-      this.orderByDesc.update((value) => !value);
-      return;
-    }
-
-    this.orderBy.set(column);
-    this.orderByDesc.set(false);
-  }
-
-  handleMenuItemSelected(item: DropdownMenuItem): void {
-    console.log(item);
+  handleMenuItemSelected(item: DropdownMenuItem, event: Event): void {
+    this.eventSelected.emit({ event: event, action: item.id });
   }
 }
