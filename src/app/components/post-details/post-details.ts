@@ -221,12 +221,7 @@ export class PostDetails implements OnInit {
     }
 
     const file = input.files[0];
-    const reader = new FileReader();
     this.cropImageForm.image().value.set(file);
-    reader.onload = (e) => {
-      this.cropImageForm.imageUrl().value.set(e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
     this.cropMenuOpened.set(true);
   }
 

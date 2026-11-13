@@ -461,4 +461,17 @@ describe("PreviewDetails", () => {
     expect(cropForm.imageUrl().value()).toBe(imageCroppedEvent.objectUrl);
     expect(postForm.imageUrl().value()).toBe(formerImageUrl);
   });
+
+  it("should not assign imageUrl when selectFile is called", async () => {
+    const file = new File([""], "image.jpg", { type: "image/jpeg" });
+    const event = { target: { files: [file] } } as unknown as Event;
+    await fixture.whenStable();
+
+    component.fileSelected(event);
+
+    expect(cropForm.image().value()).toBe(file);
+    expect(cropForm.imageUrl().value()).toBe("");
+    expect(component.imageUrl()).toBe("");
+    expect(component.cropMenuOpened()).toBe(true);
+  })
 });

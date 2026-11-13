@@ -180,10 +180,12 @@
               }
 
               @if (cropMenuOpened()) {
-                <image-cropper [aspectRatio]="Constants.aspectRatios.post" [maintainAspectRatio]="true"
-                  [imageFile]="cropImageForm.image().value()!" (imageCropped)="temporaryCroppedImageEvent.set($event)" />  
+                <div class="relative">
+                  <image-cropper [aspectRatio]="Constants.aspectRatios.post" [maintainAspectRatio]="true"
+                    [imageFile]="cropImageForm.image().value()!" (imageCropped)="temporaryCroppedImageEvent.set($event)" />
+                </div>
                 <div class="flex flex-row gap-2 justify-end mt-2">
-                  <button class="btn btn-tertiary" type="button" [disabled]="cropImageForm.image().value === null" (click)="cropMenuOpened.set(false)" transloco="post.modal.image-cropper.cancel">a</button>
+                  <button class="btn btn-tertiary" type="button" [disabled]="cropImageForm.croppedImage().value() === null" (click)="cropMenuOpened.set(false)" transloco="post.modal.image-cropper.cancel">a</button>
                   <button class="btn btn-primary" type="button" (click)="cropImage(temporaryCroppedImageEvent()!)" transloco="post.modal.image-cropper.crop">a</button>
                 </div>
               }
