@@ -82,24 +82,38 @@ export class PostDetails implements OnInit {
     tags: [],
     title: "",
     image: null,
+    temporyImage: null,
   } as const;
 
-  postForm = form<PostDetailsForm>(signal<PostDetailsForm>(this.defaultForm), (schema) => {
-    debounce(schema, 300);
-    required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
-    required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
-    required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
-    required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
-    required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
-    required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
-    required(schema.image, {
-      when: () => this.modalMode() === ModalMode.create,
-      message: "post.modal.image-required-error",
-    });
-    maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
-    validate(schema.eventStartDate, ({ value, valueOf }) => {
-      const startDate = value();
-      const endDate = valueOf(schema.eventEndDate);
+  postForm = form<PostDetailsForm>(
+    signal<PostDetailsForm>({
+      content: "",
+      eventStartDate: null,
+      eventEndDate: null,
+      imageUrl: "",
+      imageAltText: "",
+      publicationDate: null,
+      tags: [],
+      title: "",
+      image: null,
+      temporyImage: null,
+    }),
+    (schema) => {
+      debounce(schema, 300);
+      required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
+      required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
+      required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
+      required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
+      required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
+      required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
+      required(schema.image, {
+        when: () => this.modalMode() !== ModalMode.moderator,
+        message: "post.modal.image-required-error",
+      });
+      maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
+      validate(schema.eventStartDate, ({ value, valueOf }) => {
+        const startDate = value();
+        const endDate = valueOf(schema.eventEndDate);
 
       if (startDate && endDate && startDate > endDate) {
         return {
@@ -209,6 +223,7 @@ export class PostDetails implements OnInit {
         tags: this.event()?.tags.map((t) => t.id) ?? [],
         title: this.event()?.title ?? "",
         image: null,
+        temporyImage: null,
       });
     }
   }
@@ -230,7 +245,7 @@ export class PostDetails implements OnInit {
 
     const file = input.files[0];
     const reader = new FileReader();
-    this.postForm.image().value.update(() => file);
+    this.postForm.temporyImage().value.update(() => file);
     reader.onload = (e) => {
       this.postForm.imageUrl().value.update(() => e.target?.result as string);
     };
@@ -348,6 +363,7 @@ export class PostDetails implements OnInit {
 }
 
 export interface PostDetailsForm {
+  temporyImage: Blob | null;
   image: Blob | null;
   imageUrl: string;
   title: string;

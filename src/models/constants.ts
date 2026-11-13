@@ -12,4 +12,8 @@ export const Constants = {
     [EventState.Deleted]: { color: "bg-error", label: "deleted", value: EventState.Deleted },
     [EventState.Denied]: { color: "bg-pink", label: "refused", value: EventState.Denied },
   },
+  aspectRatios: {
+    post: 2 / 1,
+    profile: 1 / 1,
+  }
 };

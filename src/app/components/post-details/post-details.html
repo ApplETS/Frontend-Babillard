@@ -184,6 +184,9 @@
                   [alt]="postForm.imageAltText().value()"
                   class="w-full aspect-[2/1] rounded-lg mt-2"
                 />
+                @if (postForm.image().value()) {
+                  
+                }
               } @else {
                 <div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
               }
