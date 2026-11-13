@@ -121,14 +121,15 @@
 			"deleted": "Desactivée"
 		},
 		"menu": {
-			"duplicate": "Dupliquer",
+			"duplicate": "Créer depuis cet événement",
 			"delete": "Supprimer",
 			"open": "Ouvrir",
-			"modify": "Modifier"
+			"modify": "Modifier",
+			"view": "Consulter"
 		},
 		"modal": {
 			"create-page-title": "Créer une publication",
-			"duplicate-page-title": "(Copie)",
+			"duplicate-page-title": "Créer depuis une publication",
 			"modify-page-title": "Modifier une publication",
 			"view-page-title": "Consulter une publication",
 			"title": "Titre",
@@ -146,10 +147,12 @@
 			"cancel-button": "Fermer",
 			"submit-button": "Envoyer pour approbation",
 			"resubmit-button": "Renvoyer pour approbation",
-			"tool-tip-text": "Elle retombera en attente d'approbation et votre publication précédente sera supprimé",
+			"tool-tip-text": "Elle retombera en attente d'approbation et votre publication précédente sera supprimée",
 			"published-date-tool-tip-text": "Il s'agit de la date que l'annonce sera publiée",
 			"start-date-tool-tip-text": "Il s'agit de la date de début de l'événement",
 			"end-date-tool-tip-text": "Il s'agit de la date de fin de l'événement",
+			"error-unauthorized-create": "Vous ne pouvez pas créer de publication",
+			"error-unauthorized-edit": "Vous ne pouvez pas modifier cette publication",
 			"error-toast-message": "Veuillez remplir ces champs",
 			"date-error-toast-message": "La date de fin de l'événement doit être postérieure à la date de début",
 			"image-format-error-toast-message": "Le format de l'image n'est pas supporté",
@@ -158,9 +161,10 @@
 			"image-type-error": "Le fichier sélectionné n'est pas une image",
 			"image-required-error": "Une image est requise",
 			"preview": "Aperçu",
-			"delete-title": "Êtes-vous sûr de vouloir supprimer cette publication?",
+			"delete-title": "Êtes-vous sûr de vouloir supprimer cette publication? Entrez le titre de la publication pour confirmer.",
 			"delete-button": "Supprimer",
 			"delete-success-toast-message": "Publication supprimée",
+			"delete-error-unable": "Impossible de supprimer la publication",
 			"delete-error-toast-message": "Une erreur est survenue lors de la suppression de la publication",
 			"reject-success-toast-message": "Publication refusée",
 			"reject-error-toast-message": "Une erreur est survenue lors du refus de la publication",
@@ -181,7 +185,8 @@
 				"subtitle": "Glissez pour déplacer l'image et ajuster le recadrage en utilisant la roulette de la souris.",
 				"crop": "Recadrer",
 				"cancel": "Annuler",
-				"zoom-hint": "Utilisez ⌘ + scroll (ou ctrl + scroll) pour zoomer l'image"
+				"zoom-hint": "Utilisez ⌘ + scroll (ou ctrl + scroll) pour zoomer l'image",
+				"delete-image": "Supprimer l'image"
 			}
 		},
 		"error-fetching-events": "Une erreur est survenue lors du chargement des publications",

@@ -121,16 +121,17 @@
       "deleted": "Deactivated"
     },
     "menu": {
-      "duplicate": "Duplicate",
+      "duplicate": "Create from this event",
       "delete": "Delete",
       "open": "Open",
-      "modify": "Edit"
+      "modify": "Edit",
+      "view": "View"
     },
     "modal": {
-      "create-page-title": "Create a news",
-      "duplicate-page-title": "(Duplicate)",
-      "modify-page-title": "Modify a news",
-      "view-page-title": "Consult a news",
+      "create-page-title": "Create a post",
+      "duplicate-page-title": "Create from an post",
+      "modify-page-title": "Modify a post",
+      "view-page-title": "Consult a post",
       "title": "Title",
       "activity-area": "Activity area",
       "alt-text": "Alt text",
@@ -150,6 +151,8 @@
       "published-date-tool-tip-text": "The date that the event will be published",
       "start-date-tool-tip-text": "This is the start date of the event",
       "end-date-tool-tip-text": "This is the end date of the event",
+      "error-unauthorized-create": "You cannot create posts",
+      "error-unauthorized-edit": "You cannot edit this post",
       "error-toast-message": "Please fill those field(s)",
       "date-error-toast-message": "The event start date must be before the event end date",
       "image-format-error-toast-message": "The image format is not supported",
@@ -158,10 +161,11 @@
       "image-type-error": "The selected file is not an image",
       "image-required-error": "An image is required",
       "preview": "Preview",
-      "delete-title": "Are your sure you want to delete this news?",
+      "delete-title": "Are your sure you want to delete this news? Enter the post's title to confirm.",
       "delete-button": "Delete",
       "delete-success-toast-message": "The news has been deleted",
-      "delete-error-toast-message": "An error occurred while deleting the news",
+      "delete-error-unable": "Unable to delete the post",
+      "delete-error-toast-message": "An error occurred while deleting the post",
       "reject-success-toast-message": "The news has been rejected",
       "reject-error-toast-message": "An error occurred while rejecting the news",
       "approve-success-toast-message": "The news has been approved",
@@ -181,7 +185,8 @@
         "subtitle": "Drag to move the image and adjust the cropping using the mouse wheel.",
         "crop": "Crop",
         "cancel": "Cancel",
-        "zoom-hint": "Use ⌘ + scroll (or ctrl + scroll) to zoom the image"
+        "zoom-hint": "Use ⌘ + scroll (or ctrl + scroll) to zoom the image",
+        "delete-image": "Delete image"
       }
     },
     "error-fetching-events": "An error occured while loading the posts",

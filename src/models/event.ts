@@ -8,6 +8,7 @@ export interface Event {
   content?: string;
   imageUrl: string;
   imageAltText: string;
+  publicationDate: string | null;
   eventStartDate: string;
   eventEndDate: string;
   organizer: User | null;

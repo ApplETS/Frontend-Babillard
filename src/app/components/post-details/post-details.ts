@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   inject,
+  input,
   model,
   OnInit,
   output,
@@ -29,9 +30,14 @@ import { Event as ModelEvent } from "@models/event";
 import { EventState } from "@models/event-state";
 import { ModalMode } from "@models/modal-mode";
 import { Tag } from "@models/tag";
-import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
+import {
+  OrganizerEventService,
+  PostDetailsDTO,
+  unauthrorizedKey,
+} from "@services/organizerEventService/organizer-event.service";
 import { TagService } from "@services/tagService/tag-service";
 import { MarkdownComponent } from "ngx-markdown";
+import { ImageCroppedEvent, ImageCropperComponent } from "ngx-image-cropper";
 
 @Component({
   selector: "app-post-details",
@@ -42,6 +48,7 @@ import { MarkdownComponent } from "ngx-markdown";
     TranslocoPipe,
     Combobox,
     MarkdownComponent,
+    ImageCropperComponent,
   ],
   styles: `
     @reference "#styles.css";
@@ -54,78 +61,77 @@ import { MarkdownComponent } from "ngx-markdown";
 })
 export class PostDetails implements OnInit {
   modalMode = model.required<ModalMode>();
+  event = input<ModelEvent | null>(null);
 
   showPreview = signal(false);
   tags = signal<Tag[]>([]);
 
-  closed = output();
+  /**
+   * Indicates whether the modal asks for a refresh
+   */
+  closed = output<boolean>();
 
   tagService = inject(TagService);
   organizerEventService = inject(OrganizerEventService);
   protected readonly Constants = Constants;
+  private readonly defaultForm: PostDetailsForm = {
+    content: "",
+    eventStartDate: null,
+    eventEndDate: null,
+    imageUrl: "",
+    imageAltText: "",
+    publicationDate: null,
+    tags: [],
+    title: "",
+  } as const;
 
-  postForm = form<PostDetailsForm>(
-    signal<PostDetailsForm>({
-      content: "",
-      eventStartDate: null,
-      eventEndDate: null,
-      imageUrl: "",
-      imageAltText: "",
-      publicationDate: null,
-      tags: [],
-      title: "",
-      image: null,
-    }),
-    (schema) => {
-      debounce(schema, 300);
-      required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.image, {
-        when: () => this.modalMode() !== ModalMode.moderator,
-        message: "post.modal.image-required-error",
-      });
-      maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
-      validate(schema.eventStartDate, ({ value, valueOf }) => {
-        const startDate = value();
-        const endDate = valueOf(schema.eventEndDate);
+  postForm = form<PostDetailsForm>(signal<PostDetailsForm>(this.defaultForm), (schema) => {
+    debounce(schema, 300);
+    required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
+    maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
+    validate(schema.eventStartDate, ({ value, valueOf }) => {
+      const startDate = value();
+      const endDate = valueOf(schema.eventEndDate);
 
-        if (startDate && endDate && startDate > endDate) {
-          return {
-            kind: "invalidRange",
-            message: "Event start date cannot be after event end date",
-          };
-        }
+      if (startDate && endDate && startDate > endDate) {
+        return {
+          kind: "invalidRange",
+          message: "Event start date cannot be after event end date",
+        };
+      }
 
-        return null;
-      });
-      validate(schema.image, ({ valueOf }) => {
-        const image = valueOf(schema.image);
-        if (!image) {
-          return null;
-        }
+      return null;
+    });
+    disabled(schema, () => {
+      switch (this.modalMode()) {
+        case ModalMode.view:
+        case ModalMode.delete:
+        case ModalMode.moderator:
+          return true;
+        default:
+          return false;
+      }
+    });
+  });
 
-        if (!image.type.startsWith("image/")) {
-          return { kind: "invalidType", message: "post.modal.image-type-error" };
-        }
+  deleteConfirmationOpened = signal(false);
+  deleteConfirmationForm = form<string>(signal(""), (schema) => {
+    required(schema);
+    validate(schema, ({ value }) => {
+      if (value() !== this.event()?.title) {
+        return { kind: "mismatch" };
+      }
+      return null;
+    });
+    disabled(schema, () => this.modalMode() !== ModalMode.delete);
+  });
 
-        return null;
-      });
-      disabled(schema, () => {
-        switch (this.modalMode()) {
-          case ModalMode.view:
-          case ModalMode.delete:
-          case ModalMode.moderator:
-            return true;
-          default:
-            return false;
-        }
-      });
-    },
-  );
+  cropMenuOpened = signal(false);
+  temporaryCroppedImageEvent = signal<ImageCroppedEvent | null>(null);
 
   combobox = viewChild.required(Combobox);
 
@@ -149,6 +155,18 @@ export class PostDetails implements OnInit {
     }
   });
 
+  submitButtonLabel = computed(() => {
+    switch (this.modalMode()) {
+      case ModalMode.create:
+      case ModalMode.duplicate:
+        return "post.modal.submit-button";
+      case ModalMode.modify:
+        return "post.modal.resubmit-button";
+      default:
+        return "";
+    }
+  });
+
   canAddTag = computed(
     () =>
       !this.postForm.tags().disabled() &&
@@ -161,10 +179,29 @@ export class PostDetails implements OnInit {
       .filter((tag) => !this.postForm.tags().value().includes(tag.id))
       .map((tag) => ({ id: tag.id, name: tag.name })),
   );
-  publication = signal<ModelEvent | null>(null);
+
+  imageUrl = computed(
+    () => this.cropImageForm.imageUrl().value() ?? this.postForm.imageUrl().value(),
+  );
+  imageUrlDefined = computed(() => this.imageUrl() !== "");
 
   async ngOnInit(): Promise<void> {
     this.tags.set(await this.tagService.getAllTags());
+    if (this.event() !== null && this.modalMode() !== ModalMode.create) {
+      this.postForm().value.set({
+        content: this.event()?.content ?? "",
+        eventStartDate:
+          this.event()?.eventStartDate == null ? null : Date.parse(this.event()!.eventStartDate),
+        eventEndDate:
+          this.event()?.eventEndDate == null ? null : Date.parse(this.event()!.eventEndDate),
+        imageUrl: this.event()?.imageUrl ?? "",
+        imageAltText: this.event()?.imageAltText ?? "",
+        publicationDate:
+          this.event()?.publicationDate == null ? null : Date.parse(this.event()!.publicationDate!),
+        tags: this.event()?.tags.map((t) => t.id) ?? [],
+        title: this.event()?.title ?? "",
+      });
+    }
   }
 
   removeTag(tagId: string) {
@@ -183,44 +220,124 @@ export class PostDetails implements OnInit {
     }
 
     const file = input.files[0];
-    const reader = new FileReader();
-    this.postForm.image().value.update(() => file);
-    reader.onload = (e) => {
-      this.postForm.imageUrl().value.update(() => e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
+    this.cropImageForm.image().value.set(file);
+    this.cropMenuOpened.set(true);
+  }
+
+  cropImageForm = form<CropImageForm>(
+    signal<CropImageForm>({ image: null, croppedImage: null, imageUrl: "" }),
+    (schema) => {
+      required(schema.image, {
+        when: () => this.modalMode() !== ModalMode.moderator,
+        message: "post.modal.image-required-error",
+      });
+      required(schema.croppedImage, {
+        when: () => this.modalMode() !== ModalMode.moderator,
+        message: "post.modal.image-required-error",
+      });
+      required(schema.imageUrl, {
+        when: () => this.modalMode() !== ModalMode.moderator,
+        message: "post.modal.image-required-error",
+      });
+      validate(schema.image, ({ valueOf }) => {
+        const image = valueOf(schema.image);
+        if (!image) {
+          return null;
+        }
+
+        if (!image.type.startsWith("image/")) {
+          return { kind: "invalidType", message: "post.modal.image-type-error" };
+        }
+
+        return null;
+      });
+    },
+  );
+
+  cropImage(e: ImageCroppedEvent) {
+    this.cropImageForm.croppedImage().value.set(e.blob ?? null);
+    this.cropImageForm.imageUrl().value.set(e.objectUrl ?? "");
+    this.cropMenuOpened.set(false);
+  }
+
+  resetCropImageForm() {
+    this.cropImageForm.croppedImage().value.set(null);
+    this.cropImageForm.image().value.set(null);
+    this.cropImageForm.imageUrl().value.set(null);
+  }
+
+  resetDeleteConfirmationForm() {
+    this.deleteConfirmationForm().value.set("");
+    this.deleteConfirmationOpened.set(false);
+  }
+
+  async handleDelete() {
+    if (this.deleteConfirmationForm().invalid()) {
+      return;
+    }
+
+    const success = await submit(this.deleteConfirmationForm, (field) => this.deleteEvent(field));
+    if (success) this.closed.emit(true);
+  }
+
+  private async deleteEvent(field: FieldTree<string>): Promise<TreeValidationResult> {
+    try {
+      const eventId = this.event()!.id;
+      await this.organizerEventService.deleteEvent(eventId);
+    } catch (e: unknown) {
+      if (!(e instanceof Error)) {
+        return { kind: "serverError", fieldTree: field };
+      }
+
+      if (e.message === "Unable") {
+        return { kind: "unable", fieldTree: field };
+      } else {
+        return { kind: "serverError", fieldTree: field };
+      }
+    }
   }
 
   async handleDraft() {
-    if (this.postForm().invalid()) {
+    if (this.postForm().invalid() || this.cropImageForm().invalid()) {
       return;
     }
 
     const success = await submit(this.postForm, (field) => this.submitForm(field));
-    if (success) this.closed.emit();
+    if (success) this.closed.emit(true);
   }
 
   private async submitForm(form: FieldTree<PostDetailsForm>): Promise<TreeValidationResult> {
     try {
       const value = form().value();
-      value.eventEndDate = value.eventEndDate ? new Date(value.eventEndDate).toISOString() : null;
-      value.eventStartDate = value.eventStartDate
+      const dto: PostDetailsDTO = {
+        ...value,
+        image: this.cropImageForm.croppedImage().value(),
+        publicationDate: null,
+        eventEndDate: null,
+        eventStartDate: null,
+      };
+      dto.eventEndDate = value.eventEndDate ? new Date(value.eventEndDate).toISOString() : null;
+      dto.eventStartDate = value.eventStartDate
         ? new Date(value.eventStartDate).toISOString()
         : null;
-      value.publicationDate = value.publicationDate
+      dto.publicationDate = value.publicationDate
         ? new Date(value.publicationDate).toISOString()
         : null;
-      if (value.tags.length === 0) {
-        value.tags = null!;
+      if (dto.tags.length === 0) {
+        dto.tags = null!;
       }
 
-      if (this.publication() !== null) {
-        await this.organizerEventService.updateDraft(value, this.publication()!.id);
+      if (this.modalMode() === ModalMode.modify && this.event() !== null) {
+        await this.organizerEventService.updateDraft(dto, this.event()!.id);
       } else {
-        await this.organizerEventService.postDraft(value);
+        await this.organizerEventService.postDraft(dto);
       }
     } catch (e: unknown) {
-      if (e instanceof Error && Constants.badParameterPattern.test(e.message)) {
+      if (!(e instanceof Error)) {
+        return { kind: "serverError", message: "post.modal.post-error-toast-message" };
+      }
+
+      if (Constants.badParameterPattern.test(e.message)) {
         const field = e.message.substring(e.message.lastIndexOf("_") + 1).toLowerCase();
         switch (field) {
           case "tags":
@@ -234,17 +351,25 @@ export class PostDetails implements OnInit {
               {
                 kind: "required",
                 message: "post.modal.image-required-error",
-                fieldTree: form.image,
+                fieldTree: this.cropImageForm.image,
               },
               {
                 kind: "required",
                 message: "post.modal.image-required-error",
-                fieldTree: form.imageUrl,
+                fieldTree: this.cropImageForm.imageUrl,
               },
             ];
           default:
             return { kind: "serverError", message: "post.modal.post-error-toast-message" };
         }
+      } else if (e.message === unauthrorizedKey) {
+        return {
+          kind: "serverError",
+          message:
+            this.event() !== null
+              ? "post.modal.error-unauthorized-edit"
+              : "post.modal.error-unauthorized-create",
+        };
       } else {
         return { kind: "serverError", message: "post.modal.post-error-toast-message" };
       }
@@ -252,14 +377,19 @@ export class PostDetails implements OnInit {
   }
 }
 
+export interface CropImageForm {
+  image: File | null;
+  croppedImage: Blob | null;
+  imageUrl: string | null;
+}
+
 export interface PostDetailsForm {
-  image: Blob | null;
   imageUrl: string;
   title: string;
   content: string;
-  publicationDate: string | null;
-  eventStartDate: string | null;
-  eventEndDate: string | null;
+  publicationDate: number | null;
+  eventStartDate: number | null;
+  eventEndDate: number | null;
   tags: string[];
   imageAltText: string;
 }

@@ -1,4 +1,5 @@
 export enum ModalMode {
+  default,
   view,
   create,
   duplicate,

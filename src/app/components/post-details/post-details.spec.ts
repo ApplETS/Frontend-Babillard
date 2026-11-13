@@ -1,16 +1,19 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { PostDetails, PostDetailsForm } from "./post-details";
+import { CropImageForm, PostDetails, PostDetailsForm } from "./post-details";
 import { TagService } from "@services/tagService/tag-service";
 import { Tag } from "@models/tag";
 import { TranslocoTestingModule } from "@jsverse/transloco";
-import { FieldTree, FormField } from "@angular/forms/signals";
+import { FieldTree, form, FormField } from "@angular/forms/signals";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { ModalMode } from "@models/modal-mode";
-import { signal, twoWayBinding } from "@angular/core";
+import { inputBinding, NO_ERRORS_SCHEMA, signal, twoWayBinding } from "@angular/core";
 import { Combobox } from "@components/combobox/combobox";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
+import { Event as ModelEvent } from "@models/event";
+import { MarkdownService } from "ngx-markdown";
+import { ImageCroppedEvent } from "ngx-image-cropper";
 
 describe("PreviewDetails", () => {
   let component: PostDetails;
@@ -23,17 +26,21 @@ describe("PreviewDetails", () => {
   const organizerEventService = {
     postDraft: vi.fn(),
     updateDraft: vi.fn(),
+    deleteEvent: vi.fn(),
   };
 
   const closedCount = signal(0);
+  const event = signal<ModelEvent | null>(null);
+  const modalMode = signal(ModalMode.create);
   let postForm: FieldTree<PostDetailsForm>;
+  let deleteForm: FieldTree<string>;
+  let cropForm: FieldTree<CropImageForm>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         PostDetails,
         FormField,
-        FaIconComponent,
         TranslocoTestingModule.forRoot({
           langs: {
             en: {},
@@ -49,38 +56,80 @@ describe("PreviewDetails", () => {
       providers: [
         { provide: TagService, useValue: tagService },
         { provide: OrganizerEventService, useValue: organizerEventService },
+        MarkdownService,
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PostDetails, {
-      bindings: [twoWayBinding("modalMode", signal(ModalMode.create))],
+      bindings: [twoWayBinding("modalMode", modalMode), inputBinding("event", event)],
     });
     component = fixture.componentInstance;
     tagService.getAllTags.mockReturnValue(new Promise<Tag[]>((resolve) => resolve([])));
     closedCount.set(0);
     postForm = component.postForm;
+    deleteForm = component.deleteConfirmationForm;
+    cropForm = component.cropImageForm;
     component.closed.subscribe(() => closedCount.update((count) => count + 1));
     await fixture.whenStable();
   });
 
   afterEach(() => {
     vi.clearAllMocks();
+    event.set(null);
   });
 
   function setValidForm() {
     postForm.title().value.update(() => "Test Title");
     postForm.content().value.update(() => "Test Content");
-    postForm.imageUrl().value.update(() => "https://example.com/image.jpg");
-    postForm.image().value.update(() => new File([""], "image.jpg", { type: "image/jpeg" }));
-    postForm.eventStartDate().value.update(() => new Date().toISOString());
-    postForm.eventEndDate().value.update(() => new Date().toISOString());
+    postForm.eventStartDate().value.update(() => Date.now());
+    postForm.eventEndDate().value.update(() => Date.now());
     postForm.imageAltText().value.update(() => "Test Image Alt Text");
     postForm.tags().value.update(() => ["tag1", "tag2"]);
+    setValidCropForm();
+  }
+
+  function setValidCropForm() {
+    cropForm.image().value.update(() => new File([""], "image.jpg", { type: "image/jpeg" }));
+    cropForm.croppedImage().value.update(() => new Blob());
+    cropForm.imageUrl().value.update(() => "https://example.com/image.jpg");
   }
 
   it("should create and call TagService.getAllTags()", () => {
     expect(component).toBeTruthy();
     expect(tagService.getAllTags).toHaveBeenCalled();
+  });
+
+  it("should set form value from event when event is not null and modalMode is not create", async () => {
+    tagService.getAllTags.mockReturnValue(
+      Promise.resolve([{ id: "tag1", name: "Tag 1", createdAt: "", updatedAt: "" }]),
+    );
+    const eventValue: ModelEvent = {
+      id: "1",
+      title: "Test Event",
+      content: "Test Content",
+      imageUrl: "https://example.com/image.jpg",
+      imageAltText: "Test Image Alt Text",
+      eventStartDate: new Date().toISOString(),
+      eventEndDate: new Date().toISOString(),
+      publicationDate: new Date().toISOString(),
+      organizer: null,
+      tags: [{ id: "tag1", name: "Tag 1", createdAt: "", updatedAt: "" }],
+      state: EventState.Draft,
+    };
+    event.set(eventValue);
+    component.modalMode.set(ModalMode.modify);
+    await fixture.whenStable();
+
+    await component.ngOnInit();
+
+    expect(postForm.title().value()).toBe(eventValue.title);
+    expect(postForm.content().value()).toBe(eventValue.content);
+    expect(postForm.imageUrl().value()).toBe(eventValue.imageUrl);
+    expect(postForm.imageAltText().value()).toBe(eventValue.imageAltText);
+    expect(postForm.eventStartDate().value()).toBe(Date.parse(eventValue.eventStartDate));
+    expect(postForm.eventEndDate().value()).toBe(Date.parse(eventValue.eventEndDate));
+    expect(postForm.publicationDate().value()).toBe(Date.parse(eventValue.publicationDate!));
+    expect(postForm.tags().value()).toEqual(eventValue.tags.map((tag) => tag.id));
   });
 
   it("should not call OrganizerEventService when form is invalid", async () => {
@@ -101,12 +150,13 @@ describe("PreviewDetails", () => {
     expect(closedCount(), "closed event should have been called").toBe(1);
   });
 
-  it("should call OrganizerEventService.updateDraft() when form is valid and publication is not null", async () => {
+  it("should call OrganizerEventService.updateDraft() when form is valid and event is not null", async () => {
     organizerEventService.updateDraft.mockReturnValue(Promise.resolve({ id: "1" }));
-    component.publication.set({
+    event.set({
       id: "1",
       eventEndDate: "",
       eventStartDate: "",
+      publicationDate: null,
       content: "",
       imageAltText: "",
       imageUrl: "",
@@ -115,6 +165,7 @@ describe("PreviewDetails", () => {
       title: "",
       organizer: null,
     });
+    await fixture.whenStable();
 
     setValidForm();
 
@@ -142,27 +193,30 @@ describe("PreviewDetails", () => {
     );
   });
 
-  it("should call OrganizerEventService.updateDraft() and handle generic error when form is valid and publication is not null", async () => {
-    organizerEventService.updateDraft.mockReturnValue(
-      Promise.reject(new Error("Some error occurred")),
-    );
-    component.publication.set({
+  it("should call OrganizerEventService.updateDraft() and handle generic error when form is valid and event is not null", async () => {
+    event.set({
       id: "1",
       eventEndDate: "",
       eventStartDate: "",
       content: "",
       imageAltText: "",
       imageUrl: "",
+      publicationDate: null,
       state: EventState.OnHold,
       tags: [],
       title: "",
       organizer: null,
     });
     setValidForm();
+    await fixture.whenStable();
+    organizerEventService.updateDraft.mockReturnValue(
+      Promise.reject(new Error("Some error occurred")),
+    );
 
     await component.handleDraft();
     expect(organizerEventService.postDraft).not.toHaveBeenCalled();
     expect(organizerEventService.updateDraft).toHaveBeenCalled();
+    expect(organizerEventService.updateDraft).toHaveBeenCalledTimes(1);
     expect(closedCount(), "closed event should not have been called").toBe(0);
     expect(postForm().errors(), "form should have errors").length(1);
     const error = postForm().errors()![0];
@@ -202,26 +256,221 @@ describe("PreviewDetails", () => {
     expect(organizerEventService.updateDraft).not.toHaveBeenCalled();
     expect(closedCount(), "closed event should not have been called").toBe(0);
     expect(postForm().errors(), "form should not have error").length(0);
-    expect(postForm.image().errors(), "image field should have errors").length(1);
-    expect(postForm.imageUrl().errors(), "imageUrl field should have errors").length(1);
-    const error = postForm.image().errors()![0];
+    expect(cropForm.image().errors(), "image field should have errors").length(1);
+    expect(cropForm.imageUrl().errors(), "imageUrl field should have errors").length(1);
+    const error = cropForm.image().errors()![0];
     expect(error.kind, "error kind should be 'required'").toBe("required");
     expect(error.message, "error message should be 'post.modal.image-required-error'").toBe(
       "post.modal.image-required-error",
     );
   });
 
-  // it("should call OrganizerEventService.updateDraft() and handle specific error when form is valid and publication is not null", async () => {
-  //   organizerEventService.updateDraft.mockReturnValue(new Promise((resolve, reject) => reject({ kind: "specificError", message: "Specific error occurred" })));
-  //   setValidForm();
+  it("should call OrganizerEventService.updateDraft() and handle specific error when form is valid, publication is not null and modalMode is edit", async () => {
+    modalMode.set(ModalMode.modify);
+    event.set({
+      id: "1",
+      eventEndDate: "",
+      eventStartDate: "",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      state: EventState.OnHold,
+      tags: [],
+      title: "",
+      organizer: null,
+    });
+    setValidForm();
+    await fixture.whenStable();
+    organizerEventService.updateDraft.mockReturnValue(
+      Promise.reject(new Error("BAD_PARAM_EVENT_image")),
+    );
 
-  //   await component.handleDraft();
-  //   expect(organizerEventService.postDraft).not.toHaveBeenCalled();
-  //   expect(organizerEventService.updateDraft).toHaveBeenCalled();
-  //   expect(closedCount(), "closed event should not have been called").toBe(0);
-  //   expect(postForm().errors(), "form should have errors").length(0);
-  //   const error = postForm().errors()![0];
-  //   expect(error.kind, "error kind should be 'specificError'").toBe("specificError");
-  //   expect(error.message, "error message should be 'Specific error occurred'").toBe("Specific error occurred");
-  // });
+    await component.handleDraft();
+
+    expect(organizerEventService.postDraft).not.toHaveBeenCalled();
+    expect(organizerEventService.updateDraft).toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+    expect(postForm().errors(), "form should not have error").length(0);
+    expect(cropForm.image().errors(), "image field should have errors").length(1);
+    const error = cropForm.image().errors()[0];
+    expect(error.kind, "error kind should be 'required'").toBe("required");
+    expect(error.message, "error message should be 'post.modal.image-required-error'").toBe(
+      "post.modal.image-required-error",
+    );
+  });
+
+  it("should not call OrganizerEventService.deletePost() when deleteConfirmationForm is invalid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    });
+    deleteForm().value.set("Wrong Title");
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).not.toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+  });
+
+  it("should not call OrganizerEventService.deletePost() when event is null", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set(null);
+    component.deleteConfirmationForm().value.set("");
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).not.toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+  });
+
+  it("should call OrganizerEventService.deletePost() when deleteConfirmationForm is valid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    });
+    deleteForm().value.set("Test Title");
+    await fixture.whenStable();
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).toHaveBeenCalled();
+    expect(closedCount(), "closed event should have been called").toBe(1);
+  });
+
+  it("should call OrganizerEventService.deletePost() and handle generic error when deleteConfirmationForm is valid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    });
+    deleteForm().value.set("Test Title");
+    organizerEventService.deleteEvent.mockRejectedValue(new Error("Some error occurred"));
+    await fixture.whenStable();
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+    expect(deleteForm().errors(), "form should have errors").length(1);
+    const error = deleteForm().errors()![0];
+    expect(error.kind, "error kind should be 'serverError'").toBe("serverError");
+    expect(error.message, "error message should be undefined").toBeUndefined();
+  });
+
+  it("should call OrganizerEventService.deletePost() and handle specific error when deleteConfirmationForm is valid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    });
+    deleteForm().value.set("Test Title");
+    organizerEventService.deleteEvent.mockRejectedValue(new Error("Unable"));
+    await fixture.whenStable();
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+    expect(deleteForm().errors(), "form should have errors").length(1);
+    const error = deleteForm().errors()![0];
+    expect(error.kind, "error kind should be 'unable'").toBe("unable");
+    expect(error.message, "error message should be undefined").toBeUndefined();
+  });
+
+  it("should display imageUrl as the former imageUrl when cropImageForm.imageUrl is null", async () => {
+    postForm.imageUrl().value.set("http://example.com/former-image.jpg");
+    component.cropImageForm.imageUrl().value.set(null);
+
+    await fixture.whenStable();
+
+    expect(component.imageUrl()).toBe("http://example.com/former-image.jpg");
+    expect(component.imageUrlDefined()).toBe(true);
+  });
+
+  it("should display imageUrl as the cropImageForm.imageUrl when cropImageForm.imageUrl is not null", async () => {
+    postForm.imageUrl().value.set("http://example.com/former-image.jpg");
+    component.cropImageForm.imageUrl().value.set("http://example.com/cropped-image.jpg");
+
+    await fixture.whenStable();
+
+    expect(component.imageUrl()).toBe("http://example.com/cropped-image.jpg");
+    expect(component.imageUrlDefined()).toBe(true);
+  });
+
+  it("should assign cropImageForm when cropImage is called", async () => {
+    event.set(null);
+    component.cropImageForm.image().value.set(new File([""], "image.jpg", { type: "image/jpeg" }));
+    component.cropImageForm.imageUrl().value.set("http://example.com/image.jpg");
+    const formerImageUrl = "http://example.com/former-image.png";
+    postForm.imageUrl().value.set(formerImageUrl);
+
+    const imageCroppedEvent: ImageCroppedEvent = {
+      base64: "base64string",
+      blob: new Blob(["cropped image"], { type: "image/png" }),
+      width: 100,
+      height: 100,
+      cropperPosition: { x1: 0, y1: 0, x2: 100, y2: 100 },
+      imagePosition: { x1: 0, y1: 0, x2: 100, y2: 100 },
+      objectUrl: "http://example.com/cropped-image.png",
+    };
+    await fixture.whenStable();
+
+    component.cropImage(imageCroppedEvent);
+
+    expect(cropForm.croppedImage().value()).toBe(imageCroppedEvent.blob);
+    expect(cropForm.imageUrl().value()).toBe(imageCroppedEvent.objectUrl);
+    expect(postForm.imageUrl().value()).toBe(formerImageUrl);
+  });
+
+  it("should not assign imageUrl when selectFile is called", async () => {
+    const file = new File([""], "image.jpg", { type: "image/jpeg" });
+    const event = { target: { files: [file] } } as unknown as Event;
+    await fixture.whenStable();
+
+    component.fileSelected(event);
+
+    expect(cropForm.image().value()).toBe(file);
+    expect(cropForm.imageUrl().value()).toBe("");
+    expect(component.imageUrl()).toBe("");
+    expect(component.cropMenuOpened()).toBe(true);
+  });
 });
