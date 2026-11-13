@@ -221,9 +221,9 @@
         [class.justify-between]="modalMode() === ModalMode.moderator"
         [class.justify-start]="modalMode() !== ModalMode.moderator"
       >
-      @switch (modalMode()) {
-        @case (ModalMode.moderator) {
-        <!-- {modalMode === Constants.publicationModalStatus.moderator && (
+        @switch (modalMode()) {
+          @case (ModalMode.moderator) {
+            <!-- {modalMode === Constants.publicationModalStatus.moderator && (
 				<>
 					{publication?.state !== NewsStates.PUBLISHED ? (
 					<div class="grid grid-cols-2 gap-6">
@@ -281,59 +281,77 @@
 							)}
 						</div>
 			</div> -->
-
-        }
-        @case (ModalMode.create) 
-        @case (ModalMode.modify)
-        @case (ModalMode.duplicate) {
-          <button
-            class="btn btn-info px-8 font-normal"
-            [disabled]="event()?.state === EventState.Approved"
-            (click)="handleDraft()"
-            type="button"
-            [transloco]="submitButtonLabel()"
-          >
-            a
-          </button>
-        }
-        @case (ModalMode.delete) {
-          @if (!deleteConfirmationOpened()) {
-            <button class="btn-error btn px-8 font-normal" transloco="post.modal.delete-button" type="button" (click)="deleteConfirmationOpened.set(true)">a</button>
-          } @else {
-            <div class="flex-col flex gap-2">
-
-              <label>
-                <span transloco="post.modal.delete-title"></span>
-                <input
-                  type="text"
-                  [formField]="deleteConfirmationForm"
-                  class="input input-ghost w-full"
-                />
-              </label>
-              <br>
-              <div class="flex flex-row gap-2 mt-2">
-                <button
-                  class="btn btn-error px-8 font-normal"
-                  [disabled]="deleteConfirmationForm().invalid()"
-                  (click)="handleDelete()"
-                  type="button"
-                  transloco="post.modal.delete-button"
-                >
-                  a
-                </button>
-                <button
-                  class="btn btn-info px-8 font-normal ml-2 bg-base-300 hover:bg-secondary dark:btn-secondary"
-                  (click)="resetDeleteConfirmationForm()"
-                  type="button"
-                  transloco="post.modal.cancel-button"
-                >
-                  a
-                </button>
-            </div>
-            </div>
+          }
+          @case (ModalMode.create)
+          @case (ModalMode.modify)
+          @case (ModalMode.duplicate) {
+            <button
+              class="btn btn-info px-8 font-normal"
+              [disabled]="event()?.state === EventState.Approved"
+              (click)="handleDraft()"
+              type="button"
+              [transloco]="submitButtonLabel()"
+            >
+              a
+            </button>
+          }
+          @case (ModalMode.delete) {
+            @if (!deleteConfirmationOpened()) {
+              <button
+                class="btn-error btn px-8 font-normal"
+                transloco="post.modal.delete-button"
+                type="button"
+                (click)="deleteConfirmationOpened.set(true)"
+              >
+                a
+              </button>
+            } @else {
+              <div class="flex-col flex gap-2">
+                <label>
+                  <span transloco="post.modal.delete-title"></span>
+                  <input
+                    type="text"
+                    [formField]="deleteConfirmationForm"
+                    class="input input-ghost w-full"
+                  />
+                </label>
+                <div class="flex flex-row gap-2 mt-2">
+                  <button
+                    class="btn btn-error px-8 font-normal"
+                    [disabled]="deleteConfirmationForm().invalid()"
+                    (click)="handleDelete()"
+                    type="button"
+                    transloco="post.modal.delete-button"
+                  >
+                    a
+                  </button>
+                  <button
+                    class="btn btn-info px-8 font-normal ml-2 bg-base-300 hover:bg-secondary dark:btn-secondary"
+                    (click)="resetDeleteConfirmationForm()"
+                    type="button"
+                    transloco="post.modal.cancel-button"
+                  >
+                    a
+                  </button>
+                  @if (
+                    deleteConfirmationForm()
+                      .errors()
+                      .some((e) => e.kind === "unable")
+                  ) {
+                    <span class="text-red" transloco="post.modal.delete-error-unable"></span>
+                  }
+                  @if (
+                    deleteConfirmationForm()
+                      .errors()
+                      .some((e) => e.kind === "serverError")
+                  ) {
+                    <span class="text-red" transloco="post.modal.delete-error-toast-message"></span>
+                  }
+                </div>
+              </div>
+            }
           }
         }
-      }
       </div>
     </div>
   </form>

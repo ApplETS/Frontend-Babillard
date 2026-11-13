@@ -123,9 +123,7 @@ export abstract class ApiService {
       action += routeParameters.join("/");
     }
 
-    return await lastValueFrom(
-      this.httpService.delete<T>(action, { params: queryParameters }),
-    );
+    return await lastValueFrom(this.httpService.delete<T>(action, { params: queryParameters }));
   }
 }
 

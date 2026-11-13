@@ -7,12 +7,13 @@ import { TranslocoTestingModule } from "@jsverse/transloco";
 import { FieldTree, form, FormField } from "@angular/forms/signals";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { ModalMode } from "@models/modal-mode";
-import { inputBinding, signal, twoWayBinding } from "@angular/core";
+import { inputBinding, NO_ERRORS_SCHEMA, signal, twoWayBinding } from "@angular/core";
 import { Combobox } from "@components/combobox/combobox";
 import { OrganizerEventService } from "@services/organizerEventService/organizer-event.service";
 import { EventState } from "@models/event-state";
 import { Event as ModelEvent } from "@models/event";
 import { Constants } from "@models/constants";
+import { MarkdownComponent, MarkdownService } from "ngx-markdown";
 
 describe("PreviewDetails", () => {
   let component: PostDetails;
@@ -25,19 +26,20 @@ describe("PreviewDetails", () => {
   const organizerEventService = {
     postDraft: vi.fn(),
     updateDraft: vi.fn(),
+    deleteEvent: vi.fn(),
   };
 
   const closedCount = signal(0);
   const event = signal<ModelEvent | null>(null);
   const modalMode = signal(ModalMode.create);
   let postForm: FieldTree<PostDetailsForm>;
+  let deleteForm: FieldTree<string>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         PostDetails,
         FormField,
-        FaIconComponent,
         TranslocoTestingModule.forRoot({
           langs: {
             en: {},
@@ -53,19 +55,18 @@ describe("PreviewDetails", () => {
       providers: [
         { provide: TagService, useValue: tagService },
         { provide: OrganizerEventService, useValue: organizerEventService },
+        MarkdownService,
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PostDetails, {
-      bindings: [
-        twoWayBinding("modalMode", modalMode),
-        inputBinding("event", event),
-      ],
+      bindings: [twoWayBinding("modalMode", modalMode), inputBinding("event", event)],
     });
     component = fixture.componentInstance;
     tagService.getAllTags.mockReturnValue(new Promise<Tag[]>((resolve) => resolve([])));
     closedCount.set(0);
     postForm = component.postForm;
+    deleteForm = component.deleteConfirmationForm;
     component.closed.subscribe(() => closedCount.update((count) => count + 1));
     await fixture.whenStable();
   });
@@ -290,5 +291,123 @@ describe("PreviewDetails", () => {
     expect(error.message, "error message should be 'post.modal.image-required-error'").toBe(
       "post.modal.image-required-error",
     );
+  });
+
+  it("should not call OrganizerEventService.deletePost() when deleteConfirmationForm is invalid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    })
+    deleteForm().value.set("Wrong Title");
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).not.toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+  });
+
+  it("should not call OrganizerEventService.deletePost() when event is null", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set(null);
+    component.deleteConfirmationForm().value.set("");
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).not.toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+  });
+
+  it("should call OrganizerEventService.deletePost() when deleteConfirmationForm is valid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    });
+    deleteForm().value.set("Test Title");
+    await fixture.whenStable();
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).toHaveBeenCalled();
+    expect(closedCount(), "closed event should have been called").toBe(1);
+  });
+
+  it("should call OrganizerEventService.deletePost() and handle generic error when deleteConfirmationForm is valid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    });
+    deleteForm().value.set("Test Title");
+    organizerEventService.deleteEvent.mockRejectedValue(
+      new Error("Some error occurred"),
+    );
+    await fixture.whenStable();
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+    expect(deleteForm().errors(), "form should have errors").length(1);
+    const error = deleteForm().errors()![0];
+    expect(error.kind, "error kind should be 'serverError'").toBe("serverError");
+    expect(error.message, "error message should be undefined").toBeUndefined();
+  });
+
+  it("should call OrganizerEventService.deletePost() and handle specific error when deleteConfirmationForm is valid", async () => {
+    modalMode.set(ModalMode.delete);
+    event.set({
+      id: "1",
+      title: "Test Title",
+      content: "",
+      imageAltText: "",
+      imageUrl: "",
+      publicationDate: null,
+      eventStartDate: "",
+      eventEndDate: "",
+      state: EventState.OnHold,
+      tags: [],
+      organizer: null,
+    })
+    deleteForm().value.set("Test Title");
+    organizerEventService.deleteEvent.mockRejectedValue(new Error("Unable"));
+    await fixture.whenStable();
+
+    await component.handleDelete();
+
+    expect(organizerEventService.deleteEvent).toHaveBeenCalled();
+    expect(closedCount(), "closed event should not have been called").toBe(0);
+    expect(deleteForm().errors(), "form should have errors").length(1);
+    const error = deleteForm().errors()![0];
+    expect(error.kind, "error kind should be 'unable'").toBe("unable");
+    expect(error.message, "error message should be undefined").toBeUndefined();
   });
 });

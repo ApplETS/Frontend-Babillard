@@ -137,15 +137,15 @@ export class PostDetails implements OnInit {
 
   deleteConfirmationOpened = signal(false);
   deleteConfirmationForm = form<string>(signal(""), (schema) => {
-    required(schema),
-    validate(schema, ({ value }) => {
-      if (value() !== this.event()?.title) {
-        return { kind: "mismatch" };
-      }
-      return null;
-    })
+    (required(schema),
+      validate(schema, ({ value }) => {
+        if (value() !== this.event()?.title) {
+          return { kind: "mismatch" };
+        }
+        return null;
+      }));
     disabled(schema, () => this.modalMode() !== ModalMode.delete);
-  },);
+  });
 
   combobox = viewChild.required(Combobox);
 
@@ -248,6 +248,25 @@ export class PostDetails implements OnInit {
       return;
     }
 
+    const success = await submit(this.deleteConfirmationForm, (field) => this.deleteEvent(field));
+    if (success) this.closed.emit(true);
+  }
+
+  private async deleteEvent(field: FieldTree<string>): Promise<TreeValidationResult> {
+    try {
+      const eventId = this.event()!.id;
+      await this.organizerEventService.deleteEvent(eventId);
+    } catch (e: unknown) {
+      if (!(e instanceof Error)) {
+        return { kind: "serverError", fieldTree: field };
+      }
+
+      if (e.message === "Unable") {
+        return { kind: "unable", fieldTree: field };
+      } else {
+        return { kind: "serverError", fieldTree: field };
+      }
+    }
   }
 
   async handleDraft() {

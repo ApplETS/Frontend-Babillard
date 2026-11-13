@@ -164,6 +164,7 @@
 			"delete-title": "Êtes-vous sûr de vouloir supprimer cette publication? Entrez le titre de la publication pour confirmer.",
 			"delete-button": "Supprimer",
 			"delete-success-toast-message": "Publication supprimée",
+			"delete-error-unable": "Impossible de supprimer la publication",
 			"delete-error-toast-message": "Une erreur est survenue lors de la suppression de la publication",
 			"reject-success-toast-message": "Publication refusée",
 			"reject-error-toast-message": "Une erreur est survenue lors du refus de la publication",
