@@ -15,5 +15,5 @@ export const Constants = {
   aspectRatios: {
     post: 2 / 1,
     profile: 1 / 1,
-  }
+  },
 };

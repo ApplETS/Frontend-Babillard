@@ -181,15 +181,33 @@
 
               @if (cropMenuOpened()) {
                 <div class="relative">
-                  <image-cropper [aspectRatio]="Constants.aspectRatios.post" [maintainAspectRatio]="true"
-                    [imageFile]="cropImageForm.image().value()!" (imageCropped)="temporaryCroppedImageEvent.set($event)" />
+                  <image-cropper
+                    [aspectRatio]="Constants.aspectRatios.post"
+                    [maintainAspectRatio]="true"
+                    [imageFile]="cropImageForm.image().value()!"
+                    (imageCropped)="temporaryCroppedImageEvent.set($event)"
+                  />
                 </div>
                 <div class="flex flex-row gap-2 justify-end mt-2">
-                  <button class="btn btn-tertiary" type="button" [disabled]="cropImageForm.croppedImage().value() === null" (click)="cropMenuOpened.set(false)" transloco="post.modal.image-cropper.cancel">a</button>
-                  <button class="btn btn-primary" type="button" (click)="cropImage(temporaryCroppedImageEvent()!)" transloco="post.modal.image-cropper.crop">a</button>
+                  <button
+                    class="btn btn-tertiary"
+                    type="button"
+                    [disabled]="cropImageForm.croppedImage().value() === null"
+                    (click)="cropMenuOpened.set(false)"
+                    transloco="post.modal.image-cropper.cancel"
+                  >
+                    a
+                  </button>
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    (click)="cropImage(temporaryCroppedImageEvent()!)"
+                    transloco="post.modal.image-cropper.crop"
+                  >
+                    a
+                  </button>
                 </div>
-              }
-              @else if (imageUrlDefined()) {
+              } @else if (imageUrlDefined()) {
                 <img
                   [src]="imageUrl()"
                   [alt]="postForm.imageAltText().value()"
@@ -198,10 +216,23 @@
 
                 @if (cropImageForm.imageUrl().value !== null) {}
                 <div class="flex flex-row justify-end mt-2 gap-2">
-                  <button type="button" class="btn btn-error" (click)="resetCropImageForm(); image.value = ''" transloco="post.modal.image-cropper.delete-image">a</button>
-                  <button type="button" class="btn btn-primary" transloco="post.modal.image-cropper.title" (click)="cropMenuOpened.set(true)">a</button>
+                  <button
+                    type="button"
+                    class="btn btn-error"
+                    (click)="resetCropImageForm(); image.value = ''"
+                    transloco="post.modal.image-cropper.delete-image"
+                  >
+                    a
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    transloco="post.modal.image-cropper.title"
+                    (click)="cropMenuOpened.set(true)"
+                  >
+                    a
+                  </button>
                 </div>
-
               } @else {
                 <div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
               }
@@ -313,7 +344,9 @@
               a
             </button>
             @if (postForm().submitting()) {
-              <p>Envoi en cours... <span class="loading loading-spinner loading-lg h-10 w-10"></span></p>
+              <p>
+                Envoi en cours... <span class="loading loading-spinner loading-lg h-10 w-10"></span>
+              </p>
             }
           }
           @case (ModalMode.delete) {

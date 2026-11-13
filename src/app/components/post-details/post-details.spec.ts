@@ -472,5 +472,5 @@ describe("PreviewDetails", () => {
     expect(cropForm.imageUrl().value()).toBe("");
     expect(component.imageUrl()).toBe("");
     expect(component.cropMenuOpened()).toBe(true);
-  })
+  });
 });

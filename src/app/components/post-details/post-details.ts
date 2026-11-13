@@ -48,7 +48,7 @@ import { ImageCroppedEvent, ImageCropperComponent } from "ngx-image-cropper";
     TranslocoPipe,
     Combobox,
     MarkdownComponent,
-    ImageCropperComponent
+    ImageCropperComponent,
   ],
   styles: `
     @reference "#styles.css";
@@ -85,19 +85,17 @@ export class PostDetails implements OnInit {
     title: "",
   } as const;
 
-  postForm = form<PostDetailsForm>(
-    signal<PostDetailsForm>(this.defaultForm),
-    (schema) => {
-      debounce(schema, 300);
-      required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
-      maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
-      validate(schema.eventStartDate, ({ value, valueOf }) => {
-        const startDate = value();
-        const endDate = valueOf(schema.eventEndDate);
+  postForm = form<PostDetailsForm>(signal<PostDetailsForm>(this.defaultForm), (schema) => {
+    debounce(schema, 300);
+    required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
+    required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
+    maxLength(schema.tags, 5, { message: "post.modal.tooManyTagsError" });
+    validate(schema.eventStartDate, ({ value, valueOf }) => {
+      const startDate = value();
+      const endDate = valueOf(schema.eventEndDate);
 
       if (startDate && endDate && startDate > endDate) {
         return {
@@ -182,7 +180,9 @@ export class PostDetails implements OnInit {
       .map((tag) => ({ id: tag.id, name: tag.name })),
   );
 
-  imageUrl = computed(() => this.cropImageForm.imageUrl().value() ?? this.postForm.imageUrl().value());
+  imageUrl = computed(
+    () => this.cropImageForm.imageUrl().value() ?? this.postForm.imageUrl().value(),
+  );
   imageUrlDefined = computed(() => this.imageUrl() !== "");
 
   async ngOnInit(): Promise<void> {
@@ -224,32 +224,35 @@ export class PostDetails implements OnInit {
     this.cropMenuOpened.set(true);
   }
 
-  cropImageForm = form<CropImageForm>(signal<CropImageForm>({ image: null, croppedImage: null, imageUrl: "" }), (schema) => {
-    required(schema.image, {
-      when: () => this.modalMode() !== ModalMode.moderator,
-      message: "post.modal.image-required-error",
-    });
-    required(schema.croppedImage, {
-      when: () => this.modalMode() !== ModalMode.moderator,
-      message: "post.modal.image-required-error",
-    });
-    required(schema.imageUrl, {
-      when: () => this.modalMode() !== ModalMode.moderator,
-      message: "post.modal.image-required-error",
-    });
-    validate(schema.image, ({ valueOf }) => {
-      const image = valueOf(schema.image);
-      if (!image) {
+  cropImageForm = form<CropImageForm>(
+    signal<CropImageForm>({ image: null, croppedImage: null, imageUrl: "" }),
+    (schema) => {
+      required(schema.image, {
+        when: () => this.modalMode() !== ModalMode.moderator,
+        message: "post.modal.image-required-error",
+      });
+      required(schema.croppedImage, {
+        when: () => this.modalMode() !== ModalMode.moderator,
+        message: "post.modal.image-required-error",
+      });
+      required(schema.imageUrl, {
+        when: () => this.modalMode() !== ModalMode.moderator,
+        message: "post.modal.image-required-error",
+      });
+      validate(schema.image, ({ valueOf }) => {
+        const image = valueOf(schema.image);
+        if (!image) {
+          return null;
+        }
+
+        if (!image.type.startsWith("image/")) {
+          return { kind: "invalidType", message: "post.modal.image-type-error" };
+        }
+
         return null;
-      }
-
-      if (!image.type.startsWith("image/")) {
-        return { kind: "invalidType", message: "post.modal.image-type-error" };
-      }
-
-      return null;
-    });
-  });
+      });
+    },
+  );
 
   cropImage(e: ImageCroppedEvent) {
     this.cropImageForm.croppedImage().value.set(e.blob ?? null);
