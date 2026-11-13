@@ -91,7 +91,6 @@ export class PostDetails implements OnInit {
       debounce(schema, 300);
       required(schema.title, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.content, { when: () => this.modalMode() !== ModalMode.moderator });
-      required(schema.imageUrl, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.eventStartDate, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.eventEndDate, { when: () => this.modalMode() !== ModalMode.moderator });
       required(schema.imageAltText, { when: () => this.modalMode() !== ModalMode.moderator });
@@ -230,6 +229,14 @@ export class PostDetails implements OnInit {
       when: () => this.modalMode() !== ModalMode.moderator,
       message: "post.modal.image-required-error",
     });
+    required(schema.croppedImage, {
+      when: () => this.modalMode() !== ModalMode.moderator,
+      message: "post.modal.image-required-error",
+    });
+    required(schema.imageUrl, {
+      when: () => this.modalMode() !== ModalMode.moderator,
+      message: "post.modal.image-required-error",
+    });
     validate(schema.image, ({ valueOf }) => {
       const image = valueOf(schema.image);
       if (!image) {
@@ -288,7 +295,7 @@ export class PostDetails implements OnInit {
   }
 
   async handleDraft() {
-    if (this.postForm().invalid()) {
+    if (this.postForm().invalid() || this.cropImageForm().invalid()) {
       return;
     }
 

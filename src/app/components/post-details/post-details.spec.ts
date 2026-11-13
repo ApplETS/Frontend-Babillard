@@ -81,7 +81,6 @@ describe("PreviewDetails", () => {
   function setValidForm() {
     postForm.title().value.update(() => "Test Title");
     postForm.content().value.update(() => "Test Content");
-    postForm.imageUrl().value.update(() => "https://example.com/image.jpg");
     postForm.eventStartDate().value.update(() => Date.now());
     postForm.eventEndDate().value.update(() => Date.now());
     postForm.imageAltText().value.update(() => "Test Image Alt Text");
