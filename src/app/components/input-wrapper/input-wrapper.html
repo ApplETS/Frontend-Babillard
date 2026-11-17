@@ -1,0 +1,39 @@
+<div class="flex flex-col gap-1 mb-4">
+  <!-- Étiquette + Astérisque rouge -->
+  <label class="text-sm font-bold text-gray-900">
+    {{ cleTraduction() | transloco }}
+    @if (estRequis()) {
+      <span class="text-red-600">*</span>
+    }
+  </label>
+
+  <div
+    [class]="
+      fieldState().disabled()
+        ? '[&_input]:border-gray-300 [&_input]:bg-gray-100 [&_input]:text-gray-500 [&_input]:cursor-not-allowed'
+        : listeErreurs().length > 0
+          ? '[&_input]:border-red-600 [&_input]:focus:border-red-700'
+          : '[&_input]:border-gray-900 [&_input]:focus:border-blue-600'
+    "
+  >
+    <ng-content>
+      <!-- Input utilisé uniquement si rien n'est passé dans <app-input-wrapper> -->
+      <input
+        class="w-full rounded border-2 px-3 py-2 text-base outline-none transition-colors"
+        [type]="typeChamp()"
+        [formField]="champPourInput()"
+      />
+    </ng-content>
+  </div>
+
+  <!-- Liste des erreurs en rouge -->
+  @if (listeErreurs().length > 0) {
+    <ul class="flex flex-col gap-0.5 mt-1" role="alert">
+      @for (erreur of listeErreurs(); track $index) {
+        <li class="text-xs font-bold text-red-600">
+          {{ erreur.cle | transloco: erreur.params }}
+        </li>
+      }
+    </ul>
+  }
+</div>
