@@ -8,6 +8,16 @@ interface ErreurTraduite {
 }
 type ValeurInput = string | number | boolean | Date | null;
 
+interface ValidationErrorShape {
+  kind?: string;
+  type?: string;
+  message?: string;
+  minLength?: number;
+  maxLength?: number;
+  requiredLength?: number;
+  min?: number;
+  max?: number;
+}
 @Component({
   selector: "app-input-wrapper",
   imports: [TranslocoPipe, FormField],
@@ -17,6 +27,8 @@ export class InputWrapper {
   champFormulaire = input.required<FieldTree<unknown>>();
   cleTraduction = input.required<string>();
   typeChamp = input<string>("text");
+  private static nextId = 0;
+  protected readonly inputId = `app-input-wrapper-${InputWrapper.nextId++}`;
 
   protected champPourInput = computed(
     () => this.champFormulaire() as unknown as FieldTree<ValeurInput>,
@@ -25,8 +37,8 @@ export class InputWrapper {
   protected fieldState = computed(() => this.champFormulaire()());
 
   protected estRequis = computed(() => {
-    const state = this.fieldState();
-    return Boolean((state as any).required?.());
+    const state = this.fieldState() as { required?: () => boolean };
+    return Boolean(state.required?.());
   });
 
   protected listeErreurs = computed<ErreurTraduite[]>(() => {
@@ -44,7 +56,7 @@ export class InputWrapper {
     return errors.map((err) => this.mapErreurVersTraduction(err));
   });
 
-  private mapErreurVersTraduction(error: any): ErreurTraduite {
+  private mapErreurVersTraduction(error: ValidationErrorShape): ErreurTraduite {
     const typeErreur = error.kind ?? error.type ?? "unknown";
 
     switch (typeErreur) {

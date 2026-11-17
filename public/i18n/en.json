@@ -420,6 +420,10 @@
       "max": "Maximum value is {{ max }}",
       "pattern": "The format typed is invalid",
       "unknown": "Invalid field"
+    },
+    "formulaireTest": {
+      "nom": "Name",
+      "courriel": "email"
     }
   }
 }

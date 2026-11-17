@@ -420,6 +420,10 @@
       "max": "La valeur maximale est {{ max }}",
       "pattern": "Le format saisi est invalide",
       "unknown": "Champ invalide"
+    },
+    "formulaireTest": {
+      "nom": "Nom",
+      "courriel": "courriel"
     }
   }
 }
