@@ -85,6 +85,9 @@
   .btn-primary {
     color:#15191E;
   }
+  .input-bordered {
+    border-color: #DCDCDC;
+  }
 }
 /*Les classes qui étaient originalement dans global.css*/
 /*Orignalement markdown-style.module.css */
@@ -230,4 +233,16 @@ markdown a {
 
 .marquee:hover {
   animation: marquee 10s linear infinite;
+}
+
+.input-wrapper-field input {
+  @apply input border-base-content w-full;
+}
+
+.input-wrapper-field.invalid input {
+  @apply input-error border-error;
+}
+
+.input-wrapper-field.disabled input {
+  @apply opacity-50 cursor-not-allowed;
 }

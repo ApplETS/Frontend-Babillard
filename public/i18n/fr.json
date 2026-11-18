@@ -409,21 +409,5 @@
 	},
 	"search": {
 		"action-empty": "Effacer la recherche"
-	},
-  "input-wrapper": {
-    "erreurs": {
-      "requis": "Ce champ est requis",
-      "email": "Saisir un courriel valide",
-      "minLength": "Minimum de {{ minLength }} caractères",
-      "maxLength": "Maximum de {{ maxLength }} caractères",
-      "min": "La valeur minimale est {{ min }}",
-      "max": "La valeur maximale est {{ max }}",
-      "pattern": "Le format saisi est invalide",
-      "unknown": "Champ invalide"
-    },
-    "formulaireTest": {
-      "nom": "Nom",
-      "courriel": "courriel"
-    }
-  }
+	}
 }

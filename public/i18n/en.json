@@ -409,21 +409,5 @@
   },
   "search": {
     "action-empty": "Clear search"
-  },
-  "input-wrapper": {
-    "erreurs": {
-      "requis": "This field is required",
-      "email": "Type a valid email",
-      "minLength": "Minimum of {{ minLength }} character(s)",
-      "maxLength": "Maximum of {{ maxLength }} character(s)",
-      "min": "Minimum value is {{ min }}",
-      "max": "Maximum value is {{ max }}",
-      "pattern": "The format typed is invalid",
-      "unknown": "Invalid field"
-    },
-    "formulaireTest": {
-      "nom": "Name",
-      "courriel": "email"
-    }
   }
 }
