@@ -12,6 +12,20 @@ type InputValue = string | number | boolean | Date | null;
   selector: "app-input-wrapper",
   imports: [TranslocoPipe, FormField],
   templateUrl: "./input-wrapper.html",
+  styles: `
+    .input-bordered {
+      border-color: #dcdcdc;
+    }
+    .input-wrapper-field input {
+      @apply input border-base-content w-full;
+    }
+    .input-wrapper-field.invalid input {
+      @apply input-error border-error;
+    }
+    .input-wrapper-field.disabled input {
+      @apply opacity-50 cursor-not-allowed;
+    }
+  `,
 })
 export class InputWrapper {
   private static nextId = 0;
@@ -35,7 +49,7 @@ export class InputWrapper {
       return [];
     }
     return errors
-      .filter((err) => Boolean(err.message))
+      .filter((err) => err.message !== undefined)
       .map((err) => ({
         key: err.message!,
         params: err as unknown as Record<string, unknown>,
