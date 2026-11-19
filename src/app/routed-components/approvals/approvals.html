@@ -1,1 +1,68 @@
-<p>approvals works!</p>
+<div class="p-7 flex flex-col gap-3">
+  <form class="flex flex-row gap-4 bg-base-200 py-2 px-4" [formRoot]="searchEventForm">
+    <label>
+      <span transloco="approval.search"></span>
+      <app-search
+        class="flex-1"
+        [formField]="searchEventForm.title"
+        [placeholder]="'approval.search-placeholder' | transloco"
+      />
+    </label>
+    <div class="flex flex-row flex-2 gap-4 justify-evenly">
+      <label>
+        <span transloco="pagination.orderBy">a</span>
+        <select
+          class="select select-secondary font-semibold"
+          [formField]="searchEventForm.pagination.orderBy"
+        >
+          @for (keyOption of eventKeys; track keyOption.key) {
+            <option
+              [value]="keyOption.key"
+              [selected]="searchEventForm().value().pagination.orderBy === keyOption.key"
+            >
+              {{ keyOption.label | transloco }}
+            </option>
+          }
+        </select>
+      </label>
+      <label>
+        <span transloco="pagination.order-type">a</span>
+        <app-boolean-select
+          [trueLabel]="'pagination.order-desc' | transloco"
+          [falseLabel]="'pagination.order-asc' | transloco"
+          [formField]="searchEventForm.pagination.descending"
+        />
+      </label>
+    </div>
+    <label>
+      <span transloco="post.filter"></span>
+      <select [formField]="searchEventForm.state" class="select select-secondary font-semibold">
+        @for (item of statuses; track $index) {
+          <option transloco="approval.filters.{{ item.label }}" [value]="item.value"></option>
+        }
+      </select>
+    </label>
+  </form>
+
+  @if (searchEventForm().submitting()) {
+    <app-loading-spinner />
+  } @else {
+    <app-approval-table [events]="paginatedEvents().data" />
+    <app-pagination
+      class="bg-base-200 px-4"
+      [paginationResponse]="paginatedEvents()"
+      [formField]="searchEventForm.pagination"
+    />
+  }
+</div>
+
+<app-modal (closed)="resetModal()">
+  @if (modalMode() !== ModalMode.default) {
+    <app-post-details
+      class="w-full"
+      [(modalMode)]="modalMode"
+      (closed)="resetModal($event)"
+      [event]="selectedEvent()"
+    />
+  }
+</app-modal>
