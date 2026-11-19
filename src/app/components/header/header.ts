@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
     } else {
       const routesPart = [
         {
-          route: "/",
+          route: "/dashboard/news",
           label: "dashboard.news",
           activeRoute: isActive("/dashboard/news", this.router),
           icon: faNewspaper,
@@ -70,9 +70,9 @@ export class HeaderComponent implements OnInit {
 
       if (this.authService.userInfo()?.type?.match(UserType.MODERATOR)) {
         routesPart.push({
-          route: "/approval",
+          route: "/approvals",
           label: "navbar.approval",
-          activeRoute: isActive("/approval", this.router),
+          activeRoute: isActive("/approvals", this.router),
           icon: faListCheck,
         });
       }
