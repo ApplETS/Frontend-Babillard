@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { Approvals } from "./approvals";
+import { TranslocoTestingModule } from "@jsverse/transloco";
 
 describe("Approvals", () => {
   let component: Approvals;
@@ -8,7 +9,16 @@ describe("Approvals", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Approvals],
+      imports: [Approvals,         
+        TranslocoTestingModule.forRoot({
+                langs: {
+                  en: {},
+                  fr: {},
+                },
+                preloadLangs: true,
+                translocoConfig: {},
+              }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Approvals);

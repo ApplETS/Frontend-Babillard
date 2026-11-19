@@ -83,7 +83,7 @@ describe("Header", () => {
     const routes = component.routes();
 
     expect(routes.length).toBe(1);
-    expect(routes[0].route).toBe("/");
+    expect(routes[0].route).toBe("/dashboard/news");
   });
 
   it("should show Moderator routes", () => {
@@ -94,7 +94,7 @@ describe("Header", () => {
     const routes = component.routes();
 
     expect(routes.length).toBe(2);
-    expect(routes.some((route) => route.route === "/approval")).toBe(true);
+    expect(routes.some((route) => route.route === "/approvals")).toBe(true);
   });
 
   it("should show Moderator routes, User with multiple roles", () => {
@@ -107,7 +107,7 @@ describe("Header", () => {
     console.log(routes);
 
     expect(routes.length).toBe(3);
-    expect(routes.some((route) => route.route === "/approval")).toBe(true);
+    expect(routes.some((route) => route.route === "/approvals")).toBe(true);
   });
 
   it("should show Organizer routes", () => {
