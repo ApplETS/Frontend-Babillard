@@ -13,6 +13,7 @@ type InputValue = string | number | boolean | Date | null;
   imports: [TranslocoPipe, FormField],
   templateUrl: "./input-wrapper.html",
   styles: `
+    @reference "../../../styles.css";
     .input-bordered {
       border-color: #dcdcdc;
     }
