@@ -2,6 +2,7 @@ import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { EventState } from "@models/event-state";
 import { ApiService, PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
+import { Event as ModelEvent } from "@models/event";
 
 @Injectable({
   providedIn: "root",
@@ -11,8 +12,8 @@ export class ApprovalService extends ApiService {
 
     async getApprovalEvents(
     parameters: PaginatedApprovalEventsParameters,
-  ): Promise<PaginatedResponse<Event>> {
-    const response = await this.get<PaginatedResponse<Event>>(
+  ): Promise<PaginatedResponse<ModelEvent>> {
+    const response = await this.get<PaginatedResponse<ModelEvent>>(
       this.getActionUrl(""),
       [],
       new HttpParams({
