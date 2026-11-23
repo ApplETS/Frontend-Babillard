@@ -1,16 +1,16 @@
 <div class="rounded-full mask mask-circle" [class]="size">
-  @if (user?.avatarUrl !== null && !usePlaceholder()) {
+  @if (user()?.avatarUrl !== null && !usePlaceholder()) {
     <div
       [class.hidden]="!loading()"
       [class.block]="loading()"
-      [class]="size"
+      [class]="size()"
       class="skeleton rounded-full shrink-0"
     ></div>
     <img
       alt="Avatar"
       [class.hidden]="loading()"
       [class.block]="!loading()"
-      [src]="user?.avatarUrl + '?ver=' + now.getTime()"
+      [src]="user()?.avatarUrl + '?ver=' + now.getTime()"
       (error)="setPlaceholder()"
       (load)="loading.set(false)"
     />
@@ -18,15 +18,15 @@
     <div class="avatar placeholder block">
       <div
         class="text-white rounded-full"
-        [class]="size"
+        [class]="size()"
         [class.bg-base-content]="!themeService.isDark()"
-        [class]="color"
+        [class]="color()"
       >
-        <span [class]="textSize">
-          @if (isModerator) {
+        <span [class]="textSize()">
+          @if (isModerator()) {
             M
           } @else {
-            {{ user?.organization?.at(0) }}
+            {{ user()?.organization?.at(0) }}
           }
         </span>
       </div>

@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from "@angular/core";
+import { Component, computed, inject, input, Input, signal } from "@angular/core";
 import { User } from "@models/user";
 import { UserType } from "@models/user-types";
 import { UserResponseDTO } from "@models/userResponseDTO.interface";
@@ -10,10 +10,10 @@ import { ThemeService } from "@services/themeService/theme.service";
   templateUrl: "./avatar.html",
 })
 export class Avatar {
-  @Input() size = "w-10 h-10";
-  @Input() textSize = "text-lg";
-  @Input() color = "bg-base-100";
-  @Input() user: User | UserResponseDTO | null = null;
+  size = input<string>("w-10 h-10");
+  textSize = input<string>("text-lg");
+  color = input<string>("bg-base-100");
+  user = input<User | UserResponseDTO | null>(null);
 
   themeService = inject(ThemeService);
 
@@ -26,7 +26,5 @@ export class Avatar {
     this.usePlaceholder.set(true);
   }
 
-  get isModerator(): boolean {
-    return this.user?.type === UserType.MODERATOR;
-  }
+  isModerator = computed(() => this.user()?.type === UserType.MODERATOR);
 }
