@@ -58,7 +58,7 @@ export class Approvals {
     endDate: "",
     activityAreas: [],
     tags: [],
-    state: EventState.OnHold,
+    state: EventState.All,
     pagination: {
       page: 1,
       pageSize: 10,
@@ -103,6 +103,10 @@ export class Approvals {
 
   searchEvents() {
     submit(this.searchEventForm);
+  }
+
+  openModal(e: ModelEvent) {
+    console.log("openModal", e);
   }
 }
 

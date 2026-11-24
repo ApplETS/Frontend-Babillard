@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from "@angular/core";
+import { Component, computed, inject, input, output } from "@angular/core";
 import { Avatar } from "@components/avatar/avatar";
 import { TranslocoDirective, TranslocoService } from "@jsverse/transloco";
 import { TranslocoDatePipe } from "@jsverse/transloco-locale";
@@ -13,11 +13,12 @@ import { Event } from "@models/event";
 })
 export class ApprovalTable {
   events = input.required<Event[]>();
+  selectedEvent = output<Event>();
   readonly newsStatuses = Constants.newsStatuses;
 
   translocoService = inject(TranslocoService);
 
-    headers = computed<{ key: string; label: string }[]>(() => {
+  headers = computed<{ key: string; label: string }[]>(() => {
     return [
       { key: "author", label: "approval.table.author" },
       { key: "title", label: "approval.table.title" },
