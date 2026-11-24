@@ -192,16 +192,18 @@
     "error-fetching-events": "An error occured while loading the posts",
     "none": "None"
   },
-  "approbations": {
+  "approval": {
     "title": "Approbations",
     "none": "None",
-    "search": "Search",
+    "search": "Search",		
+    "search-placeholder": "Pub 100 Génies",
     "no-post": "No post found",
     "activity-area-filters": "Activity area",
     "table": {
       "author": "Author",
       "title": "Title",
       "release-date": "Release date",
+      "undefined-release-date": "Undefined release date",
       "status": "Status",
       "open": "Open"
     },

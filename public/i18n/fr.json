@@ -195,12 +195,14 @@
 	"approval": {
 		"title": "Approbations",
 		"search": "Rechercher",
+		"search-placeholder": "Pub 100 Génies",
 		"no-post": "Aucune publication",
 		"activity-area-filters": "Secteur d'activité",
 		"table": {
 			"author": "Auteur",
 			"title": "Titre",
 			"release-date": "Date de publication",
+			"undefined-release-date": "Date de publication indéfinie",
 			"status": "Statut",
 			"open": "Ouvrir"
 		},
