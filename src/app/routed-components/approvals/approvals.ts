@@ -106,7 +106,9 @@ export class Approvals {
   }
 
   openModal(e: ModelEvent) {
-    console.log("openModal", e);
+    this.selectedEvent.set(e);
+    this.modalMode.set(ModalMode.moderator);
+    this.modal().showModal();
   }
 }
 
