@@ -251,6 +251,7 @@ export class PostDetails implements OnInit {
 
         return null;
       });
+      disabled(schema, () => this.postForm().disabled());
     },
   );
 
