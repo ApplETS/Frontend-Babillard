@@ -376,6 +376,14 @@ export class PostDetails implements OnInit {
       }
     }
   }
+
+  handleApprove() {}
+
+  showRefusalForm = signal(false);
+  refusalForm = form<string>(signal(""), (schema) => {
+    required(schema);
+    disabled(schema, () => this.modalMode() !== ModalMode.moderator);
+  });
 }
 
 export interface CropImageForm {

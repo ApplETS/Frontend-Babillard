@@ -5,17 +5,12 @@
       <div class="flex items-center gap-2">
         <h1 class="text-2xl block" [transloco]="modalTitle()">a</h1>
         @if (modalMode() === ModalMode.modify) {
-          <div
-            class="tooltip tooltip-bottom ml-2"
-            [attr.data-tip]="'post.modal.tool-tip-text' | transloco"
-          >
-            <button
-              type="button"
-              class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2"
-            >
-              !
-            </button>
-          </div>
+        <div class="tooltip tooltip-bottom ml-2" [attr.data-tip]="'post.modal.tool-tip-text' | transloco">
+          <button type="button"
+            class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
+            !
+          </button>
+        </div>
         }
         <!-- @if (!postForm().disabled()) {
           <div class="ml-auto">
@@ -36,14 +31,10 @@
             <label class="block mb-3">
               <span transloco="post.modal.title"></span>
               @if (postForm.title().required()) {
-                <span class="text-red">*</span>
+              <span class="text-red">*</span>
               }
               <div [class.disabled]="postForm.title().disabled()">
-                <input
-                  [formField]="postForm.title"
-                  type="text"
-                  class="input input-ghost w-full"
-                />
+                <input [formField]="postForm.title" type="text" class="input input-ghost w-full" />
               </div>
             </label>
 
@@ -53,14 +44,11 @@
                   <label class="block">
                     <span transloco="post.modal.published-date"></span>
                     @if (postForm.publicationDate().required()) {
-                      <span class="text-red">*</span>
+                    <span class="text-red">*</span>
                     }
                     <div [class.disabled]="postForm.publicationDate().disabled()">
-                      <input
-                        type="datetime-local"
-                        [formField]="postForm.publicationDate"
-                        class="input input-ghost w-full"
-                      />
+                      <input type="datetime-local" [formField]="postForm.publicationDate"
+                        class="input input-ghost w-full" />
                     </div>
                   </label>
                 </div>
@@ -70,14 +58,11 @@
                 <label class="block">
                   <span transloco="post.modal.event-start-date"></span>
                   @if (postForm.eventStartDate().required()) {
-                    <span class="text-red">*</span>
+                  <span class="text-red">*</span>
                   }
                   <div [class.disabled]="postForm.eventStartDate().disabled()">
-                    <input
-                      type="datetime-local"
-                      [formField]="postForm.eventStartDate"
-                      class="input input-ghost w-full"
-                    />
+                    <input type="datetime-local" [formField]="postForm.eventStartDate"
+                      class="input input-ghost w-full" />
                   </div>
                 </label>
               </div>
@@ -85,47 +70,34 @@
                 <label class="block">
                   <span transloco="post.modal.event-end-date"></span>
                   @if (postForm.eventEndDate().required()) {
-                    <span class="text-red">*</span>
+                  <span class="text-red">*</span>
                   }
-                  <div
-                    [class.disabled]="
+                  <div [class.disabled]="
                       postForm.eventStartDate().invalid() || postForm.eventEndDate().disabled()
-                    "
-                  >
-                    <input
-                      type="datetime-local"
-                      [formField]="postForm.eventEndDate"
-                      class="input input-ghost w-full"
-                    />
+                    ">
+                    <input type="datetime-local" [formField]="postForm.eventEndDate" class="input input-ghost w-full" />
                   </div>
                 </label>
               </div>
             </div>
             <div class="mb-3">
               <span class="block" transloco="post.modal.tags-title">a</span>
-              <div
-                class="flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg"
-              >
+              <div class="flex items-center min-h-[3rem] gap-2 py-2 px-2 border border-base-content rounded-lg">
                 @for (tag of postForm.tags().value(); track tag) {
-                  <div
-                    [class]="Constants.colors.at($index)"
-                    class="badge text-black py-4 px-3 flex items-center whitespace-nowrap overflow-hidden"
-                    style="max-width: &quot;calc(100% - 30px)&quot;"
-                  >
-                    <span class="truncate">{{ tags().find((t) => t.id === tag)?.name }}</span>
-                    @if (!postForm.tags().disabled()) {
-                      <button type="button" (click)="removeTag(tag)">
-                        <fa-icon class="ml-2 cursor-pointer" [icon]="faXmark" />
-                      </button>
-                    }
-                  </div>
+                <div [class]="Constants.colors.at($index)"
+                  class="badge text-black py-4 px-3 flex items-center whitespace-nowrap overflow-hidden"
+                  style="max-width: &quot;calc(100% - 30px)&quot;">
+                  <span class="truncate">{{ tags().find((t) => t.id === tag)?.name }}</span>
+                  @if (!postForm.tags().disabled()) {
+                  <button type="button" (click)="removeTag(tag)">
+                    <fa-icon class="ml-2 cursor-pointer" [icon]="faXmark" />
+                  </button>
+                  }
+                </div>
                 }
                 @if (canAddTag()) {
-                  <app-combobox
-                    [values]="availableTags()"
-                    [placeholder]="'post.search' | transloco"
-                    (valueChanged)="addTag($event!)"
-                  />
+                <app-combobox [values]="availableTags()" [placeholder]="'post.search' | transloco"
+                  (valueChanged)="addTag($event!)" />
                 }
               </div>
             </div>
@@ -137,104 +109,66 @@
                 <label class="block" for="alt-text">
                   <span transloco="post.modal.alt-text"></span>
                   @if (postForm.imageAltText().required()) {
-                    <span class="text-red">*</span>
+                  <span class="text-red">*</span>
                   }
                 </label>
-                <div
-                  class="tooltip tooltip-bottom ml-2"
-                  [attr.data-tip]="'post.modal.alt-text-tooltip' | transloco"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2"
-                  >
+                <div class="tooltip tooltip-bottom ml-2" [attr.data-tip]="'post.modal.alt-text-tooltip' | transloco">
+                  <button type="button"
+                    class="btn btn-circle bg-base-300 btn-sm text-xs h-8 w-8 flex items-center justify-center mb-2">
                     ?
                   </button>
                 </div>
               </div>
               <div [class.disabled]="postForm.imageAltText().disabled()">
-                <input
-                  type="text"
-                  [formField]="postForm.imageAltText"
-                  class="input input-ghost w-full"
-                  id="alt-text"
-                />
+                <input type="text" [formField]="postForm.imageAltText" class="input input-ghost w-full" id="alt-text" />
               </div>
             </div>
             <div class="flex-1 h-64 overflow-clip rounded-lg">
-              <input
-                type="file"
-                class="file-input file-input-bordered file-input-accent w-full"
-                (change)="fileSelected($event)"
-                [disabled]="cropImageForm.image().disabled()"
-                accept="image/*"
-                #image
-              />
+              <input type="file" class="file-input file-input-bordered file-input-accent w-full"
+                (change)="fileSelected($event)" [disabled]="cropImageForm.image().disabled()" accept="image/*" #image />
               @let imageTypeError =
-                cropImageForm
-                  .image()
-                  .errors()
-                  .find((e) => e.kind === "invalidType");
+              cropImageForm
+              .image()
+              .errors()
+              .find((e) => e.kind === "invalidType");
               @if (imageTypeError) {
-                <span class="text-red" [transloco]="imageTypeError.message"></span>
+              <span class="text-red" [transloco]="imageTypeError.message"></span>
               }
 
               @if (cropMenuOpened()) {
-                <div class="relative">
-                  <image-cropper
-                    [aspectRatio]="Constants.aspectRatios.post"
-                    [maintainAspectRatio]="true"
-                    [imageFile]="cropImageForm.image().value()!"
-                    (imageCropped)="temporaryCroppedImageEvent.set($event)"
-                  />
-                </div>
-                <div class="flex flex-row gap-2 justify-end mt-2">
-                  <button
-                    class="btn btn-tertiary"
-                    type="button"
-                    [disabled]="cropImageForm.croppedImage().value() === null"
-                    (click)="cropMenuOpened.set(false)"
-                    transloco="post.modal.image-cropper.cancel"
-                  >
-                    a
-                  </button>
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    (click)="cropImage(temporaryCroppedImageEvent()!)"
-                    transloco="post.modal.image-cropper.crop"
-                  >
-                    a
-                  </button>
-                </div>
+              <div class="relative">
+                <image-cropper [aspectRatio]="Constants.aspectRatios.post" [maintainAspectRatio]="true"
+                  [imageFile]="cropImageForm.image().value()!"
+                  (imageCropped)="temporaryCroppedImageEvent.set($event)" />
+              </div>
+              <div class="flex flex-row gap-2 justify-end mt-2">
+                <button class="btn btn-tertiary" type="button"
+                  [disabled]="cropImageForm.croppedImage().value() === null" (click)="cropMenuOpened.set(false)"
+                  transloco="post.modal.image-cropper.cancel">
+                  a
+                </button>
+                <button class="btn btn-primary" type="button" (click)="cropImage(temporaryCroppedImageEvent()!)"
+                  transloco="post.modal.image-cropper.crop">
+                  a
+                </button>
+              </div>
               } @else if (imageUrlDefined()) {
-                <img
-                  [src]="imageUrl()"
-                  [alt]="postForm.imageAltText().value()"
-                  class="w-full aspect-[2/1] rounded-lg mt-2"
-                />
+              <img [src]="imageUrl()" [alt]="postForm.imageAltText().value()"
+                class="w-full aspect-[2/1] rounded-lg mt-2" />
 
-                @if (cropImageForm.imageUrl().value !== null) {}
-                <div class="flex flex-row justify-end mt-2 gap-2">
-                  <button
-                    type="button"
-                    class="btn btn-error"
-                    (click)="resetCropImageForm(); image.value = ''"
-                    transloco="post.modal.image-cropper.delete-image"
-                  >
-                    a
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    transloco="post.modal.image-cropper.title"
-                    (click)="cropMenuOpened.set(true)"
-                  >
-                    a
-                  </button>
-                </div>
+              @if (cropImageForm.imageUrl().value !== null) {}
+              <div class="flex flex-row justify-end mt-2 gap-2">
+                <button type="button" class="btn btn-error" (click)="resetCropImageForm(); image.value = ''"
+                  transloco="post.modal.image-cropper.delete-image">
+                  a
+                </button>
+                <button type="button" class="btn btn-primary" transloco="post.modal.image-cropper.title"
+                  (click)="cropMenuOpened.set(true)">
+                  a
+                </button>
+              </div>
               } @else {
-                <div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
+              <div class="w-full h-full rounded-lg mt-2 bg-base-300 dark:bg-base-100"></div>
               }
             </div>
           </div>
@@ -245,53 +179,52 @@
         <label class="block" for="content">
           <span transloco="post.modal.content"></span>
           @if (postForm.content().required()) {
-            <span class="text-red">*</span>
+          <span class="text-red">*</span>
           }
           @if (postForm.content().disabled()) {
-            <div class="relative">
-              <div class="disabled">
-                <markdown [data]="postForm.content().value()" class="p-2" />
-              </div>
+          <div class="relative">
+            <div class="disabled">
+              <markdown [data]="postForm.content().value()" class="p-2" />
             </div>
+          </div>
           } @else {
-            <textarea [formField]="postForm.content" class="w-full" id="content"></textarea>
+          <textarea [formField]="postForm.content" class="w-full" id="content"></textarea>
           }
         </label>
       </div>
 
       @for (error of postForm().errors(); track error.kind) {
-        <span class="text-red" [transloco]="error.message"></span>
+      <span class="text-red" [transloco]="error.message"></span>
       }
 
       <div class="divider my-1"></div>
 
-      <div
-        class="mt-2 flex"
-        [class.justify-between]="modalMode() === ModalMode.moderator"
-        [class.justify-start]="modalMode() !== ModalMode.moderator"
-      >
+      <div class="mt-2 flex" [class.justify-between]="modalMode() === ModalMode.moderator"
+        [class.justify-start]="modalMode() !== ModalMode.moderator">
         @switch (modalMode()) {
-          @case (ModalMode.moderator) {
-            <!-- {modalMode === Constants.publicationModalStatus.moderator && (
-				<>
-					{publication?.state !== NewsStates.PUBLISHED ? (
-					<div class="grid grid-cols-2 gap-6">
-						<button class="font-normal btn btn-success px-8" disabled={publication?.state===NewsStates.APPROVED ??
-							false} onClick={handleApprove} type="button">
-							{ta('modal.approve-button')}
-						</button>
-						<button class="font-normal btn btn-error" onClick={()=> setRejectModalOpen(true)}
-							type="button"
-							>
-							{ta('modal.reject-button')}
-						</button>
-					</div>
-					) : (
-					<button class="font-normal btn btn-error px-8" onClick={()=> setDeleteModalOpen(true)}
-						type="button"
-						>
-						{ta('modal.deactivate-button')}
-					</button>
+        @case (ModalMode.moderator) {
+        @if (event()?.state !== EventState.Published) {
+        <div class="grid grid-cols-2 gap-6">
+          <button class="font-normal btn btn-success px-8" [disabled]="event()?.state===EventState.Approved"
+            (click)="handleApprove()" type="button" transloco="approval.modal.approve-button">
+            a
+          </button>
+          <button class="font-normal btn btn-error" (click)="showRefusalForm.set(true)" type="button"
+            transloco="approval.modal.reject-button">
+            a
+          </button>
+        </div>
+        } @else {
+        <button class="font-normal btn btn-error px-8" (click)="showRefusalForm.set(true)"
+          transloco="approval.modal.deactivate-button" type="button">
+          a
+        </button>
+        }
+
+        @if (showRefusalForm()) {
+          Refusal actif
+        }
+        <!-- (
 					)}
 				</>
 				)}
@@ -330,81 +263,59 @@
 							)}
 						</div>
 			</div> -->
-          }
-          @case (ModalMode.create)
-          @case (ModalMode.modify)
-          @case (ModalMode.duplicate) {
-            <button
-              class="btn btn-info px-8 font-normal"
-              [disabled]="event()?.state === EventState.Approved"
-              (click)="handleDraft()"
-              type="button"
-              [transloco]="submitButtonLabel()"
-            >
+        }
+        @case (ModalMode.create)
+        @case (ModalMode.modify)
+        @case (ModalMode.duplicate) {
+        <button class="btn btn-info px-8 font-normal" [disabled]="event()?.state === EventState.Approved"
+          (click)="handleDraft()" type="button" [transloco]="submitButtonLabel()">
+          a
+        </button>
+        @if (postForm().submitting()) {
+        <p>
+          Envoi en cours... <span class="loading loading-spinner loading-lg h-10 w-10"></span>
+        </p>
+        }
+        }
+        @case (ModalMode.delete) {
+        @if (!deleteConfirmationOpened()) {
+        <button class="btn-error btn px-8 font-normal" transloco="post.modal.delete-button" type="button"
+          (click)="deleteConfirmationOpened.set(true)">
+          a
+        </button>
+        } @else {
+        <div class="flex-col flex gap-2">
+          <label>
+            <span transloco="post.modal.delete-title"></span>
+            <input type="text" [formField]="deleteConfirmationForm" class="input input-ghost w-full" />
+          </label>
+          <div class="flex flex-row gap-2 mt-2">
+            <button class="btn btn-error px-8 font-normal" [disabled]="deleteConfirmationForm().invalid()"
+              (click)="handleDelete()" type="button" transloco="post.modal.delete-button">
               a
             </button>
-            @if (postForm().submitting()) {
-              <p>
-                Envoi en cours... <span class="loading loading-spinner loading-lg h-10 w-10"></span>
-              </p>
+            <button class="btn btn-info px-8 font-normal ml-2 bg-base-300 hover:bg-secondary dark:btn-secondary"
+              (click)="resetDeleteConfirmationForm()" type="button" transloco="post.modal.cancel-button">
+              a
+            </button>
+            @if (
+            deleteConfirmationForm()
+            .errors()
+            .some((e) => e.kind === "unable")
+            ) {
+            <span class="text-red" transloco="post.modal.delete-error-unable"></span>
             }
-          }
-          @case (ModalMode.delete) {
-            @if (!deleteConfirmationOpened()) {
-              <button
-                class="btn-error btn px-8 font-normal"
-                transloco="post.modal.delete-button"
-                type="button"
-                (click)="deleteConfirmationOpened.set(true)"
-              >
-                a
-              </button>
-            } @else {
-              <div class="flex-col flex gap-2">
-                <label>
-                  <span transloco="post.modal.delete-title"></span>
-                  <input
-                    type="text"
-                    [formField]="deleteConfirmationForm"
-                    class="input input-ghost w-full"
-                  />
-                </label>
-                <div class="flex flex-row gap-2 mt-2">
-                  <button
-                    class="btn btn-error px-8 font-normal"
-                    [disabled]="deleteConfirmationForm().invalid()"
-                    (click)="handleDelete()"
-                    type="button"
-                    transloco="post.modal.delete-button"
-                  >
-                    a
-                  </button>
-                  <button
-                    class="btn btn-info px-8 font-normal ml-2 bg-base-300 hover:bg-secondary dark:btn-secondary"
-                    (click)="resetDeleteConfirmationForm()"
-                    type="button"
-                    transloco="post.modal.cancel-button"
-                  >
-                    a
-                  </button>
-                  @if (
-                    deleteConfirmationForm()
-                      .errors()
-                      .some((e) => e.kind === "unable")
-                  ) {
-                    <span class="text-red" transloco="post.modal.delete-error-unable"></span>
-                  }
-                  @if (
-                    deleteConfirmationForm()
-                      .errors()
-                      .some((e) => e.kind === "serverError")
-                  ) {
-                    <span class="text-red" transloco="post.modal.delete-error-toast-message"></span>
-                  }
-                </div>
-              </div>
+            @if (
+            deleteConfirmationForm()
+            .errors()
+            .some((e) => e.kind === "serverError")
+            ) {
+            <span class="text-red" transloco="post.modal.delete-error-toast-message"></span>
             }
-          }
+          </div>
+        </div>
+        }
+        }
         }
       </div>
     </div>
