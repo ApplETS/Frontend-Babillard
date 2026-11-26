@@ -10,7 +10,7 @@ import { Event as ModelEvent } from "@models/event";
 export class ApprovalService extends ApiService {
   protected override apiController = "moderator-events";
 
-    async getApprovalEvents(
+  async getApprovalEvents(
     parameters: PaginatedApprovalEventsParameters,
   ): Promise<PaginatedResponse<ModelEvent>> {
     const response = await this.get<PaginatedResponse<ModelEvent>>(
@@ -23,6 +23,10 @@ export class ApprovalService extends ApiService {
       }),
     );
     return response;
+  }
+
+  async setApprovalEventStatus(eventId: string, status: EventState, refusalReason = ""): Promise<void> {
+    
   }
 }
 

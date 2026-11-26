@@ -4,6 +4,7 @@ import { ApprovalService } from "./approval.service";
 import { provideHttpClient } from "@angular/common/http";
 import { provideHttpClientTesting, HttpTestingController } from "@angular/common/http/testing";
 import { environment } from "@environments/environment";
+import { EventState } from "@models/event-state";
 
 describe("ApprovalService", () => {
   let service: ApprovalService;
@@ -43,5 +44,22 @@ describe("ApprovalService", () => {
 
     const result = await responsePromise;
     expect(result).toEqual(mockResponse);
+  });
+
+  it("should call /api/moderator-events/{eventId}/state when setApprovalEventStatus is called", async () => {
+    const eventId = "1";
+    const status = EventState.Approved;
+    
+    const responsePromise = service.setApprovalEventStatus(eventId, status);
+
+    const req = httpClient.expectOne(`${environment.API_URL}/api/moderator-events/${eventId}/state`);
+    expect(req.request.method).toBe("PATCH");
+    expect(req.request.body).toBeNull();
+    expect(req.request.params.get("status")).toBe(status);
+    expect(req.request.params.get("refusalReason")).toBe("");
+    req.flush({});
+
+    const response = await responsePromise;
+    expect(response).toBeUndefined();
   });
 });
