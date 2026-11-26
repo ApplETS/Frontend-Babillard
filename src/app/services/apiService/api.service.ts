@@ -84,6 +84,24 @@ export abstract class ApiService {
     );
   }
 
+  protected async patch<T>(
+    action: string,
+    body: unknown,
+    routeParameters: unknown[] = [],
+    queryParameters: HttpParams = new HttpParams(),
+  ): Promise<T> {
+    if (!action.endsWith("/") && routeParameters.length > 0) {
+      action += "/";
+
+    }
+
+    if (routeParameters.length > 0) {
+      action += routeParameters.join("/");
+    }
+
+    return await lastValueFrom(this.httpService.patch<T>(action, body, { params: queryParameters }));
+  }
+
   protected async patchMultipartForm<T>(
     action: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

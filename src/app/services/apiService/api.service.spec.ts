@@ -59,6 +59,10 @@ export class TestApiService extends ApiService {
   ): Promise<T> {
     return await super.delete<T>(action, routeParameters, queryParameters);
   }
+
+  public override async patch<T>(action: string, body: unknown, routeParameters?: unknown[], queryParameters?: HttpParams): Promise<T> {
+    return await super.patch<T>(action, body, routeParameters, queryParameters);
+  }
 }
 
 describe("ApiService", () => {
@@ -230,6 +234,34 @@ describe("ApiService", () => {
         request.params.get("key") === "value"
       );
     }, "DELETE request");
+
+    req.flush("response");
+
+    await expect(responsePromise).resolves.toBe("response");
+  });
+
+  it("should call httpService.patch with the correct url, body, and query parameters", async () => {
+    const action = "testAction";
+    const routeParameters = ["param1", "param2"];
+    const queryParameters = new HttpParams().set("key", "value");
+    const body = { data: "test" };
+    const expectedUrl = `${environment.API_URL}/api/test/${action}/${routeParameters.join("/")}`;
+    const responsePromise = service.patch<string>(
+      service.getActionUrl(action),
+      body,
+      routeParameters,
+      queryParameters,
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const req = httpServiceSpy.expectOne((request) => {
+      return (
+        request.method === "PATCH" &&
+        request.url === expectedUrl &&
+        request.params.get("key") === "value"
+      );
+    }, "PATCH request");
 
     req.flush("response");
 
