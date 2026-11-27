@@ -1,4 +1,4 @@
-import { HttpParams } from "@angular/common/http";
+import { HttpErrorResponse, HttpParams, HttpStatusCode } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { EventState } from "@models/event-state";
 import { ApiService, PaginatedResponse, PaginationParameters } from "@services/apiService/api.service";
@@ -26,7 +26,27 @@ export class ApprovalService extends ApiService {
   }
 
   async setApprovalEventStatus(eventId: string, status: EventState, refusalReason = ""): Promise<void> {
-    
+    try {
+      await this.patch<void>(
+        this.getActionUrl(`${eventId}/state`),
+        null,
+        [],
+        new HttpParams({
+          fromObject: {
+            status,
+            refusalReason,
+          },
+        }),
+      );
+    } catch (e: unknown) {
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === HttpStatusCode.BadRequest) {
+          throw new Error(e.error, { cause: e });
+        }
+      }
+
+      throw new Error("An unexpected error occurred.", { cause: e });
+    }
   }
 }
 

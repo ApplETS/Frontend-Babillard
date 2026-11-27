@@ -382,6 +382,13 @@ export class PostDetails implements OnInit {
   showRefusalForm = signal(false);
   refusalForm = form<string>(signal(""), (schema) => {
     required(schema);
+    validate(schema, ({ value}) => {
+      if (value().trim().length === 0) {
+        return { kind: "empty" };
+      }
+
+      return null;
+    })
     disabled(schema, () => this.modalMode() !== ModalMode.moderator);
   });
 }
