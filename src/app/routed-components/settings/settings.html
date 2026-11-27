@@ -1,0 +1,115 @@
+<section *transloco="let t; prefix: 'settings'" class="mx-auto max-w-3xl px-4 py-8">
+  <!-- Header -->
+  <header class="mb-8 border-b border-base-300 pb-4">
+    <h1 class="text-2xl font-bold tracking-tight">{{ t('title') }}</h1>
+    <p class="mt-1 text-sm opacity-75">{{ t('subtitle') }}</p>
+  </header>
+
+  <form (submit)="saveSettings($event)" class="space-y-6">
+    <!-- Section Profil -->
+    <div class="rounded-xl border border-base-300 bg-base-100 p-6 shadow-sm">
+      <h2 class="mb-4 text-lg font-semibold">{{ t('profile.heading') }}</h2>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <app-input-wrapper
+          [formField]="settingsForm.displayName"
+          translationKey="settings.profile.displayName"
+        />
+
+        <div>
+          <app-input-wrapper
+            [formField]="settingsForm.email"
+            translationKey="settings.profile.email"
+            inputType="email"
+          />
+          <p class="-mt-2 text-xs opacity-60">{{ t('profile.emailManagedByOidc') }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Préférences -->
+    <div class="rounded-xl border border-base-300 bg-base-100 p-6 shadow-sm">
+      <h2 class="mb-4 text-lg font-semibold">{{ t('preferences.heading') }}</h2>
+
+      <div class="space-y-4 gap-2 flex justify-between">
+        <!-- Sélection de langue avec projection ng-content -->
+        <app-lang-switcher/>
+
+        <!-- Toggle Mode Sombre -->
+        <app-theme-switcher/>
+      </div>
+    </div>
+
+    <!-- Section Notifications -->
+    <div class="rounded-xl border border-base-300 bg-base-100 p-6 shadow-sm">
+      <h2 class="mb-4 text-lg font-semibold">{{ t('notifications.heading') }}</h2>
+
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <label for="emailNotif" class="text-sm font-bold">
+              {{ t('notifications.email') }}
+            </label>
+            <p class="text-xs opacity-70">{{ t('notifications.emailDesc') }}</p>
+          </div>
+
+          <input
+            id="emailNotif"
+            type="checkbox"
+            class="toggle toggle-primary"
+            [formField]="settingsForm.emailNotifications"
+          />
+        </div>
+
+        <div class="flex items-center justify-between border-t border-base-200 pt-4">
+          <div>
+            <label for="pushNotif" class="text-sm font-bold">
+              {{ t('notifications.push') }}
+            </label>
+            <p class="text-xs opacity-70">{{ t('notifications.pushDesc') }}</p>
+          </div>
+
+          <input
+            id="pushNotif"
+            type="checkbox"
+            class="toggle toggle-primary"
+            [formField]="settingsForm.pushNotifications"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Barre d'actions -->
+    <div class="flex items-center justify-between pt-2">
+      <div>
+        @if (saveSuccess()) {
+          <span class="text-sm font-medium text-success">
+            {{ t('actions.savedSuccess') }}
+          </span>
+        }
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          class="btn btn-ghost"
+          [disabled]="!hasChanges() || isSaving()"
+          (click)="resetForm()"
+        >
+          {{ t('actions.cancel') }}
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!hasChanges() || isSaving() || settingsForm().invalid()"
+        >
+          @if (isSaving()) {
+            <app-loading-spinner/>
+          }
+          {{ t('actions.save') }}
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

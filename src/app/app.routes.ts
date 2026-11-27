@@ -12,5 +12,10 @@ export const routes: Routes = [
     loadComponent: () => import("@routed-components/posts/posts").then((m) => m.Posts),
     canActivate: [organizerGuard],
   },
+  {
+    path: "settings",
+    loadComponent: () =>
+      import("@routed-components/settings/settings").then((m) => m.Settings),
+  },
   { path: "**", redirectTo: "/dashboard/news" },
 ];
