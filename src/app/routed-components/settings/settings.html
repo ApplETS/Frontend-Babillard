@@ -10,82 +10,148 @@
     <div class="rounded-xl border border-base-300 bg-base-100 p-6 shadow-sm">
       <h2 class="mb-4 text-lg font-semibold">{{ t('profile.heading') }}</h2>
 
-      <div class="grid gap-4 sm:grid-cols-2">
-        <app-input-wrapper
-          [formField]="settingsForm.displayName"
-          translationKey="settings.profile.displayName"
-        />
+      <!-- Avatar Upload -->
+      <div class="mb-6 flex items-center gap-4">
+        <div class="avatar">
+          <div class="w-16 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+            @if (avatarPreview() || currentAvatarUrl()) {
+              <img [src]="avatarPreview() || currentAvatarUrl()" alt="Avatar" />
+            } @else {
+              <div class="flex h-full w-full items-center justify-center bg-base-300 text-lg font-bold">
+                {{ profileModel().email?.charAt(0)?.toUpperCase() || '?' }}
+              </div>
+            }
+          </div>
+        </div>
 
+        <div>
+          <label for="avatarInput" class="btn btn-sm btn-outline">
+            @if (isUploadingAvatar()) {
+              <app-loading-spinner />
+            }
+            {{ t('profile.changeAvatar') }}
+          </label>
+          <input
+            id="avatarInput"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            (change)="onAvatarSelected($event)"
+          />
+          <p class="mt-1 text-xs opacity-60">{{ t('profile.avatarHint') }}</p>
+        </div>
+      </div>
+
+      <!-- Core Profile Fields -->
+      <div class="grid gap-x-4 sm:grid-cols-2">
         <div>
           <app-input-wrapper
             [formField]="settingsForm.email"
             translationKey="settings.profile.email"
             inputType="email"
           />
-          <p class="-mt-2 text-xs opacity-60">{{ t('profile.emailManagedByOidc') }}</p>
+          <p class="-mt-3 mb-4 text-xs opacity-60">{{ t('profile.emailReadOnly') }}</p>
+        </div>
+
+        <app-input-wrapper
+          [formField]="settingsForm.organization"
+          translationKey="settings.profile.organization"
+        />
+
+        <div class="sm:col-span-2">
+          <app-input-wrapper
+            [formField]="settingsForm.profileDescription"
+            translationKey="settings.profile.description"
+          >
+            <textarea
+              id="profileDescriptionInput"
+              rows="3"
+              class="textarea textarea-bordered border-base-content w-full"
+              [formField]="settingsForm.profileDescription"
+            ></textarea>
+          </app-input-wrapper>
         </div>
       </div>
     </div>
 
-    <!-- Section Préférences -->
+    <!-- Social & Website Links -->
     <div class="rounded-xl border border-base-300 bg-base-100 p-6 shadow-sm">
-      <h2 class="mb-4 text-lg font-semibold">{{ t('preferences.heading') }}</h2>
+      <h2 class="mb-4 text-lg font-semibold">{{ t('links.heading') }}</h2>
 
-      <div class="space-y-4 gap-2 flex justify-between">
-        <!-- Sélection de langue avec projection ng-content -->
-        <app-lang-switcher/>
-
-        <!-- Toggle Mode Sombre -->
-        <app-theme-switcher/>
+      <div class="grid gap-x-4 sm:grid-cols-2">
+        <app-input-wrapper
+          [formField]="settingsForm.webSiteLink"
+          translationKey="settings.links.website"
+          inputType="url"
+        />
+        <app-input-wrapper
+          [formField]="settingsForm.linkedInLink"
+          translationKey="settings.links.linkedin"
+          inputType="url"
+        />
+        <app-input-wrapper
+          [formField]="settingsForm.discordLink"
+          translationKey="settings.links.discord"
+        />
+        <app-input-wrapper
+          [formField]="settingsForm.xLink"
+          translationKey="settings.links.x"
+          inputType="url"
+        />
+        <app-input-wrapper
+          [formField]="settingsForm.instagramLink"
+          translationKey="settings.links.instagram"
+          inputType="url"
+        />
+        <app-input-wrapper
+          [formField]="settingsForm.facebookLink"
+          translationKey="settings.links.facebook"
+          inputType="url"
+        />
+        <app-input-wrapper
+          [formField]="settingsForm.redditLink"
+          translationKey="settings.links.reddit"
+          inputType="url"
+        />
+        <app-input-wrapper
+          [formField]="settingsForm.tikTokLink"
+          translationKey="settings.links.tiktok"
+          inputType="url"
+        />
       </div>
     </div>
 
-    <!-- Section Notifications -->
+    <!-- App Preferences -->
     <div class="rounded-xl border border-base-300 bg-base-100 p-6 shadow-sm">
-      <h2 class="mb-4 text-lg font-semibold">{{ t('notifications.heading') }}</h2>
+      <h2 class="mb-4 text-lg font-semibold">{{ t('preferences.heading') }}</h2>
 
       <div class="space-y-4">
         <div class="flex items-center justify-between">
           <div>
-            <label for="emailNotif" class="text-sm font-bold">
-              {{ t('notifications.email') }}
-            </label>
-            <p class="text-xs opacity-70">{{ t('notifications.emailDesc') }}</p>
+            <p class="text-sm font-bold">{{ t('preferences.language') }}</p>
+            <p class="text-xs opacity-70">{{ t('preferences.languageDesc') }}</p>
           </div>
-
-          <input
-            id="emailNotif"
-            type="checkbox"
-            class="toggle toggle-primary"
-            [formField]="settingsForm.emailNotifications"
-          />
+          <app-lang-switcher />
         </div>
 
         <div class="flex items-center justify-between border-t border-base-200 pt-4">
           <div>
-            <label for="pushNotif" class="text-sm font-bold">
-              {{ t('notifications.push') }}
-            </label>
-            <p class="text-xs opacity-70">{{ t('notifications.pushDesc') }}</p>
+            <p class="text-sm font-bold">{{ t('preferences.theme') }}</p>
+            <p class="text-xs opacity-70">{{ t('preferences.themeDesc') }}</p>
           </div>
-
-          <input
-            id="pushNotif"
-            type="checkbox"
-            class="toggle toggle-primary"
-            [formField]="settingsForm.pushNotifications"
-          />
+          <app-theme-switcher />
         </div>
       </div>
     </div>
 
-    <!-- Barre d'actions -->
+    <!-- Action Bar -->
     <div class="flex items-center justify-between pt-2">
       <div>
         @if (saveSuccess()) {
-          <span class="text-sm font-medium text-success">
-            {{ t('actions.savedSuccess') }}
-          </span>
+          <span class="text-sm font-medium text-success">{{ t('actions.savedSuccess') }}</span>
+        }
+        @if (saveError()) {
+          <span class="text-sm font-medium text-error">{{ t('actions.savedError') }}</span>
         }
       </div>
 
@@ -105,7 +171,7 @@
           [disabled]="!hasChanges() || isSaving() || settingsForm().invalid()"
         >
           @if (isSaving()) {
-            <app-loading-spinner/>
+            <app-loading-spinner />
           }
           {{ t('actions.save') }}
         </button>

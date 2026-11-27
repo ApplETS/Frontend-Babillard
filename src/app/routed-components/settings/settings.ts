@@ -1,19 +1,25 @@
-import { Component, computed, effect, inject, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  Input,
+  linkedSignal,
+  OnInit,
+  signal,
+} from "@angular/core";
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from "@jsverse/transloco";
 import { disabled, form, FormField, required } from "@angular/forms/signals";
 import { LoadingSpinner } from "@components/loading-spinner/loading-spinner";
 import { InputWrapper } from "@components/input-wrapper/input-wrapper";
 import { LangSwitcher } from "@components/lang-switcher/lang-switcher";
 import { ThemeSwitcher } from "@components/theme-switcher/theme-switcher";
+import { AuthService } from "@services/authService/auth.service";
+import { UserUpdateDTO } from "@models/userUpdateDTO.interface";
+import { UserService } from "@services/userService/user.service";
 
-export interface UserSettings {
-  displayName: string;
-  email: string;
-  language: "fr" | "en";
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  darkMode: boolean;
-}
+
+type SettingsFormModel = Required<UserUpdateDTO>;
 
 @Component({
   selector: "app-settings",
@@ -28,48 +34,83 @@ export interface UserSettings {
   templateUrl: "./settings.html",
 })
 export class Settings {
-  protected readonly form = form;
+  private readonly userService = inject(UserService);
 
-  // État sauvegardé (à remplacer par les données de ton service Auth/User)
-  private readonly savedSettings = signal<UserSettings>({
-    displayName: "Yves-Shaheem",
-    email: "student@etsmtl.net",
-    language: "fr",
-    emailNotifications: true,
-    pushNotifications: false,
-    darkMode: true,
+  readonly currentAvatarUrl = computed(() => this.userService.userInfo()?.avatarUrl ?? null);
+
+  private readonly savedSettings = linkedSignal<SettingsFormModel>(() => {
+    const user = this.userService.userInfo();
+    return {
+      id: user?.id ?? "",
+      name: user?.name ?? "",
+      email: user?.email ?? "",
+      organization: user?.organization ?? "",
+      activityAreaId: user?.activityArea?.id ?? "",
+      fieldsOfInterests: user?.fieldsOfInterests ?? [],
+      hasLoggedIn: user?.hasLoggedIn ?? true,
+      profileDescription: user?.profileDescription ?? "",
+      facebookLink: user?.facebookLink ?? "",
+      instagramLink: user?.instagramLink ?? "",
+      tikTokLink: user?.tikTokLink ?? "",
+      xLink: user?.xLink ?? "",
+      discordLink: user?.discordLink ?? "",
+      linkedInLink: user?.linkedInLink ?? "",
+      redditLink: user?.redditLink ?? "",
+      webSiteLink: user?.webSiteLink ?? "",
+    };
   });
 
-  // Modèle réactif lié au Signal Form
-  readonly settingsModel = signal<UserSettings>({ ...this.savedSettings() });
+  readonly profileModel = linkedSignal<SettingsFormModel>(() => ({
+    ...this.savedSettings(),
+  }));
 
-  // Arbre de champs (FieldTree) compatible avec ton InputWrapper
-  readonly settingsForm = form(this.settingsModel, (path) => {
-    required(path.displayName, { message: "validation.required" });
+  readonly settingsForm = form(this.profileModel, (path) => {
     disabled(path.email);
   });
 
-  // États UI
+  readonly avatarPreview = signal<string | null>(null);
+  readonly isUploadingAvatar = signal(false);
+
   readonly isSaving = signal(false);
   readonly saveSuccess = signal(false);
+  readonly saveError = signal(false);
 
-  // Détecte si une valeur diffère de l'état sauvegardé
   readonly hasChanges = computed(() => {
-    const current = this.settingsModel();
+    const curr = this.profileModel();
     const saved = this.savedSettings();
     return (
-      current.displayName !== saved.displayName ||
-      current.language !== saved.language ||
-      current.emailNotifications !== saved.emailNotifications ||
-      current.pushNotifications !== saved.pushNotifications ||
-      current.darkMode !== saved.darkMode
+      curr.organization !== saved.organization ||
+      curr.profileDescription !== saved.profileDescription ||
+      curr.facebookLink !== saved.facebookLink ||
+      curr.instagramLink !== saved.instagramLink ||
+      curr.tikTokLink !== saved.tikTokLink ||
+      curr.xLink !== saved.xLink ||
+      curr.discordLink !== saved.discordLink ||
+      curr.linkedInLink !== saved.linkedInLink ||
+      curr.redditLink !== saved.redditLink ||
+      curr.webSiteLink !== saved.webSiteLink
     );
   });
 
+  async onAvatarSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    this.avatarPreview.set(URL.createObjectURL(file));
+    this.isUploadingAvatar.set(true);
+
+    try {
+      // await this.userService.updateAvatar(file);
+    } finally {
+      this.isUploadingAvatar.set(false);
+    }
+  }
+
   resetForm(): void {
-    const saved = this.savedSettings();
-    this.settingsModel.set({ ...saved });
+    this.profileModel.set({ ...this.savedSettings() });
     this.saveSuccess.set(false);
+    this.saveError.set(false);
   }
 
   async saveSettings(event: Event): Promise<void> {
@@ -81,13 +122,13 @@ export class Settings {
 
     this.isSaving.set(true);
     this.saveSuccess.set(false);
+    this.saveError.set(false);
 
     try {
-      // TODO: Remplacer par l'appel à ton service API
-      await new Promise((resolve) => setTimeout(resolve, 600));
-
-      this.savedSettings.set({ ...this.settingsModel() });
+      // await this.userService.updateUserInfo(this.profileModel());
       this.saveSuccess.set(true);
+    } catch {
+      this.saveError.set(true);
     } finally {
       this.isSaving.set(false);
     }

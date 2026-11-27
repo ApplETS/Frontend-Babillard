@@ -9,13 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { FieldOfInterestTagResponseDTO } from "@models/fieldOfInterestTagResponseDTO.interface";
 
 export interface UserUpdateDTO {
-  id?: string;
+  id: string;
+  name?: string;
   email?: string;
   organization?: string;
   activityAreaId?: string;
   hasLoggedIn?: boolean;
+  fieldsOfInterests?: FieldOfInterestTagResponseDTO[];
   profileDescription?: string;
   facebookLink?: string;
   instagramLink?: string;
