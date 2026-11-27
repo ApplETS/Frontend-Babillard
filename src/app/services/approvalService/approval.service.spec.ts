@@ -52,7 +52,7 @@ describe("ApprovalService", () => {
     
     const responsePromise = service.setApprovalEventStatus(eventId, status);
 
-    const req = httpClient.expectOne(`${environment.API_URL}/api/moderator-events/${eventId}/state`);
+    const req = httpClient.expectOne(`${environment.API_URL}/api/moderator-events/${eventId}/state?status=${status}&refusalReason=`);
     expect(req.request.method).toBe("PATCH");
     expect(req.request.body).toBeNull();
     expect(req.request.params.get("status")).toBe(status);
@@ -61,5 +61,49 @@ describe("ApprovalService", () => {
 
     const response = await responsePromise;
     expect(response).toBeUndefined();
+  });
+
+  it("should call /api/moderator-events/{eventId}/state with refusalReason when setApprovalEventStatus is called with a refusal reason", async () => {
+    const eventId = "1";
+    const status = EventState.Denied;
+    const refusalReason = "Not suitable";
+
+    const responsePromise = service.setApprovalEventStatus(eventId, status, refusalReason);
+
+    const req = httpClient.expectOne(`${environment.API_URL}/api/moderator-events/${eventId}/state?status=${status}&refusalReason=${encodeURIComponent(refusalReason)}`);
+    expect(req.request.method).toBe("PATCH");
+    expect(req.request.body).toBeNull();
+    expect(req.request.params.get("status")).toBe(status);
+    expect(req.request.params.get("refusalReason")).toBe(refusalReason);
+    req.flush({});
+
+    const response = await responsePromise;
+    expect(response).toBeUndefined();
+  });
+
+  it("should throw an error when setApprovalEventStatus receives a BadRequest response", async () => {
+    const eventId = "1";
+    const status = EventState.Denied;
+
+    const responsePromise = service.setApprovalEventStatus(eventId, status);
+
+    const req = httpClient.expectOne(`${environment.API_URL}/api/moderator-events/${eventId}/state?status=${status}&refusalReason=`);
+    expect(req.request.method).toBe("PATCH");
+    req.flush("Bad Request", { status: 400, statusText: "Bad Request" });
+
+    await expect(responsePromise).rejects.toThrow("Bad Request");
+  });
+
+  it("should throw an error when setApprovalEventStatus receives an unexpected error", async () => {
+    const eventId = "1";
+    const status = EventState.Denied;
+
+    const responsePromise = service.setApprovalEventStatus(eventId, status);
+
+    const req = httpClient.expectOne(`${environment.API_URL}/api/moderator-events/${eventId}/state?status=${status}&refusalReason=`);
+    expect(req.request.method).toBe("PATCH");
+    req.error(new ProgressEvent("Unexpected error"));
+
+    await expect(responsePromise).rejects.toThrow("An unexpected error occurred.");
   });
 });
